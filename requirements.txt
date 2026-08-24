@@ -1,0 +1,19 @@
+# Python dependencies for Journalist Safety Monitoring (Common Crawl News source)
+
+# WARC file reading
+warcio>=1.7.4
+
+# HTML -> article text extraction
+trafilatura>=1.8.0
+
+# HTTP client for streaming WARC downloads
+requests>=2.31.0
+
+# Configuration - NEEDED FOR config.yaml
+PyYAML>=6.0
+
+# Date handling
+python-dateutil>=2.8.0
+
+# Tests
+pytest>=8.0.0

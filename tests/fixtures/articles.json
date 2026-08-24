@@ -1,0 +1,32 @@
+[
+  {
+    "title": "Ten miners killed in collapse",
+    "description": "A journalist reported that ten miners were killed...",
+    "query": "journalist killed",
+    "expected": "rejected"
+  },
+  {
+    "title": "Mexican journalist shot dead outside his home",
+    "description": "",
+    "query": "journalist killed",
+    "expected": "validated"
+  },
+  {
+    "title": "Journalism student killed while covering protest",
+    "description": "",
+    "query": "journalist killed",
+    "expected": "validated"
+  },
+  {
+    "title": "Reporter says three civilians were killed",
+    "description": "",
+    "query": "reporter killed",
+    "expected": "rejected"
+  },
+  {
+    "title": "Police detain reporter covering demonstration",
+    "description": "",
+    "query": "reporter detained",
+    "expected": "validated"
+  }
+]

@@ -1,0 +1,252 @@
+# Journalist Safety Monitoring (Common Crawl News) - Configuration
+
+# Monitoring parameters
+lookback_days: 1  # CC-NEWS ships new WARC files every ~2-3 hours; no need for GDELT's 7-day lookback
+update_frequency: "daily"  # Options: daily, weekly, manual
+
+# Alert thresholds (unchanged from the GDELT-based repo)
+alert_thresholds:
+  critical:
+    - "killed"
+    - "murder"
+    - "death"
+    - "fatal"
+    - "assassination"
+  high:
+    - "attack"
+    - "assault"
+    - "injured"
+    - "detained"
+    - "arrest"
+    - "kidnapped"
+  medium:
+    - "threat"
+    - "intimidation"
+    - "harassment"
+    - "censorship"
+
+# High-priority countries (higher journalist risk) - unchanged from the GDELT-based repo
+priority_countries:
+  critical:
+    - "MX"  # Mexico
+    - "AF"  # Afghanistan
+    - "SY"  # Syria
+    - "IQ"  # Iraq
+    - "SO"  # Somalia
+  high:
+    - "PK"  # Pakistan
+    - "IN"  # India
+    - "PH"  # Philippines
+    - "BR"  # Brazil
+    - "TR"  # Turkey
+    - "EG"  # Egypt
+    - "RU"  # Russia
+    - "CN"  # China
+    - "SA"  # Saudi Arabia
+    - "IR"  # Iran
+  medium:
+    - "US"
+    - "UK"
+    - "FR"
+    - "DE"
+    - "ES"
+    - "IT"
+
+# News sources by country, classified by source type -- see PLAN.md's
+# 2026-08-24 update for how this was derived.
+#
+# source: ccnews  -- confirmed present in a sample of real CC-NEWS WARC
+#   files (13 files spread across August 2026, ~175k articles scanned) AND
+#   not blocked in robots.txt. UNLIKE gdelt_queries in the GDELT-based repo,
+#   this is NOT a search filter -- CC-NEWS has no keyword/domain search API.
+#   Every WARC file is downloaded and scanned in full regardless of this
+#   list; this only decides which of the scanned records get kept.
+#
+# source: rss -- blocks CCBot in robots.txt (confirmed via direct robots.txt
+#   check), so can never appear in CC-NEWS, but publishes a working public
+#   RSS/Atom feed (confirmed parseable with feedparser as of 2026-08-24).
+#   fetch_full_text: true means that domain's robots.txt allows a generic
+#   (non-CCBot) user agent, so RSSCollector can fetch the article page for
+#   full-text validation, not just the feed summary.
+#
+# Domains not listed here (e.g. Reuters, AP, Aristegui Noticias) are known
+# gaps: CCBot-blocked AND no usable RSS feed. Not covered by this repo.
+ccnews_domains:
+  MX:
+    - domain: "www.jornada.com.mx"
+      source: "rss"
+      feed_url: "https://www.jornada.com.mx/rss/edicion.xml"
+      fetch_full_text: true
+  SY:
+    - domain: "www.syriahr.com"
+      source: "rss"
+      feed_url: "https://www.syriahr.com/en/feed/"
+      fetch_full_text: true
+  PH:
+    - domain: "www.rappler.com"
+      source: "rss"
+      feed_url: "https://www.rappler.com/feed/"
+      fetch_full_text: true
+  IN:
+    - domain: "economictimes.indiatimes.com"
+      source: "ccnews"
+    - domain: "www.thehindu.com"
+      source: "rss"
+      feed_url: "https://www.thehindu.com/news/international/feeder/default.rss"
+      fetch_full_text: true
+  BR:
+    - domain: "www.folha.uol.com.br"
+      source: "rss"
+      feed_url: "https://www.folha.uol.com.br/emcimadahora/rss091.xml"
+      fetch_full_text: true
+  TR:
+    - domain: "www.haberler.com"
+      source: "ccnews"
+  RU:
+    - domain: "www.kommersant.ru"
+      source: "ccnews"
+    - domain: "meduza.io"
+      source: "ccnews"
+  SA:
+    - domain: "www.arabnews.com"
+      source: "ccnews"
+  IR:
+    - domain: "www.irna.ir"
+      source: "ccnews"
+  UK:
+    - domain: "www.theguardian.com"
+      source: "rss"
+      feed_url: "https://www.theguardian.com/world/rss"
+      fetch_full_text: true
+    - domain: "www.bbc.com"
+      source: "rss"
+      feed_url: "http://feeds.bbci.co.uk/news/world/rss.xml"
+      fetch_full_text: true
+  DE:
+    - domain: "www.finanznachrichten.de"
+      source: "ccnews"
+    - domain: "www.spiegel.de"
+      source: "rss"
+      feed_url: "https://www.spiegel.de/international/index.rss"
+      fetch_full_text: true
+  ES:
+    - domain: "elpais.com"
+      source: "rss"
+      feed_url: "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada"
+      fetch_full_text: true
+  IT:
+    - domain: "www.corriere.it"
+      source: "rss"
+      feed_url: "https://xml2.corriereobjects.it/rss/homepage.xml"
+      fetch_full_text: true
+
+# Known gaps: CCBot-blocked with no usable RSS feed. Listed for visibility,
+# not used by any collector.
+uncovered_domains:
+  - domain: "www.reuters.com"
+    reason: "blocks all bots (robots.txt Disallow: / for User-agent: *); RSS discontinued"
+  - domain: "apnews.com"
+    reason: "blocks CCBot; RSS discontinued"
+  - domain: "aristeguinoticias.com"
+    reason: "blocks CCBot; feed URL returns no parseable entries"
+
+# Allowed (robots.txt doesn't block CCBot) but not yet confirmed present in
+# a CC-NEWS WARC file, and no RSS feed checked -- these cover AF/IQ/SO/PK/
+# EG/CN/US/FR, which otherwise have no confirmed source above. Needs either
+# a bigger WARC sample or an RSS feed check before promoting into
+# ccnews_domains/rss.
+unverified_domains:
+  - domain: "www.tolonews.com"
+    country: "AF"
+  - domain: "www.rudaw.net"
+    country: "IQ"
+  - domain: "www.garoweonline.com"
+    country: "SO"
+  - domain: "www.dawn.com"
+    country: "PK"
+  - domain: "www.almasryalyoum.com"
+    country: "EG"
+  - domain: "www.scmp.com"
+    country: "CN"
+  - domain: "www.lemonde.fr"
+    country: "FR"
+    note: "not checked against robots.txt or CC-NEWS sample yet"
+
+# CC-NEWS collection parameters (replaces gdelt_queries's rate-limit/retry block)
+ccnews_collection:
+  # WARC files are sharded across scheduled runs, same idea as the GDELT
+  # repo's --shard-count/--shard-index, but sharding files instead of queries.
+  shard_count: 4
+  max_warc_files_per_run: 1
+  request_timeout_seconds: 60
+  max_retries: 2
+  retry_backoff_seconds: 30
+
+# Validation/debug output (unchanged from the GDELT-based repo)
+validation:
+  export_decisions: true
+  export_validated: true
+  export_candidates: true
+  export_rejected: false
+  debug_dir: "data/debug"
+  candidate_export_days: 10
+
+# Report generation (unchanged from the GDELT-based repo)
+reporting:
+  format: "markdown"
+  include_charts: true
+  detail_level: "detailed"
+  sections:
+    - "executive_summary"
+    - "severity_breakdown"
+    - "incident_types"
+    - "geographic_analysis"
+    - "critical_incidents"
+    - "trends"
+    - "recommendations"
+
+# Data retention (unchanged from the GDELT-based repo)
+data_retention:
+  database_days: 180
+  rolling_export_windows:
+    - label: "10d"
+      days: 10
+    - label: "30d"
+      days: 30
+    - label: "180d"
+      days: 180
+  raw_data_days: 90
+  reports_days: 365
+  alerts_days: 180
+
+# Notification settings (unchanged from the GDELT-based repo)
+notifications:
+  enabled: true
+  channels:
+    github_issues: true
+    slack: false
+    email: false
+    telegram: false
+  notify_on:
+    - "critical_alert"
+    - "high_risk_country"
+    - "trend_change"
+  quiet_hours:
+    enabled: false
+    start: "22:00"
+    end: "08:00"
+
+# Advanced settings (unchanged from the GDELT-based repo)
+advanced:
+  deduplication_enabled: true
+  dedupe_similarity_threshold: 0.85
+  location_extraction: true
+  entity_recognition: false
+  sentiment_analysis: false
+  export_formats:
+    - "csv"
+    - "json"
+  integrations:
+    cpj_api: false
+    rsf_api: false
+    ifex_api: false

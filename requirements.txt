@@ -6,6 +6,9 @@ warcio>=1.7.4
 # HTML -> article text extraction
 trafilatura>=1.8.0
 
+# RSS/Atom feed parsing
+feedparser>=6.0.0
+
 # HTTP client for streaming WARC downloads
 requests>=2.31.0
 

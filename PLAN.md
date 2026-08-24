@@ -1,5 +1,45 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-08-24: hybrid CC-NEWS + RSS design
+
+Purpose clarified: this repo is a **parallel, independent path to the GDELT
+repo**, for eventual output comparison — not required to match its coverage,
+but should be as good a signal as reasonably achievable on its own.
+
+While building the domain allowlist, I found CC-NEWS structurally excludes a
+lot of exactly the outlets this project cares about most: **13 of 27
+candidate domains (48%) block `CCBot` in `robots.txt`**, including Reuters,
+AP, BBC, The Guardian, Der Spiegel, El País, The Hindu, Corriere della Sera,
+La Jornada, and — worse for this specific project — Rappler (Maria Ressa's
+outlet) and SyriaHR (a human-rights-incident monitoring org). No amount of
+WARC sampling will ever find these; the block is structural. What CC-NEWS
+*does* reliably contain skews toward non-news content (press-release wires,
+commercial sites) plus a real but narrower set of accessible regional/
+non-English news outlets (confirmed: `economictimes.indiatimes.com`,
+`haberler.com`, `kommersant.ru`, `meduza.io`, `arabnews.com`, `irna.ir`,
+`finanznachrichten.de`).
+
+Checked whether the blocked outlets publish public RSS feeds instead (robots
+disallow rules target `CCBot` specifically, not feed readers) —
+**10 of the 13 blocked domains have working feeds**: BBC, The Guardian,
+Rappler, Der Spiegel, El País, The Hindu, La Jornada, SyriaHR, Folha de
+S.Paulo, Corriere della Sera. Only AP, Reuters, and Aristegui Noticias have no
+usable public feed left (both wire services discontinued RSS years ago) —
+permanent gaps, acceptable since wire content is republished broadly enough
+that GDELT likely covers it regardless.
+
+**Revised architecture: two collectors, one pipeline.** `CCNewsCollector`
+(WARC-based) stays for the broad regional/long-tail signal CC-NEWS is
+actually good at. A new `RSSCollector` (using `feedparser` — trivial to use,
+gives title/link/summary/published-date directly, no HTML parsing required
+for the basic case) covers the specific major outlets CC-NEWS can't reach.
+Both normalize into the same article-dict shape and run through the same
+`validate_incident` / `database.py` / reporting pipeline. For RSS-sourced
+articles, fetch the full article page for richer validation text only where
+that domain's `robots.txt` allows a generic (non-`CCBot`) user agent — true
+for all of these except the wire services, which have no full-text access
+under either approach and are excluded anyway.
+
 ## Context
 
 The existing `journalist-safety-monitor` fork works by querying GDELT's DOC 2.0
@@ -113,6 +153,11 @@ source-agnostic and can move over close to as-is:
   `gdelt_queries`.
 - New dependencies: `warcio`, an HTML text extractor, plus whatever the
   existing repo already uses (`requests`, `pyyaml`, sqlite via stdlib).
+- An `RSSCollector` (see the 2026-08-24 update above): polls a per-domain
+  feed URL list with `feedparser`, normalizes entries into the same
+  article-dict shape as the CC-NEWS/GDELT collectors, and optionally fetches
+  the full article page (where robots.txt allows a generic agent) for richer
+  validation text. New dependency: `feedparser`.
 
 ## Repo setup
 
@@ -128,14 +173,24 @@ split you'd have to keep syncing (as we just untangled for the current repo).
    parsing approach end-to-end before wiring anything else up.
 2. **Validator integration**: feed extracted article text through
    `validate_incident` (copied as-is initially), compare decisions against a
-   few known incidents to sanity-check.
-3. **Sharded collection loop + database + config** — port over
-   `collect_incidents`/`database.py` patterns from the existing repo.
-4. **Reporting/alerting/retention** — copy over largely unchanged.
-5. **GitHub Actions workflow** — scheduled + shard, mirroring the existing
+   few known incidents to sanity-check. Done: confirmed via
+   `spikes/spike_validator_on_fulltext.py` that the validator generalizes
+   cleanly to full-length body text.
+3. **Domain classification**: finalize the config.yaml domain list, tagging
+   each entry `source: ccnews` or `source: rss` (+ feed URL) per the
+   2026-08-24 update above.
+4. **RSSCollector**: build the feedparser-based collector for the 10
+   RSS-only domains, normalizing entries to the shared article-dict shape.
+5. **Sharded collection loop + database + config** — port over
+   `collect_incidents`/`database.py` patterns from the existing repo, calling
+   both `CCNewsCollector` and `RSSCollector`.
+6. **Reporting/alerting/retention** — copy over largely unchanged.
+7. **GitHub Actions workflow** — scheduled + shard, mirroring the existing
    `monitor.yml`.
-6. **Backfill script** — adapt `scripts/backfill_validated_incidents.py` to
-   replay historical CC-NEWS WARC files instead of re-querying GDELT.
+8. **Backfill script** — adapt `scripts/backfill_validated_incidents.py` to
+   replay historical CC-NEWS WARC files instead of re-querying GDELT (RSS
+   feeds have no historical archive, so backfill only applies to the CC-NEWS
+   side).
 
 ## Verification approach
 

@@ -1,0 +1,52 @@
+name: Journalist Safety Monitoring (CC-NEWS)
+on:
+  schedule:
+    # Offset from the GDELT repo's 0,6,12,18 cron so the two don't collide.
+    # 4 runs/day x shard_count=4 x max_warc_files_per_run=1 processes ~4
+    # CC-NEWS WARC files/day, matching CC-NEWS's own ~16 files/day / 4
+    # shards publication rate -- see config.yaml's ccnews_collection.
+    - cron: '15 1,7,13,19 * * *'
+  workflow_dispatch:
+    inputs:
+      shard_index:
+        description: 'Zero-based CC-NEWS WARC file shard to run'
+        required: false
+        default: ''
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run monitoring system
+        run: |
+          if [ -n "${{ github.event.inputs.shard_index }}" ]; then
+            SHARD_INDEX="${{ github.event.inputs.shard_index }}"
+          else
+            SHARD_INDEX=$((10#$(date -u +%H) / 6))
+          fi
+          echo "Running CC-NEWS shard ${SHARD_INDEX}/4"
+          python journalist_safety_monitor.py --shard-count 4 --shard-index "${SHARD_INDEX}"
+
+      - name: Commit and push results
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          mkdir -p reports alerts data/exports
+          git add reports alerts data/incidents.db data/exports data/ccnews_state.json
+          git diff --staged --quiet || git commit -m "Update monitoring data"
+          git push || echo "Nothing to push"

@@ -275,7 +275,13 @@ def main() -> int:
                 if len(incident_batch) >= args.batch_size or len(candidate_batch) >= args.batch_size:
                     flush()
 
-                state.mark_processed(path)
+                # Only record a file as done once its results are actually
+                # in the database -- a --dry-run preview doesn't write
+                # anything, so marking it processed here would make a
+                # later real run silently skip it forever, losing whatever
+                # it found.
+                if db:
+                    state.mark_processed(path)
                 logger.info(
                     "[%d files done] %s: %d articles matched, %d validated so far (%.0fs)",
                     files_scanned, path, len(articles), totals["validated"], time.monotonic() - t0,

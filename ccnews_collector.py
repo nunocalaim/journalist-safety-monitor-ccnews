@@ -62,7 +62,10 @@ class CCNewsCollector:
         self.state_path.parent.mkdir(parents=True, exist_ok=True)
         self.state_path.write_text(json.dumps(state, indent=2))
 
-    def _fetch_warc_paths(self, year: int, month: int) -> List[str]:
+    def fetch_warc_paths(self, year: int, month: int) -> List[str]:
+        # Public: also called directly by scripts/backfill_ccnews.py, which
+        # needs a specific historical month's file list rather than "this
+        # month" (what _next_files_to_process below is scoped to).
         url = WARC_PATHS_INDEX_URL.format(year=year, month=month)
         logger.info("Fetching WARC file index: %s", url)
         resp = requests.get(url, timeout=self.timeout)
@@ -75,12 +78,12 @@ class CCNewsCollector:
 
     def _next_files_to_process(self) -> List[str]:
         now = datetime.now(timezone.utc)
-        all_paths = self._fetch_warc_paths(now.year, now.month)
+        all_paths = self.fetch_warc_paths(now.year, now.month)
         if now.day <= 2:
             # Cover the tail of the previous month near a month boundary.
             prev_year, prev_month = (now.year - 1, 12) if now.month == 1 else (now.year, now.month - 1)
             try:
-                all_paths = self._fetch_warc_paths(prev_year, prev_month) + all_paths
+                all_paths = self.fetch_warc_paths(prev_year, prev_month) + all_paths
             except requests.RequestException:
                 pass
 
@@ -114,7 +117,7 @@ class CCNewsCollector:
         for path in files:
             url = WARC_BASE_URL + path
             try:
-                articles.extend(self._scan_file(url))
+                articles.extend(self.scan_file(url))
             except requests.RequestException as e:
                 logger.error("Failed to stream %s: %s", url, e)
                 continue
@@ -122,7 +125,10 @@ class CCNewsCollector:
         self._mark_processed(files)
         return articles
 
-    def _scan_file(self, warc_url: str) -> List[Dict]:
+    def scan_file(self, warc_url: str) -> List[Dict]:
+        # Public: also called directly by scripts/backfill_ccnews.py, one
+        # historical file at a time, bypassing collect()'s shard/state
+        # bookkeeping (the backfill script keeps its own state file).
         logger.info("Streaming %s", warc_url)
         resp = requests.get(warc_url, stream=True, timeout=self.timeout)
         resp.raise_for_status()

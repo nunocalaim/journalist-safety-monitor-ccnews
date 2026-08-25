@@ -172,6 +172,14 @@ unverified_domains:
     country: "FR"
     note: "not checked against robots.txt or CC-NEWS sample yet"
 
+# RSS collection parameters
+rss_collection:
+  # Feeds are sorted newest-first and re-polled every run; older entries are
+  # near-certain duplicates the database will dedup anyway, so capping here
+  # avoids refetching+extracting 100+ full article pages per feed per run.
+  max_entries_per_feed: 25
+  request_timeout_seconds: 20
+
 # CC-NEWS collection parameters (replaces gdelt_queries's rate-limit/retry block)
 ccnews_collection:
   # WARC files are sharded across scheduled runs, same idea as the GDELT

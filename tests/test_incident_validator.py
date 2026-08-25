@@ -110,6 +110,36 @@ def test_validate_incident_fixture(article):
             "candidate",
             None,
         ),
+        # Real false positives found running against CC-NEWS/RSS full article
+        # text (2026-08-24): "X told reporters that Y was killed/attacked" is
+        # common in full-length body text and was missed by the
+        # subject-first-only SOURCE_ATTRIBUTION_PATTERNS regex, which only
+        # caught "reporter told/said X", not "X told reporters".
+        (
+            {
+                "title": "Landslide at waste mound in Guinea capital kills 30, government says",
+                "description": (
+                    "One woman, Cire Diallo, told reporters at the scene "
+                    "that her five children were killed."
+                ),
+            },
+            "",
+            "rejected",
+            None,
+        ),
+        (
+            {
+                "title": "Trump lashes out after US-Canada talks devolve into trade war",
+                "description": (
+                    "\"You're at war when you're attacked, and we got "
+                    "attacked,\" the Canadian prime minister told reporters "
+                    "in Ottawa."
+                ),
+            },
+            "",
+            "rejected",
+            None,
+        ),
     ],
 )
 def test_validate_incident_types(article, query, expected_status, expected_type):

@@ -154,6 +154,12 @@ SEVERITY_BY_TYPE = {
 SOURCE_ATTRIBUTION_PATTERNS = [
     r"\b(?:journalist|reporter|correspondent|editor)\s+(?:reports?|reported|says?|said|writes?|wrote|claims?|claimed|told)\b",
     r"\baccording to\s+(?:a|an|the)?\s*(?:journalist|reporter|correspondent|editor)\b",
+    # Object-position phrasing ("X told reporters that Y was killed") -- the
+    # subject-first pattern above misses this, and it's common in full
+    # article body text (rare in short titles, where this was first tuned).
+    r"\btold\s+(?:reporters?|journalists?|correspondents?|the (?:press|media))\b",
+    r"\bspoke\s+to\s+(?:reporters?|journalists?|correspondents?|the (?:press|media))\b",
+    r"\b(?:said|says?)\s+to\s+(?:reporters?|journalists?)\b",
     r"\bmedia reports?\b",
     r"\bpress release\b",
     r"\bpress conference\b",

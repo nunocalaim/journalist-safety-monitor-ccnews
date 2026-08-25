@@ -18,6 +18,7 @@ import feedparser
 import requests
 import trafilatura
 
+from language_detect import detect_language
 from sources import rss_domains
 
 logger = logging.getLogger(__name__)
@@ -62,7 +63,9 @@ class RSSCollector:
             logger.warning("Feed for %s did not parse: %s", source.domain, parsed.get('bozo_exception'))
             return []
 
-        feed_language = parsed.feed.get('language', '') or ''
+        # Feeds sometimes declare a region variant (e.g. "en-us"); normalize to the
+        # primary subtag so it lines up with the ISO 639-1 codes detect_language() returns.
+        feed_language = (parsed.feed.get('language', '') or '').split('-')[0].lower()
 
         articles = []
         for entry in parsed.entries[:self.max_entries_per_feed]:
@@ -83,7 +86,7 @@ class RSSCollector:
                 'description': text,
                 'domain': source.domain,
                 'country': source.country,
-                'language': feed_language,
+                'language': detect_language(text) or feed_language,
                 'published_date': entry.get('published', '') or entry.get('updated', ''),
                 'source': 'rss',
             })

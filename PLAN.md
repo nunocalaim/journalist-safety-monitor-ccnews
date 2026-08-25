@@ -1,5 +1,45 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-08-25 (2): source list expanded, language detection wired in
+
+Domain/RSS list expansion (step "3a" of the post-launch strategy) is done:
+`scripts/discover_sources.py` classifies a candidate domain (CCBot block via
+robots.txt, RSS/Atom auto-discovery, feed-parse validation), and running it
+against a diversity-curated candidate list (`scripts/candidate_domains.txt`
+-- state media alongside independent/exile media for restricted-press
+countries) grew the allowlist from 17 to 57 sources (34 ccnews + 23 rss),
+now covering all 21 priority countries. 10 domains remain structurally
+uncovered (CCBot-blocked, no discoverable feed) and are tracked in
+`config.yaml`'s `uncovered_domains` list.
+
+That expansion made language support (step "3b") urgent: `incident_validator.py`
+caps any non-English article at `candidate` status via `_is_non_english()`,
+and its positive-frame matcher is English-word-only, so non-English articles
+can never validate today -- now confirmed to affect several of the 57 live
+sources (Spanish, Russian, Portuguese, Italian, French, Arabic, Farsi).
+
+First step done: article language now gets detected and stored, via a new
+`language_detect.py` (backed by `py3langid`) called from both collectors.
+This was not as simple as it looked -- trafilatura only populates its own
+`language` field when you pass `target_language`, but that argument is a
+*filter*: if the detected language doesn't match, `extract()` raises
+internally and returns `None`, silently discarding the article. That would
+have dropped every non-English article before it ever reached the
+validator, so detection is done independently with `py3langid` instead
+(no model download needed, unlike `langdetect`), right after extraction.
+Verified 8/8 correct on realistic journalist-safety sentences across en/es/
+ru/pt/ar/it/fr/fa; regression tests in `tests/test_language_detect.py`.
+
+Not yet done: the actual per-language validator dispatch (translated term
+lists for `MEDIA_SUBJECT_TERMS`/`ACTION_TERMS_BY_TYPE`/source-attribution/
+retrospective/negation patterns, keyed by the now-populated `language`
+field). Priority order agreed: Spanish, Portuguese, Russian, Italian,
+French, then Arabic/Farsi (different scripts but still whitespace-delimited,
+so the existing regex approach should work mechanically) -- Hindi/Chinese
+deferred since current Indian/Chinese sources are English-language editions,
+and true CJK tokenization (no whitespace word boundaries) is a bigger lift.
+Historical backfill (phase 8) stays deferred until after this.
+
 ## Update 2026-08-25: pipeline built, verified live on GitHub Actions
 
 Steps 1-7 of the phased build plan are done: `CCNewsCollector`,

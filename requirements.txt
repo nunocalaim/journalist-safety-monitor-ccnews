@@ -6,6 +6,11 @@ warcio>=1.7.4
 # HTML -> article text extraction
 trafilatura>=1.8.0
 
+# Language detection for article text (see language_detect.py -- trafilatura's
+# own language field only populates via target_language, which also filters
+# out non-matching articles, so we run this ourselves instead)
+py3langid>=0.2.2
+
 # RSS/Atom feed parsing
 feedparser>=6.0.0
 

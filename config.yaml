@@ -53,65 +53,172 @@ priority_countries:
     - "IT"
 
 # News sources by country, classified by source type -- see PLAN.md's
-# 2026-08-24 update for how this was derived.
+# 2026-08-24 update for how this was derived; expanded 2026-08-25 using
+# scripts/discover_sources.py against scripts/candidate_domains.txt, a list
+# researched for geographic, geopolitical, and media-bias diversity (state
+# media alongside independent/exile media in restricted-press countries).
 #
-# source: ccnews  -- confirmed present in a sample of real CC-NEWS WARC
-#   files (13 files spread across August 2026, ~175k articles scanned) AND
-#   not blocked in robots.txt. UNLIKE gdelt_queries in the GDELT-based repo,
-#   this is NOT a search filter -- CC-NEWS has no keyword/domain search API.
-#   Every WARC file is downloaded and scanned in full regardless of this
-#   list; this only decides which of the scanned records get kept.
+# source: ccnews  -- allowed by robots.txt (not CCBot-blocked). Some of
+#   these (economictimes, haberler, kommersant, meduza, arabnews, irna,
+#   finanznachrichten) were separately confirmed actually present in a
+#   sample of real CC-NEWS WARC files; the rest are only confirmed
+#   *allowed*, not yet confirmed *actually crawled* by CC-NEWS (it only
+#   crawls a curated source list Common Crawl doesn't publish) -- treat
+#   these as eligible-but-unproven until production runs show real matches.
+#   UNLIKE gdelt_queries in the GDELT-based repo, this is NOT a search
+#   filter -- every WARC file is downloaded and scanned in full regardless
+#   of this list; it only decides which of the scanned records get kept.
 #
-# source: rss -- blocks CCBot in robots.txt (confirmed via direct robots.txt
-#   check), so can never appear in CC-NEWS, but publishes a working public
-#   RSS/Atom feed (confirmed parseable with feedparser as of 2026-08-24).
-#   fetch_full_text: true means that domain's robots.txt allows a generic
-#   (non-CCBot) user agent, so RSSCollector can fetch the article page for
-#   full-text validation, not just the feed summary.
-#
-# Domains not listed here (e.g. Reuters, AP, Aristegui Noticias) are known
-# gaps: CCBot-blocked AND no usable RSS feed. Not covered by this repo.
+# source: rss -- blocks CCBot in robots.txt (or robots.txt was unreachable,
+#   noted per-entry below), so can never appear in CC-NEWS, but publishes a
+#   working public RSS/Atom feed (confirmed parseable with feedparser).
+#   fetch_full_text: true means that domain's robots.txt confirmed a
+#   generic (non-CCBot) user agent is allowed, so RSSCollector fetches the
+#   article page for full-text validation, not just the feed summary;
+#   false means either confirmed blocked for a generic agent too, or
+#   robots.txt was unreachable so it's left conservative (summary only).
 ccnews_domains:
   MX:
     - domain: "www.jornada.com.mx"
       source: "rss"
       feed_url: "https://www.jornada.com.mx/rss/edicion.xml"
       fetch_full_text: true
+    - domain: "www.reforma.com"
+      source: "rss"
+      feed_url: "https://www.reforma.com/rss/portada.xml"
+      fetch_full_text: false  # robots.txt unreachable; heavily paywalled
+    - domain: "www.eluniversal.com.mx"
+      source: "ccnews"
+  AF:
+    - domain: "tolonews.com"
+      source: "rss"
+      feed_url: "https://tolonews.com/rss.xml"
+      fetch_full_text: false  # robots.txt unreachable
+    - domain: "8am.media"  # Hasht-e Subh, independent, publishing in exile
+      source: "rss"
+      feed_url: "https://8am.media/feed/"
+      fetch_full_text: true
+    - domain: "www.afintl.com"  # Afghanistan International, London-based
+      source: "ccnews"
   SY:
     - domain: "www.syriahr.com"
       source: "rss"
       feed_url: "https://www.syriahr.com/en/feed/"
       fetch_full_text: true
-  PH:
-    - domain: "www.rappler.com"
+    - domain: "english.enabbaladi.net"  # independent, pro-opposition origin
       source: "rss"
-      feed_url: "https://www.rappler.com/feed/"
+      feed_url: "https://english.enabbaladi.net/feed/"
       fetch_full_text: true
+    - domain: "sana.sy"  # Syrian state news agency
+      source: "ccnews"
+  IQ:
+    - domain: "www.rudaw.net"  # Kurdish, KDP-affiliated
+      source: "ccnews"
+    - domain: "shafaq.com"  # independent
+      source: "ccnews"
+    - domain: "www.alsumaria.tv"  # independent
+      source: "ccnews"
+  SO:
+    - domain: "www.garoweonline.com"
+      source: "ccnews"
+    - domain: "hiiraan.com"  # diaspora-run, Canada-based
+      source: "ccnews"
+  PK:
+    - domain: "www.dawn.com"
+      source: "ccnews"
+    - domain: "www.geo.tv"
+      source: "ccnews"
+    - domain: "www.thenews.com.pk"
+      source: "ccnews"
+    - domain: "tribune.com.pk"
+      source: "ccnews"
   IN:
     - domain: "economictimes.indiatimes.com"
       source: "ccnews"
     - domain: "www.thehindu.com"
       source: "rss"
-      feed_url: "https://www.thehindu.com/news/international/feeder/default.rss"
+      feed_url: "https://www.thehindu.com/feeder/default.rss"
       fetch_full_text: true
+    - domain: "thewire.in"  # independent, critical of government
+      source: "ccnews"
+    - domain: "timesofindia.indiatimes.com"
+      source: "ccnews"
+  PH:
+    - domain: "www.rappler.com"
+      source: "rss"
+      feed_url: "https://www.rappler.com/feed/"
+      fetch_full_text: true
+    - domain: "newsinfo.inquirer.net"
+      source: "ccnews"
+    - domain: "www.gmanetwork.com"
+      source: "ccnews"
   BR:
     - domain: "www.folha.uol.com.br"
       source: "rss"
       feed_url: "https://www.folha.uol.com.br/emcimadahora/rss091.xml"
       fetch_full_text: true
+    - domain: "www.brasildefato.com.br"  # left-leaning independent
+      source: "ccnews"
+    - domain: "oglobo.globo.com"
+      source: "rss"
+      feed_url: "https://oglobo.globo.com/rss/oglobo"
+      fetch_full_text: true
   TR:
     - domain: "www.haberler.com"
+      source: "ccnews"
+    - domain: "bianet.org"  # independent, human-rights focused
+      source: "ccnews"
+    - domain: "www.duvarenglish.com"  # independent
+      source: "ccnews"
+  EG:
+    - domain: "www.almasryalyoum.com"
+      source: "ccnews"
+    - domain: "www.madamasr.com"  # independent, blocked inside Egypt itself
+      source: "rss"
+      feed_url: "https://www.madamasr.com/feed/"
+      fetch_full_text: true
+    - domain: "english.ahram.org.eg"  # state-affiliated
       source: "ccnews"
   RU:
     - domain: "www.kommersant.ru"
       source: "ccnews"
-    - domain: "meduza.io"
+    - domain: "meduza.io"  # independent, in exile
+      source: "ccnews"
+    - domain: "novayagazeta.eu"  # independent, in exile, banned in Russia
+      source: "rss"
+      feed_url: "https://novayagazeta.eu/feed/rss"
+      fetch_full_text: true
+  CN:
+    - domain: "www.scmp.com"  # Hong Kong, English
+      source: "ccnews"
+    - domain: "www.sixthtone.com"  # state-owned but Western-audience angle
+      source: "rss"
+      feed_url: "http://www.sixthtone.com/rss/index.xml"
+      fetch_full_text: false  # robots.txt unreachable
+    - domain: "chinadigitaltimes.net"  # US-based, tracks CN censorship directives
+      source: "rss"
+      feed_url: "https://chinadigitaltimes.net/feed/"
+      fetch_full_text: true
+    - domain: "www.globaltimes.cn"  # state media
       source: "ccnews"
   SA:
     - domain: "www.arabnews.com"
       source: "ccnews"
   IR:
-    - domain: "www.irna.ir"
+    - domain: "www.irna.ir"  # state news agency
+      source: "ccnews"
+    - domain: "en.radiofarda.com"  # US-funded independent/exile
+      source: "ccnews"
+    - domain: "www.iranintl.com"  # exile, London/DC-based, banned in Iran
+      source: "ccnews"
+    - domain: "www.tehrantimes.com"  # state-aligned English daily
+      source: "ccnews"
+  US:
+    - domain: "theintercept.com"  # independent, investigative
+      source: "rss"
+      feed_url: "https://theintercept.com/feed/"
+      fetch_full_text: true
+    - domain: "www.propublica.org"  # independent, investigative
       source: "ccnews"
   UK:
     - domain: "www.theguardian.com"
@@ -122,6 +229,15 @@ ccnews_domains:
       source: "rss"
       feed_url: "http://feeds.bbci.co.uk/news/world/rss.xml"
       fetch_full_text: true
+  FR:
+    - domain: "www.lemonde.fr"
+      source: "rss"
+      feed_url: "https://www.lemonde.fr/rss/une.xml"
+      fetch_full_text: true
+    - domain: "www.france24.com"
+      source: "rss"
+      feed_url: "https://www.france24.com/en/rss"
+      fetch_full_text: false  # robots.txt unreachable
   DE:
     - domain: "www.finanznachrichten.de"
       source: "ccnews"
@@ -134,14 +250,19 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada"
       fetch_full_text: true
+    - domain: "www.elmundo.es"
+      source: "rss"
+      feed_url: "https://www.elmundo.es/rss/googlenews/portada.xml"
+      fetch_full_text: true
   IT:
     - domain: "www.corriere.it"
       source: "rss"
       feed_url: "https://xml2.corriereobjects.it/rss/homepage.xml"
       fetch_full_text: true
 
-# Known gaps: CCBot-blocked with no usable RSS feed. Listed for visibility,
-# not used by any collector.
+# Known gaps: CCBot-blocked with no usable RSS feed (checked directly and
+# via scripts/discover_sources.py, including a common-feed-path fallback).
+# Not used by any collector.
 uncovered_domains:
   - domain: "www.reuters.com"
     reason: "blocks all bots (robots.txt Disallow: / for User-agent: *); RSS discontinued"
@@ -149,28 +270,20 @@ uncovered_domains:
     reason: "blocks CCBot; RSS discontinued"
   - domain: "aristeguinoticias.com"
     reason: "blocks CCBot; feed URL returns no parseable entries"
-
-# Allowed (robots.txt doesn't block CCBot) but not yet confirmed present in
-# a CC-NEWS WARC file, and no RSS feed checked -- these cover AF/IQ/SO/PK/
-# EG/CN/US/FR, which otherwise have no confirmed source above. Needs either
-# a bigger WARC sample or an RSS feed check before promoting into
-# ccnews_domains/rss.
-unverified_domains:
-  - domain: "www.tolonews.com"
-    country: "AF"
-  - domain: "www.rudaw.net"
-    country: "IQ"
-  - domain: "www.garoweonline.com"
-    country: "SO"
-  - domain: "www.dawn.com"
-    country: "PK"
-  - domain: "www.almasryalyoum.com"
-    country: "EG"
-  - domain: "www.scmp.com"
-    country: "CN"
-  - domain: "www.lemonde.fr"
-    country: "FR"
-    note: "not checked against robots.txt or CC-NEWS sample yet"
+  - domain: "www.proceso.com.mx"
+    reason: "robots.txt unreachable; no discoverable/guessable feed"
+  - domain: "www.ndtv.com"
+    reason: "robots.txt unreachable; no discoverable/guessable feed"
+  - domain: "www.aa.com.tr"
+    reason: "Anadolu Agency (state); feed discovered but returns no entries"
+  - domain: "tass.com"
+    reason: "Russian state news agency; robots.txt unreachable, no discoverable feed"
+  - domain: "english.alarabiya.net"
+    reason: "robots.txt unreachable; no discoverable/guessable feed"
+  - domain: "www.dw.com"
+    reason: "Deutsche Welle; blocks CCBot, no discoverable/guessable feed"
+  - domain: "www.repubblica.it"
+    reason: "blocks CCBot; no discoverable/guessable feed"
 
 # RSS collection parameters
 rss_collection:

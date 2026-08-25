@@ -1,0 +1,111 @@
+# Candidate news domains for classification via discover_sources.py.
+# Sourced 2026-08-25 from web research aiming for geographic, geopolitical,
+# and media-bias diversity per priority_countries in config.yaml: state
+# media, independent domestic media, and exile/opposition media where a
+# free press is restricted. domain:country
+
+# --- MX (critical) ---
+www.jornada.com.mx:MX
+www.reforma.com:MX
+www.proceso.com.mx:MX
+www.eluniversal.com.mx:MX
+
+# --- AF (critical) ---
+tolonews.com:AF
+8am.media:AF
+www.afintl.com:AF
+
+# --- SY (critical) ---
+www.syriahr.com:SY
+english.enabbaladi.net:SY
+sana.sy:SY
+
+# --- IQ (critical) ---
+www.rudaw.net:IQ
+shafaq.com:IQ
+www.alsumaria.tv:IQ
+
+# --- SO (critical) ---
+www.garoweonline.com:SO
+hiiraan.com:SO
+
+# --- PK (high) ---
+www.dawn.com:PK
+www.geo.tv:PK
+www.thenews.com.pk:PK
+tribune.com.pk:PK
+
+# --- IN (high) ---
+economictimes.indiatimes.com:IN
+www.thehindu.com:IN
+thewire.in:IN
+www.ndtv.com:IN
+timesofindia.indiatimes.com:IN
+
+# --- PH (high) ---
+www.rappler.com:PH
+newsinfo.inquirer.net:PH
+www.gmanetwork.com:PH
+
+# --- BR (high) ---
+www.folha.uol.com.br:BR
+www.brasildefato.com.br:BR
+oglobo.globo.com:BR
+
+# --- TR (high) ---
+www.haberler.com:TR
+bianet.org:TR
+www.duvarenglish.com:TR
+www.aa.com.tr:TR
+
+# --- EG (high) ---
+www.almasryalyoum.com:EG
+www.madamasr.com:EG
+english.ahram.org.eg:EG
+
+# --- RU (high) ---
+www.kommersant.ru:RU
+meduza.io:RU
+novayagazeta.eu:RU
+tass.com:RU
+
+# --- CN (high) ---
+www.scmp.com:CN
+www.sixthtone.com:CN
+chinadigitaltimes.net:CN
+www.globaltimes.cn:CN
+
+# --- SA (high) ---
+www.arabnews.com:SA
+english.alarabiya.net:SA
+
+# --- IR (high) ---
+www.irna.ir:IR
+en.radiofarda.com:IR
+www.iranintl.com:IR
+www.tehrantimes.com:IR
+
+# --- US (medium) ---
+theintercept.com:US
+www.propublica.org:US
+
+# --- UK (medium) ---
+www.theguardian.com:UK
+www.bbc.com:UK
+
+# --- FR (medium) ---
+www.lemonde.fr:FR
+www.france24.com:FR
+
+# --- DE (medium) ---
+www.finanznachrichten.de:DE
+www.spiegel.de:DE
+www.dw.com:DE
+
+# --- ES (medium) ---
+elpais.com:ES
+www.elmundo.es:ES
+
+# --- IT (medium) ---
+www.corriere.it:IT
+www.repubblica.it:IT

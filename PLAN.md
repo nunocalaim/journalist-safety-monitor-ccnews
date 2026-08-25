@@ -1,5 +1,34 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-08-25: pipeline built, verified live on GitHub Actions
+
+Steps 1-7 of the phased build plan are done: `CCNewsCollector`,
+`RSSCollector`, the orchestrator, and the scheduled workflow all exist and
+have been verified against real data, including a live GitHub Actions run
+(commit `fb24c1e`) -- checkout, deps, WARC streaming, all 10 RSS feeds,
+validation, database, report, and commit-push-back all worked cleanly in
+~4 minutes.
+
+Two real validator false positives turned up running the actual pipeline
+against real articles (not synthetic fixtures) and got fixed, with the
+real cases kept as regression tests: (1) "X told reporters that Y was
+killed" -- common in full article body text, missed by the
+subject-first-only source-attribution regex; (2) no negation handling at
+all -- "harassed and intimidated reporters, but did not harm them" matched
+as a positive frame. Also fixed: "Year after X..."-style anniversary
+framing without a number, which the numeric-only retrospective filter
+missed.
+
+One infra quirk found only on the Actions runner (not locally): El País
+(`elpais.com`) returns 403 Forbidden on every full-article-page fetch from
+GitHub's IP ranges, even though its robots.txt allows a generic agent.
+`RSSCollector` already falls back to the feed summary text on a fetch
+failure, so this degrades gracefully (thinner validation text for that one
+domain) rather than breaking the run.
+
+Remaining: Phase 8 (backfill script, replaying historical CC-NEWS WARC
+files) -- lower priority, not yet started.
+
 ## Update 2026-08-24: hybrid CC-NEWS + RSS design
 
 Purpose clarified: this repo is a **parallel, independent path to the GDELT

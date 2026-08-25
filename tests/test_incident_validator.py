@@ -140,6 +140,52 @@ def test_validate_incident_fixture(article):
             "rejected",
             None,
         ),
+        # Headline-style anniversary phrasing ("Year after X", "it's been a
+        # year since X") -- the original RETROSPECTIVE_PATTERNS only caught
+        # numeric forms like "6 years later".
+        (
+            {
+                "title": (
+                    "Year after Israeli strikes killed journalists at "
+                    "hospital, no one has been held accountable"
+                ),
+                "description": (
+                    "It's been a year since Israeli soldiers killed 22 "
+                    "Palestinians, including journalists and rescue "
+                    "workers, in a double strike on a hospital in Gaza."
+                ),
+            },
+            "",
+            "candidate",
+            None,
+        ),
+        # Negation directly attached to a harm-action term flips its
+        # meaning; the validator originally had no negation handling.
+        (
+            {
+                "title": "",
+                "description": (
+                    "Traditionally the KGB harassed and intimidated "
+                    "foreign reporters, but did not harm them."
+                ),
+            },
+            "",
+            "candidate",
+            None,
+        ),
+        # Negation elsewhere in the sentence, about something unrelated to
+        # the harm action, must NOT suppress a real positive match -- a
+        # first attempt at the negation fix (window-based, not
+        # action-attached) regressed exactly this case.
+        (
+            {
+                "title": "Journalist shot dead, police have not named a suspect",
+                "description": "",
+            },
+            "",
+            "validated",
+            "KILLING",
+        ),
     ],
 )
 def test_validate_incident_types(article, query, expected_status, expected_type):

@@ -167,12 +167,42 @@ SOURCE_ATTRIBUTION_PATTERNS = [
 
 
 RETROSPECTIVE_PATTERNS = [
-    r"\b\d+\s+(?:years?|months?)\s+(?:ago|later|on)\b",
+    r"\b(?:\d+|a|an|one)\s+(?:years?|months?)\s+(?:ago|later|on|after)\b",
+    # Headline-style elliptical phrasing that drops the leading article,
+    # e.g. "Year after Israeli strikes killed journalists..." -- common
+    # enough in real headlines to be worth its own pattern rather than
+    # relying on "a year after" always being spelled out.
+    r"^\s*years?\s+after\b",
+    r"\bit'?s been\s+(?:\d+|a|an|one)\s+(?:years?|months?)\s+since\b",
     r"\b(?:anniversary|commemorates?|remembering|look back|looking back)\b",
     r"\b(?:on this day|this day in history|history|historical)\b",
     r"\b(?:identified body|finally identifies body|remains identified)\b",
     r"\b(?:first journalist killed|battle of little bighorn)\b",
 ]
+
+# Negation attached directly to a harm-action term flips its meaning (e.g.
+# "didn't harm them", "was never attacked"). Deliberately narrow: only
+# triggers when the negation is immediately followed by a recognized
+# action-like word, not just anywhere nearby in the sentence -- an earlier,
+# broader "negation somewhere near the match" version incorrectly rejected
+# "journalist shot dead, police have not named a suspect" (unrelated
+# negation later in the sentence, about the investigation, not the killing).
+_NEGATABLE_ACTIONS = sorted(
+    {action for actions in ACTION_TERMS_BY_TYPE.values() for action in actions}
+    | {"harm", "harmed", "hurt", "injure"},
+    key=len,
+    reverse=True,
+)
+_NEGATABLE_ACTIONS_RE = "|".join(
+    re.escape(a).replace(r"\ ", r"\s+") for a in _NEGATABLE_ACTIONS
+)
+NEGATED_ACTION_RE = re.compile(
+    rf"\b(?:did|does|do|has|have|had|is|are|was|were|will|wo|can|could|would|should)"
+    rf"\s*(?:n['’]?t|not)"
+    rf"(?:\s+\w+){{0,2}}\s+(?:{_NEGATABLE_ACTIONS_RE})\b"
+    rf"|\bnever(?:\s+\w+){{0,2}}\s+(?:{_NEGATABLE_ACTIONS_RE})\b"
+    rf"|\bno longer(?:\s+\w+){{0,2}}\s+(?:{_NEGATABLE_ACTIONS_RE})\b",
+)
 
 
 def validate_incident(article: dict, matched_query: str = "") -> IncidentValidation:
@@ -356,6 +386,8 @@ def _find_positive_incident_frame(sentence: str) -> Optional[tuple[str, str, str
                 )
 
                 if subject_before_action or action_before_subject or nominal_frame:
+                    if NEGATED_ACTION_RE.search(lowered):
+                        continue
                     return incident_type, subject, action
 
     return None

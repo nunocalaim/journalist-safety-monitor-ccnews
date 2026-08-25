@@ -1,5 +1,54 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-08-25 (6): historical backfill script (phase 8)
+
+Built `scripts/backfill_ccnews.py`, the last item on the original phased
+build plan. Replays historical CC-NEWS WARC files through the *current*
+`CCNewsCollector` + `validate_incident()` (so it benefits from all of this
+session's work: the 96-source allowlist, language detection, and the
+6-language validator dispatch) and backfills the database, rather than
+re-querying anything live. RSS feeds have no historical archive (only
+recent entries), so this only covers `source: ccnews` domains.
+
+Two of `CCNewsCollector`'s methods (`_fetch_warc_paths`, `_scan_file`) were
+promoted from private to public (`fetch_warc_paths`, `scan_file`) since
+they're now genuinely called by two things -- the live scheduled collector
+and this script -- rather than duplicating WARC-streaming/extraction logic
+a second time and risking the two drifting apart.
+
+Runs locally per the user's standing instruction (not via GitHub Actions):
+CC-NEWS ships ~16 WARC files/day at roughly a minute each to stream+scan,
+so the agreed 3-month backfill window (~1,440 files) is realistically a
+day-scale job -- well past what a scheduled Actions job should attempt, and
+past what fits in one sitting anyway. Built resumable from the start: a
+`--state` file (`data/ccnews_backfill_state.json`, tracked in git like the
+live pipeline's `data/ccnews_state.json`) records every WARC file already
+scanned, so an interrupted run can be restarted and picks up where it left
+off. WARC filenames embed their crawl timestamp
+(`CC-NEWS-20260801193946-00321.warc.gz`), so date-range filtering happens
+against the path list itself, without downloading files outside the
+requested window.
+
+Also implemented actual retry-with-backoff for WARC streaming, using
+`ccnews_collection.max_retries`/`retry_backoff_seconds` from config --
+these were declared but silently never read by any code (the live
+collector just skips a failed file and tries again next scheduled run,
+which is fine for a recurring job but not for a run meant to complete an
+entire historical range unattended).
+
+Verified end-to-end against real data before considering it done, not just
+unit-tested: a dry run correctly narrowed a month's 412 WARC files down to
+15 in a 2-day test range, a second dry run against the same `--state` file
+correctly skipped the already-scanned files and moved to the next ones
+(proving resumability), and a real (non-dry-run) run against a throwaway
+database inserted 2 new validated incidents with correct evidence text
+(an IR journalist detention, an IR cameraman wounded) -- confirming the
+whole path from historical WARC bytes to a validated database row works.
+
+Not yet run for real: the actual 3-month backfill is a deliberate,
+user-initiated long-running local job, not something to kick off
+automatically.
+
 ## Update 2026-08-25 (5): domain list expanded 57 -> 96 sources
 
 The 2026-08-24 expansion left several countries thin -- averaging 2.7

@@ -1,5 +1,62 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-08-25 (3): per-language validator dispatch for es/pt/it/fr/ru
+
+Step "3b" (language support) is now implemented, not just detected. New
+`language_terms.py` holds a `LanguageTerms` dataclass (media subject terms,
+action terms by incident type, source-attribution patterns, retrospective
+patterns, negation prefixes) and a registry for Spanish, Portuguese,
+Italian, French, and Russian -- the languages the 2026-08-24 expansion
+actually put live sources in. `incident_validator.py` was refactored so
+every helper function takes a `terms` argument instead of closing over
+English module constants directly; `validate_incident()` looks up
+`article["language"]` (now populated by `language_detect.py`) and dispatches
+to the matching term set, falling back to the pre-existing English-only/
+capped-at-candidate behavior for any language not in the registry
+(Arabic and Farsi included -- still deliberately deferred, see below).
+
+English's own behavior is unchanged: its term lists and the negation-regex
+construction were generalized into the same `negation_prefixes`-based
+builder every language now uses, and the full pre-existing English
+regression suite still passes byte-for-byte. One existing fixture flipped
+on purpose: a Spanish-tagged article ("Periodista asesinado en Mexico")
+that used to be capped at "candidate" now validates as KILLING, which is
+the entire point of this work -- updated with a comment explaining why.
+
+Added 26 new regression cases (`tests/test_incident_validator.py`): a
+validated killing, validated detention, source-attribution rejection,
+retrospective candidate, and negated-action candidate for each of the 5
+new languages, all checked directly against the code before being written
+into the suite (not written speculatively). Plus one case confirming a
+still-unsupported language (Arabic) stays capped at "candidate" exactly as
+before the refactor.
+
+Real translation gotchas hit and fixed along the way, worth remembering if
+extending further: (1) Spanish's "a un año del asesinato" and Italian's
+"anno dall'omicidio" use article contractions (de+el -> del, da+l' ->
+dall') that a plain trailing `\b` after the preposition misses -- fixed by
+allowing the contracted form explicitly (Spanish) or dropping the trailing
+boundary since the contraction attaches directly (Italian). (2) These
+languages negate with a particle directly before the verb (no/não/non,
+French "pas" after the auxiliary in compound tenses, Russian "не") rather
+than English's auxiliary+"not" -- the negation builder needed to accept
+raw regex fragments per language, not a fixed English-shaped template.
+
+Explicitly out of scope for this pass, still open: Arabic and Farsi (their
+definite article attaches to the noun with no space, e.g. Arabic "الصحفي" =
+"the journalist" as one token, so plain `\bterm\b` entries won't match --
+needs prefixed word-form variants, not a copy of this pass); the optional
+English-only "killing of a journalist" nominal-frame bonus pattern wasn't
+translated (subject/action proximity matching already covers the core
+cases). Translations are rule-based vocabulary, not reviewed by a native
+speaker of each language -- worth revisiting if real traffic surfaces a
+language whose false-positive/negative rate looks off.
+
+Next: re-run the live pipeline to confirm the now-validating non-English
+sources actually produce validated/CRITICAL alerts end-to-end, then move to
+the historical backfill script (phase 8), run locally per the user's
+earlier instruction (not via GitHub Actions, to avoid run-time limits).
+
 ## Update 2026-08-25 (2): source list expanded, language detection wired in
 
 Domain/RSS list expansion (step "3a" of the post-launch strategy) is done:

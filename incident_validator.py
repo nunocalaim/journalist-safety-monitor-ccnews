@@ -218,6 +218,16 @@ class _CompiledLanguage:
     nominal_frame_pattern: Optional[str] = None
 
 
+def _term_re(term: str) -> str:
+    escaped = re.escape(term.lower())
+    escaped = escaped.replace(r"\ ", r"\s+")
+    return rf"\b{escaped}\b"
+
+
+def _term_in_text(term: str, text: str) -> bool:
+    return re.search(_term_re(term), text) is not None
+
+
 def _build_negated_action_re(terms: LanguageTerms) -> re.Pattern:
     actions = sorted(
         {action for actions in terms.action_terms_by_type.values() for action in actions}
@@ -229,6 +239,17 @@ def _build_negated_action_re(terms: LanguageTerms) -> re.Pattern:
     alternatives = [
         rf"{prefix}(?:\s+\w+){{0,2}}\s+(?:{actions_re})\b" for prefix in terms.negation_prefixes
     ]
+    # Languages that negate by fusing the negation into the verb itself
+    # (Turkish: öldürüldü "was killed" -> öldürülmedi "was not killed") have
+    # no preceding word to anchor a prefix+window match against, so they
+    # list the fully-inflected negated forms directly instead.
+    alternatives += [_term_re(term) for term in terms.negated_action_terms]
+    if not alternatives:
+        # `"|".join([])` is "", and re.compile("") matches every position in
+        # any string -- which would make every sentence look "negated" and
+        # silently block all validation for a language with neither
+        # mechanism configured. Use a pattern that never matches instead.
+        return re.compile(r"(?!)")
     return re.compile("|".join(alternatives))
 
 
@@ -466,16 +487,6 @@ def _find_positive_incident_frame(sentence: str, compiled: _CompiledLanguage) ->
                     return incident_type, subject, action
 
     return None
-
-
-def _term_in_text(term: str, text: str) -> bool:
-    return re.search(_term_re(term), text) is not None
-
-
-def _term_re(term: str) -> str:
-    escaped = re.escape(term.lower())
-    escaped = escaped.replace(r"\ ", r"\s+")
-    return rf"\b{escaped}\b"
 
 
 def _first_matching_sentence(sentences: list[str], predicate) -> str:

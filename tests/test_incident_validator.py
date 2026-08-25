@@ -241,6 +241,17 @@ def test_validate_incident_types(article, query, expected_status, expected_type)
         ("ru", "Годовщина смерти журналиста напоминает о безнаказанности.", "candidate", None),
         ("ru", "Журналист не был убит во время операции, по данным полиции.", "candidate", None),
 
+        # Turkish (added 2026-08-25, after es/pt/it/fr/ru): negates by
+        # fusing a suffix into the verb itself (öldürüldü "was killed" ->
+        # öldürülmedi "was not killed"), handled via negated_action_terms
+        # instead of the negation_prefixes every other language uses -- see
+        # language_terms.py.
+        ("tr", "Gazeteci başkentte vurularak öldürüldü.", "validated", "KILLING"),
+        ("tr", "Bir muhabir protesto sırasında polis tarafından gözaltına alındı.", "validated", "DETENTION"),
+        ("tr", "Bir tanık gazetecilere konuştu: Oğlu saldırıda öldürüldü.", "rejected", None),
+        ("tr", "Gazetecinin öldürülmesinin yıl dönümü, cezasızlığı hatırlatıyor.", "candidate", None),
+        ("tr", "Gazeteci operasyon sırasında polise göre öldürülmedi.", "candidate", None),
+
         # No Arabic term list yet -- still capped at "candidate", same
         # graceful-degradation gate every unsupported language uses.
         ("arabic", "قُتل الصحفي على يد مسلحين في المدينة، وفقا لما أفاد به شهود محليون.", "candidate", None),
@@ -251,3 +262,25 @@ def test_validate_incident_multilanguage(language, text, expected_status, expect
 
     assert result.status == expected_status
     assert result.incident_type == expected_type
+
+
+def test_build_negated_action_re_with_no_negation_config_never_matches():
+    # A language with neither negation_prefixes nor negated_action_terms
+    # set (Turkish, added for this mechanism, has the latter but not the
+    # former) must not silently treat every sentence as negated:
+    # "|".join([]) is "", and re.compile("") matches at position 0 of any
+    # string, which would block every positive match for that language.
+    from incident_validator import _build_negated_action_re
+    from language_terms import LanguageTerms
+
+    empty_terms = LanguageTerms(
+        media_subject_terms=[],
+        action_terms_by_type={},
+        source_attribution_patterns=[],
+        retrospective_patterns=[],
+    )
+
+    pattern = _build_negated_action_re(empty_terms)
+
+    assert pattern.search("any text at all, including an empty string") is None
+    assert pattern.search("") is None

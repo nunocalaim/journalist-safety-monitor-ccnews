@@ -109,3 +109,97 @@ www.elmundo.es:ES
 # --- IT (medium) ---
 www.corriere.it:IT
 www.repubblica.it:IT
+# Round 2 candidates, researched 2026-08-25: expanding source density,
+# prioritizing the thinnest countries (SA had 1 source, IT had 1, SO had 2)
+# and topping up the rest. Same diversity criteria as round 1
+# (candidate_domains.txt): state media alongside independent/exile media
+# where the press is restricted. domain:country
+
+# --- MX (critical, had 3) ---
+animalpolitico.com:MX
+www.sinembargo.mx:MX
+
+# --- AF (critical, had 3) ---
+www.khaama.com:AF
+www.pajhwok.com:AF
+theafghantimes.com:AF
+
+# --- SY (critical, had 3) ---
+syrianobserver.com:SY
+syriadirect.org:SY
+
+# --- IQ (critical, had 3) ---
+www.kurdistan24.net:IQ
+964media.com:IQ
+
+# --- SO (critical, had 2) ---
+www.somaliguardian.com:SO
+www.mareeg.com:SO
+keydmedia.net:SO
+
+# --- PK (high, had 4) ---
+www.samaa.tv:PK
+www.nation.com.pk:PK
+
+# --- IN (high, had 4) ---
+scroll.in:IN
+www.newslaundry.com:IN
+
+# --- PH (high, had 3) ---
+verafiles.org:PH
+www.bulatlat.com:PH
+
+# --- BR (high, had 3) ---
+www.intercept.com.br:BR
+apublica.org:BR
+
+# --- TR (high, had 3) ---
+www.cumhuriyet.com.tr:TR
+www.diken.com.tr:TR
+
+# --- EG (high, had 3) ---
+egyptindependent.com:EG
+
+# --- RU (high, had 3) ---
+istories.media:RU
+verstka.media:RU
+mediazona.ca:RU
+
+# --- CN (high, had 4) ---
+www.caixinglobal.com:CN
+
+# --- SA (high, had 1 -- thinnest tier-1 country) ---
+www.saudigazette.com.sa:SA
+english.aawsat.com:SA
+www.spa.gov.sa:SA
+
+# --- IR (high, had 4) ---
+kayhanlife.com:IR
+www.iranwire.com:IR
+
+# --- US (medium, had 2) ---
+www.themarshallproject.org:US
+www.motherjones.com:US
+
+# --- UK (medium, had 2) ---
+www.independent.co.uk:UK
+www.telegraph.co.uk:UK
+
+# --- FR (medium, had 2) ---
+www.liberation.fr:FR
+www.mediapart.fr:FR
+www.lefigaro.fr:FR
+
+# --- DE (medium, had 2) ---
+www.sueddeutsche.de:DE
+www.zeit.de:DE
+
+# --- ES (medium, had 2) ---
+www.lavanguardia.com:ES
+www.elconfidencial.com:ES
+www.abc.es:ES
+
+# --- IT (medium, had 1 -- thinnest of all) ---
+www.lastampa.it:IT
+www.ilfattoquotidiano.it:IT
+www.ansa.it:IT

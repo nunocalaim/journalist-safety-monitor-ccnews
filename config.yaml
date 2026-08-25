@@ -89,6 +89,8 @@ ccnews_domains:
       fetch_full_text: false  # robots.txt unreachable; heavily paywalled
     - domain: "www.eluniversal.com.mx"
       source: "ccnews"
+    - domain: "animalpolitico.com"  # independent
+      source: "ccnews"
   AF:
     - domain: "tolonews.com"
       source: "rss"
@@ -99,6 +101,12 @@ ccnews_domains:
       feed_url: "https://8am.media/feed/"
       fetch_full_text: true
     - domain: "www.afintl.com"  # Afghanistan International, London-based
+      source: "ccnews"
+    - domain: "www.khaama.com"  # Khaama Press, independent
+      source: "ccnews"
+    - domain: "www.pajhwok.com"  # Pajhwok Afghan News, independent
+      source: "ccnews"
+    - domain: "theafghantimes.com"  # independent, human rights/women's issues focus
       source: "ccnews"
   SY:
     - domain: "www.syriahr.com"
@@ -111,6 +119,12 @@ ccnews_domains:
       fetch_full_text: true
     - domain: "sana.sy"  # Syrian state news agency
       source: "ccnews"
+    - domain: "syrianobserver.com"  # independent
+      source: "rss"
+      feed_url: "https://syrianobserver.com/feed"
+      fetch_full_text: true
+    - domain: "syriadirect.org"  # independent
+      source: "ccnews"
   IQ:
     - domain: "www.rudaw.net"  # Kurdish, KDP-affiliated
       source: "ccnews"
@@ -118,10 +132,20 @@ ccnews_domains:
       source: "ccnews"
     - domain: "www.alsumaria.tv"  # independent
       source: "ccnews"
+    - domain: "www.kurdistan24.net"  # Kurdish, Erbil-based
+      source: "ccnews"
+    - domain: "964media.com"  # independent, Arabic/Kurdish/English
+      source: "ccnews"
   SO:
     - domain: "www.garoweonline.com"
       source: "ccnews"
     - domain: "hiiraan.com"  # diaspora-run, Canada-based
+      source: "ccnews"
+    - domain: "www.somaliguardian.com"  # independent
+      source: "ccnews"
+    - domain: "www.mareeg.com"  # independent, Mogadishu-based
+      source: "ccnews"
+    - domain: "keydmedia.net"  # independent, Mogadishu-based
       source: "ccnews"
   PK:
     - domain: "www.dawn.com"
@@ -143,6 +167,10 @@ ccnews_domains:
       source: "ccnews"
     - domain: "timesofindia.indiatimes.com"
       source: "ccnews"
+    - domain: "scroll.in"  # independent
+      source: "ccnews"
+    - domain: "www.newslaundry.com"  # independent, media watchdog
+      source: "ccnews"
   PH:
     - domain: "www.rappler.com"
       source: "rss"
@@ -151,6 +179,8 @@ ccnews_domains:
     - domain: "newsinfo.inquirer.net"
       source: "ccnews"
     - domain: "www.gmanetwork.com"
+      source: "ccnews"
+    - domain: "www.bulatlat.com"  # independent, alternative media
       source: "ccnews"
   BR:
     - domain: "www.folha.uol.com.br"
@@ -163,12 +193,22 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://oglobo.globo.com/rss/oglobo"
       fetch_full_text: true
+    - domain: "www.intercept.com.br"  # independent, investigative
+      source: "ccnews"
+    - domain: "apublica.org"  # independent, investigative
+      source: "rss"
+      feed_url: "https://apublica.org/feed/"
+      fetch_full_text: false  # robots.txt unreachable
   TR:
     - domain: "www.haberler.com"
       source: "ccnews"
     - domain: "bianet.org"  # independent, human-rights focused
       source: "ccnews"
     - domain: "www.duvarenglish.com"  # independent
+      source: "ccnews"
+    - domain: "www.cumhuriyet.com.tr"  # last major independent daily
+      source: "ccnews"
+    - domain: "www.diken.com.tr"  # independent
       source: "ccnews"
   EG:
     - domain: "www.almasryalyoum.com"
@@ -179,6 +219,8 @@ ccnews_domains:
       fetch_full_text: true
     - domain: "english.ahram.org.eg"  # state-affiliated
       source: "ccnews"
+    - domain: "egyptindependent.com"  # independent
+      source: "ccnews"
   RU:
     - domain: "www.kommersant.ru"
       source: "ccnews"
@@ -188,6 +230,12 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://novayagazeta.eu/feed/rss"
       fetch_full_text: true
+    - domain: "istories.media"  # independent, in exile
+      source: "ccnews"
+    - domain: "verstka.media"  # independent, in exile
+      source: "ccnews"
+    - domain: "mediazona.ca"  # independent, in exile
+      source: "ccnews"
   CN:
     - domain: "www.scmp.com"  # Hong Kong, English
       source: "ccnews"
@@ -204,6 +252,14 @@ ccnews_domains:
   SA:
     - domain: "www.arabnews.com"
       source: "ccnews"
+    - domain: "www.saudigazette.com.sa"
+      source: "ccnews"
+    - domain: "www.spa.gov.sa"  # Saudi Press Agency, state
+      source: "ccnews"
+    - domain: "english.aawsat.com"  # Asharq Al-Awsat, Saudi-owned pan-Arab daily
+      source: "rss"
+      feed_url: "https://english.aawsat.com/feed/"
+      fetch_full_text: false  # robots.txt unreachable
   IR:
     - domain: "www.irna.ir"  # state news agency
       source: "ccnews"
@@ -213,12 +269,22 @@ ccnews_domains:
       source: "ccnews"
     - domain: "www.tehrantimes.com"  # state-aligned English daily
       source: "ccnews"
+    - domain: "kayhanlife.com"  # independent, exile, London-based
+      source: "ccnews"
+    - domain: "www.iranwire.com"  # independent, exile
+      source: "rss"
+      feed_url: "https://iranwire.com/fa/feed/"
+      fetch_full_text: true
   US:
     - domain: "theintercept.com"  # independent, investigative
       source: "rss"
       feed_url: "https://theintercept.com/feed/"
       fetch_full_text: true
     - domain: "www.propublica.org"  # independent, investigative
+      source: "ccnews"
+    - domain: "www.themarshallproject.org"  # independent, criminal justice focus
+      source: "ccnews"
+    - domain: "www.motherjones.com"  # independent, investigative
       source: "ccnews"
   UK:
     - domain: "www.theguardian.com"
@@ -229,6 +295,14 @@ ccnews_domains:
       source: "rss"
       feed_url: "http://feeds.bbci.co.uk/news/world/rss.xml"
       fetch_full_text: true
+    - domain: "www.independent.co.uk"
+      source: "rss"
+      feed_url: "https://www.independent.co.uk/rss"
+      fetch_full_text: false  # robots.txt unreachable
+    - domain: "www.telegraph.co.uk"
+      source: "rss"
+      feed_url: "https://www.telegraph.co.uk/rss.xml"
+      fetch_full_text: false  # robots.txt unreachable
   FR:
     - domain: "www.lemonde.fr"
       source: "rss"
@@ -238,12 +312,22 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://www.france24.com/en/rss"
       fetch_full_text: false  # robots.txt unreachable
+    - domain: "www.liberation.fr"
+      source: "rss"
+      feed_url: "https://www.liberation.fr/arc/outboundfeeds/rss/"
+      fetch_full_text: true
   DE:
     - domain: "www.finanznachrichten.de"
       source: "ccnews"
     - domain: "www.spiegel.de"
       source: "rss"
       feed_url: "https://www.spiegel.de/international/index.rss"
+      fetch_full_text: true
+    - domain: "www.sueddeutsche.de"
+      source: "ccnews"
+    - domain: "www.zeit.de"
+      source: "rss"
+      feed_url: "https://newsfeed.zeit.de/index"
       fetch_full_text: true
   ES:
     - domain: "elpais.com"
@@ -254,10 +338,28 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://www.elmundo.es/rss/googlenews/portada.xml"
       fetch_full_text: true
+    - domain: "www.lavanguardia.com"
+      source: "rss"
+      feed_url: "https://www.lavanguardia.com/rss/home.xml"
+      fetch_full_text: true
+    - domain: "www.abc.es"
+      source: "rss"
+      feed_url: "https://www.abc.es/rss/2.0/portada/"
+      fetch_full_text: true
   IT:
     - domain: "www.corriere.it"
       source: "rss"
       feed_url: "https://xml2.corriereobjects.it/rss/homepage.xml"
+      fetch_full_text: true
+    - domain: "www.lastampa.it"
+      source: "rss"
+      feed_url: "https://www.lastampa.it/rss/copertina.xml"
+      fetch_full_text: true
+    - domain: "www.ilfattoquotidiano.it"  # independent, investigative
+      source: "ccnews"
+    - domain: "www.ansa.it"  # ANSA, leading Italian news agency
+      source: "rss"
+      feed_url: "https://www.ansa.it/rss.xml"
       fetch_full_text: true
 
 # Known gaps: CCBot-blocked with no usable RSS feed (checked directly and
@@ -284,6 +386,22 @@ uncovered_domains:
     reason: "Deutsche Welle; blocks CCBot, no discoverable/guessable feed"
   - domain: "www.repubblica.it"
     reason: "blocks CCBot; no discoverable/guessable feed"
+  - domain: "www.sinembargo.mx"
+    reason: "robots.txt unreachable; no discoverable/guessable feed"
+  - domain: "www.samaa.tv"
+    reason: "robots.txt unreachable; no discoverable/guessable feed"
+  - domain: "www.nation.com.pk"
+    reason: "robots.txt unreachable; feed discovered but returns no entries"
+  - domain: "verafiles.org"
+    reason: "robots.txt unreachable; feed discovered but returns no entries"
+  - domain: "www.caixinglobal.com"
+    reason: "blocks CCBot; no discoverable/guessable feed"
+  - domain: "www.mediapart.fr"
+    reason: "blocks CCBot; no discoverable/guessable feed (paywalled, subscriber-funded)"
+  - domain: "www.lefigaro.fr"
+    reason: "blocks CCBot; feed discovered but returns no entries"
+  - domain: "www.elconfidencial.com"
+    reason: "blocks CCBot; feed discovered but returns no entries"
 
 # RSS collection parameters
 rss_collection:

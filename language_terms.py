@@ -43,7 +43,16 @@ class LanguageTerms:
     action_terms_by_type: Dict[str, List[str]]
     source_attribution_patterns: List[str]
     retrospective_patterns: List[str]
-    negation_prefixes: List[str]
+    # negation_prefixes: a word/phrase that appears directly before the verb
+    # (no/não/non, French "pas" after the auxiliary, Russian "не"). Doesn't
+    # fit every language -- Turkish negates by inserting a suffix inside the
+    # verb itself (öldürüldü "was killed" -> öldürülmedi "was not killed"),
+    # so there's no preceding word to match. negated_action_terms covers
+    # that case instead: literal fully-inflected negated verb forms, matched
+    # directly rather than via a prefix+window template. A language can use
+    # either mechanism, both, or neither.
+    negation_prefixes: List[str] = field(default_factory=list)
+    negated_action_terms: List[str] = field(default_factory=list)
     extra_negatable_actions: List[str] = field(default_factory=list)
 
 
@@ -478,12 +487,139 @@ RUSSIAN = LanguageTerms(
 )
 
 
+# Turkish is agglutinative: negation is a suffix inserted inside the verb
+# itself (öldürüldü "was killed" -> öldürülmedi "was not killed"), not a
+# preceding word, so there's no negation_prefixes list here -- see
+# negated_action_terms below instead, and the LanguageTerms docstring for
+# why the two mechanisms exist separately. Also unhandled for this first
+# pass: "asla" (never) and "artık ... değil" (no longer) as separate
+# negation constructions, and Turkish's dotted/dotless I casefolding
+# (Python's str.lower() turns capital İ into "i" + a stray combining dot,
+# not plain "i", under the default non-Turkish locale) -- mainly affects
+# sentence-initial capitalized words, worth revisiting if it causes missed
+# matches in practice.
+TURKISH = LanguageTerms(
+    media_subject_terms=[
+        "gazeteci", "gazeteciler",
+        "gazetecilik öğrencisi", "gazetecilik öğrencileri",
+        "muhabir", "muhabirler",
+        "savaş muhabiri", "savaş muhabirleri",
+        "yabancı muhabir", "yabancı muhabirler",
+        "foto muhabiri", "foto muhabirleri",
+        "kameraman", "kameramanlar",
+        "editör", "editörler",
+        "köşe yazarı", "köşe yazarları",
+        "sunucu", "sunucular",
+        "basın mensubu", "basın mensupları",
+        "medya çalışanı", "medya çalışanları",
+        "haber ekibi",
+        "gazete",
+        "haber merkezi",
+        "medya kuruluşu", "haber kuruluşu",
+        "radyo istasyonu",
+        "televizyon kanalı", "tv kanalı",
+    ],
+    action_terms_by_type={
+        "KILLING": [
+            "öldürüldü",
+            "katledildi",
+            "suikaste uğradı",
+            "vurularak öldürüldü",
+            "bıçaklanarak öldürüldü",
+            "dövülerek öldürüldü",
+            "ölü bulundu",
+        ],
+        "DETENTION": [
+            "gözaltına alındı",
+            "tutuklandı",
+            "hapsedildi",
+            "mahkum edildi",
+            "gözaltında",
+        ],
+        "ATTACK": [
+            "saldırıya uğradı",
+            "dövüldü",
+            "vuruldu",
+            "bıçaklandı",
+            "yaralandı",
+            "kaçırıldı",
+            "işkence gördü",
+        ],
+        "THREAT": [
+            "tehdit edildi",
+            "ölüm tehdidi",
+            "taciz edildi",
+            "gözdağı verildi",
+        ],
+        "CENSORSHIP": [
+            "sansürlendi",
+            "yasaklandı",
+            "engellendi",
+            "kapatıldı",
+            "askıya alındı",
+            "baskın yapıldı",
+        ],
+        "DISAPPEARANCE": [
+            "kayboldu",
+            "zorla kaybedildi",
+        ],
+    },
+    source_attribution_patterns=[
+        r"\b(?:gazeteci|muhabir|editör)\w*\s+(?:bildirdi|açıkladı|söyledi|yazdı|iddia etti)\b",
+        r"\bbir\s+(?:gazeteciye|muhabire|editöre)\s+göre\b",
+        r"\bgazetecilere\s+(?:söyledi|konuştu|anlattı)\b",
+        r"\bbasına\s+konuştu\b",
+        r"\bmedya\s+raporlarına\s+göre\b",
+        r"\bbasın\s+açıklaması\b",
+        r"\bbasın\s+toplantısı\b",
+    ],
+    retrospective_patterns=[
+        r"\b(?:\d+|bir)\s+yıl\s+(?:sonra|önce)\b",
+        r"\byıl\s*dönümü\b",
+        r"\bhatırlatıyor\b|\banma\b",
+        r"\bbu\s+tarihte\b",
+    ],
+    # No negation_prefixes -- see the module comment above. These are the
+    # literal negated forms of every action term above (suffix -me/-ma
+    # inserted before the final tense/agreement suffix), matched directly
+    # rather than via a preceding-word window.
+    negated_action_terms=[
+        "öldürülmedi",
+        "katledilmedi",
+        "suikaste uğramadı",
+        "ölü bulunmadı",
+        "gözaltına alınmadı",
+        "tutuklanmadı",
+        "hapsedilmedi",
+        "mahkum edilmedi",
+        "saldırıya uğramadı",
+        "dövülmedi",
+        "vurulmadı",
+        "bıçaklanmadı",
+        "yaralanmadı",
+        "kaçırılmadı",
+        "işkence görmedi",
+        "tehdit edilmedi",
+        "taciz edilmedi",
+        "gözdağı verilmedi",
+        "sansürlenmedi",
+        "yasaklanmadı",
+        "engellenmedi",
+        "kapatılmadı",
+        "askıya alınmadı",
+        "kaybolmadı",
+        "zorla kaybedilmedi",
+    ],
+)
+
+
 LANGUAGE_TERMS: Dict[str, LanguageTerms] = {
     "es": SPANISH,
     "pt": PORTUGUESE,
     "it": ITALIAN,
     "fr": FRENCH,
     "ru": RUSSIAN,
+    "tr": TURKISH,
 }
 
 # Full language names, in case metadata ever carries them instead of an
@@ -494,4 +630,5 @@ LANGUAGE_ALIASES: Dict[str, str] = {
     "italian": "it",
     "french": "fr",
     "russian": "ru",
+    "turkish": "tr",
 }

@@ -1,5 +1,58 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-08-25 (4): live pipeline check + Turkish language support
+
+Re-ran the live GitHub Actions pipeline after the (3) language work below
+and confirmed the dispatch is actually exercised on real traffic, not just
+synthetic tests: querying `article_candidates` by language+status after the
+run showed real `rejected` decisions for es (41), it (6), pt (5), ru (2) --
+those only happen when the new term lists actually matched something and
+correctly ruled it out, so the code paths are demonstrably live. 0
+`validated` incidents fired for any language this run, English included --
+not a red flag, just a small sample (one shard of one day's WARC files);
+real killings/detentions are rare per few hundred articles.
+
+That same query surfaced something the source list alone didn't show:
+**Turkish was the second-largest language bucket in live traffic (320
+articles -- more than Spanish and Russian combined)**, entirely from
+`haberler.com`/`bianet.org`-style Turkish-language CC-NEWS sources, and it
+had zero language support. Added it, following the same
+`language_terms.py` pattern as (3) below -- with one real architectural
+wrinkle: Turkish negates by fusing a suffix into the verb itself
+(öldürüldü "was killed" -> öldürülmedi "was not killed"), not with a
+preceding word like every other language handled so far, so the existing
+`negation_prefixes` mechanism (a word before the action, within a small
+window) can't express it at all. Added a second mechanism,
+`negated_action_terms` -- literal fully-inflected negated verb forms,
+matched directly -- that a language can use instead of or alongside
+prefixes. Building it surfaced and fixed a real latent bug: a language
+with neither mechanism set would silently compile `"|".join([])` -> `""`,
+and `re.compile("")` matches every position in any string, which would
+have made every sentence look "negated" and blocked all validation for
+that language. Regression test added
+(`test_build_negated_action_re_with_no_negation_config_never_matches`).
+
+Turkish's core case -- passive-voice headlines like "Gazeteci öldürüldü"
+(journalist was-killed), the dominant real-world Turkish news pattern --
+is covered and tested (validated killing/detention, source-attribution
+rejection, retrospective and negated-action candidates, all checked
+directly before being written into the suite, same discipline as (3)).
+But Turkish's agglutination goes further than the negation case: nouns and
+verbs take productive case/tense/mood suffixes that a bare-word-list
+approach doesn't cover reported speech ("gazetecilere" = "to journalists",
+"öldürüldüğünü" = "that [he] was killed" -- both miss the plain
+"gazeteci"/"öldürüldü" list entries the same way "asked" doesn't match a
+list entry for "ask"). This is a distinct, real coverage gap from the
+Arabic/Farsi one (that was prefixes on nouns; this is suffixes on both
+nouns and verbs, and on verbs it's productive across many more
+grammatical categories) -- worth a fuller pass (case-suffixed subject
+forms, more verb-form coverage) if Turkish's false-negative rate looks
+high in practice, not attempted here given the scope of this session.
+
+Next: expand the domain/RSS candidate list (see the source-count table
+below -- several countries, especially Saudi Arabia at 1 source and Italy
+at 1, are thin), then the historical backfill script (phase 8).
+
 ## Update 2026-08-25 (3): per-language validator dispatch for es/pt/it/fr/ru
 
 Step "3b" (language support) is now implemented, not just detected. New

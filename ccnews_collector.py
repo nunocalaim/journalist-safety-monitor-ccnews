@@ -21,6 +21,7 @@ import requests
 import trafilatura
 from warcio.archiveiterator import ArchiveIterator
 
+from language_detect import detect_language
 from sources import ccnews_domains
 
 logger = logging.getLogger(__name__)
@@ -176,7 +177,7 @@ class CCNewsCollector:
             'description': text,
             'domain': urlparse(url).netloc,
             'country': country,
-            'language': data.get('language') or '',
+            'language': detect_language(text),
             'published_date': data.get('date') or '',
             'source': 'ccnews',
         }

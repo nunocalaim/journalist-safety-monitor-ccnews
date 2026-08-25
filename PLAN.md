@@ -1,5 +1,34 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-08-25 (5): domain list expanded 57 -> 96 sources
+
+The 2026-08-24 expansion left several countries thin -- averaging 2.7
+sources/country, with Saudi Arabia and Italy down to a single outlet each
+and Somalia to two -- thin enough that most real incidents in those
+countries wouldn't be caught by any watched source regardless of validator
+quality. Researched a second, larger candidate batch
+(`scripts/candidate_domains.txt`, appended -- 46 new domains, same
+diversity criteria as round 1: state media alongside independent/exile
+media where the press is restricted) and ran it through
+`scripts/discover_sources.py`. 38 of 46 came back usable; 8 uncovered
+(CCBot-blocked with no working feed: `sinembargo.mx`, `samaa.tv`,
+`nation.com.pk`, `verafiles.org`, `caixinglobal.com`, `mediapart.fr`,
+`lefigaro.fr`, `elconfidencial.com` -- added to `uncovered_domains`).
+
+New per-country counts: every country now has at least 3 sources (France,
+the new minimum), most have 4-6. Saudi Arabia went 1 -> 4 (added Saudi
+Gazette, the state Saudi Press Agency, and Asharq Al-Awsat), Italy 1 -> 4
+(La Stampa, ANSA, Il Fatto Quotidiano), Somalia 2 -> 5. Total: 57 -> 96
+sources (61 ccnews + 35 rss). Also re-verified the 6 originally-uncovered
+domains from the 2026-08-24 round (NDTV, Anadolu/aa.com.tr, TASS, Al
+Arabiya, DW, La Repubblica) that this session initially thought were
+undocumented -- they were already correctly recorded in
+`uncovered_domains`, just past where an earlier partial file read had
+stopped; no actual gap, confirmed still uncovered on re-check.
+
+Next: historical backfill script (phase 8), the last item on the original
+phased build plan.
+
 ## Update 2026-08-25 (4): live pipeline check + Turkish language support
 
 Re-ran the live GitHub Actions pipeline after the (3) language work below

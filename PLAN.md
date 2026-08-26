@@ -1,5 +1,44 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-08-26 (7): two candidate-bucket fixes -- 65k rows reclassified
+
+Reviewing the actual `article_candidates` reason breakdown (prompted by
+"why are these candidates, what are the criteria") turned up two branches
+in `validate_incident()` that were producing "candidate" for reasons that
+don't actually apply to this repo:
+
+**`matched_query` fallback (35,412 rows, the single largest bucket).** This
+validator was originally shared with the GDELT-based sibling repo, where
+`matched_query` meant "this article's *title/snippet* matched a keyword
+search, but we don't have the full article text to confirm it" -- a real
+source of uncertainty, since GDELT never returns full article bodies. This
+repo always validates full extracted article text, and both collectors set
+`matched_query` to a constant per-domain label (`"ccnews:bianet.org"`,
+`"historical_backfill"`), never an actual search match -- so it carried no
+signal, and "nothing found anywhere in the full text" is a confident
+rejection, not genuine ambiguity. Removed the `matched_query` parameter
+from `validate_incident()` entirely (and the leftover `query` field from
+test fixtures/parametrization) rather than leave a dead parameter around.
+
+**Unsupported-language cap (21,730 rows).** Previously capped at
+"candidate" so a human could review non-English articles the validator
+couldn't confirm. Per user decision: reject these instead for now (fewer
+false "needs review" rows to sift through) and revisit as more languages
+get term-list support (see the 2026-08-25 Turkish/es/pt/it/fr/ru entries
+above) -- Arabic and Farsi are the two biggest remaining gaps given the
+57-source list's exile/state-media coverage of Iran and the Arab world.
+
+Existing `article_candidates` rows were reclassified (UPDATE, not DELETE --
+this keeps the audit trail of what was actually seen and scanned) from
+`candidate` to `rejected` with the reason text the current code would now
+produce: 35,412 rows moved from "query-only match..." to "no media subject
+or harm action found", 21,730 from "non-English returned text lacks
+English validation evidence" to "unsupported language; no term list to
+validate against yet". `candidate` dropped from ~65k to 8,297 -- now only
+the two branches that represent genuine ambiguity (retrospective/
+historical framing, and "journalist term present but no clear harm
+action"). Reports/exports regenerated from the cleaned database.
+
 ## Update 2026-08-25 (6): historical backfill script (phase 8)
 
 Built `scripts/backfill_ccnews.py`, the last item on the original phased

@@ -11,20 +11,19 @@ FIXTURE_PATH = Path(__file__).parent / "fixtures" / "articles.json"
 
 @pytest.mark.parametrize("article", json.loads(FIXTURE_PATH.read_text()))
 def test_validate_incident_fixture(article):
-    result = validate_incident(article, matched_query=article.get("query", ""))
+    result = validate_incident(article)
 
     assert result.status == article["expected"]
 
 
 @pytest.mark.parametrize(
-    ("article", "query", "expected_status", "expected_type"),
+    ("article", "expected_status", "expected_type"),
     [
         (
             {
                 "title": "Mexican journalist shot dead outside his home",
                 "description": "",
             },
-            "journalist killed",
             "validated",
             "KILLING",
         ),
@@ -33,7 +32,6 @@ def test_validate_incident_fixture(article):
                 "title": "Police detain reporter covering demonstration",
                 "description": "",
             },
-            "reporter detained",
             "validated",
             "DETENTION",
         ),
@@ -42,7 +40,6 @@ def test_validate_incident_fixture(article):
                 "title": "Sudanese journalists murdered after militia raid",
                 "description": "",
             },
-            "journalists killed",
             "validated",
             "KILLING",
         ),
@@ -51,7 +48,6 @@ def test_validate_incident_fixture(article):
                 "title": "Authorities arrest reporters covering the protest",
                 "description": "",
             },
-            "reporters detained",
             "validated",
             "DETENTION",
         ),
@@ -60,7 +56,6 @@ def test_validate_incident_fixture(article):
                 "title": "Newspaper office raided by security forces",
                 "description": "",
             },
-            "newspaper raided",
             "validated",
             "CENSORSHIP",
         ),
@@ -69,7 +64,6 @@ def test_validate_incident_fixture(article):
                 "title": "Press conference held after deadly mine collapse",
                 "description": "",
             },
-            "press killed",
             "rejected",
             None,
         ),
@@ -78,7 +72,6 @@ def test_validate_incident_fixture(article):
                 "title": "Journalist writes about attacks on schools",
                 "description": "",
             },
-            "journalist attacked",
             "candidate",
             None,
         ),
@@ -92,7 +85,6 @@ def test_validate_incident_fixture(article):
                 "description": "",
                 "language": "Spanish",
             },
-            "near10:\"journalist killed\"",
             "validated",
             "KILLING",
         ),
@@ -101,7 +93,6 @@ def test_validate_incident_fixture(article):
                 "title": "AP first journalist killed in action was at the Battle of Little Bighorn 150 years ago",
                 "description": "",
             },
-            'near10:"journalist killed"',
             "candidate",
             None,
         ),
@@ -110,7 +101,6 @@ def test_validate_incident_fixture(article):
                 "title": "Six Years Later, DNA Finally Identifies Body of Missing #EndSARS Reporter",
                 "description": "",
             },
-            'near10:"journalist detained"',
             "candidate",
             None,
         ),
@@ -127,7 +117,6 @@ def test_validate_incident_fixture(article):
                     "that her five children were killed."
                 ),
             },
-            "",
             "rejected",
             None,
         ),
@@ -140,7 +129,6 @@ def test_validate_incident_fixture(article):
                     "in Ottawa."
                 ),
             },
-            "",
             "rejected",
             None,
         ),
@@ -159,7 +147,6 @@ def test_validate_incident_fixture(article):
                     "workers, in a double strike on a hospital in Gaza."
                 ),
             },
-            "",
             "candidate",
             None,
         ),
@@ -173,7 +160,6 @@ def test_validate_incident_fixture(article):
                     "foreign reporters, but did not harm them."
                 ),
             },
-            "",
             "candidate",
             None,
         ),
@@ -186,14 +172,13 @@ def test_validate_incident_fixture(article):
                 "title": "Journalist shot dead, police have not named a suspect",
                 "description": "",
             },
-            "",
             "validated",
             "KILLING",
         ),
     ],
 )
-def test_validate_incident_types(article, query, expected_status, expected_type):
-    result = validate_incident(article, matched_query=query)
+def test_validate_incident_types(article, expected_status, expected_type):
+    result = validate_incident(article)
 
     assert result.status == expected_status
     assert result.incident_type == expected_type
@@ -252,9 +237,11 @@ def test_validate_incident_types(article, query, expected_status, expected_type)
         ("tr", "Gazetecinin öldürülmesinin yıl dönümü, cezasızlığı hatırlatıyor.", "candidate", None),
         ("tr", "Gazeteci operasyon sırasında polise göre öldürülmedi.", "candidate", None),
 
-        # No Arabic term list yet -- still capped at "candidate", same
-        # graceful-degradation gate every unsupported language uses.
-        ("arabic", "قُتل الصحفي على يد مسلحين في المدينة، وفقا لما أفاد به شهود محليون.", "candidate", None),
+        # No Arabic term list yet -- rejected rather than validated-or-not
+        # (2026-08-26: unsupported languages now reject instead of being
+        # capped at "candidate", see PLAN.md), the same gate every
+        # unsupported language hits.
+        ("arabic", "قُتل الصحفي على يد مسلحين في المدينة، وفقا لما أفاد به شهود محليون.", "rejected", None),
     ],
 )
 def test_validate_incident_multilanguage(language, text, expected_status, expected_type):

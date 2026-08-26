@@ -1,5 +1,35 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-08-26 (8): backfill stopped, Actions resumed -- back to steady state
+
+Deliberately stopped the historical backfill (SIGINT both times, clean
+flush verified) rather than run it to completion of the full 90-day
+window: 374 WARC files processed, covering 2026-05-27 through 2026-06-28,
+172 validated incidents. Judged a solid initial historical baseline rather
+than something that had to finish in one go -- it's resumable
+(`data/ccnews_backfill_state.json`) whenever picking the remaining ~55
+days back up makes sense.
+
+Worth recording what the backfill actually proved, beyond just adding
+rows: of the 172 incidents, 75 are in a non-English language an
+English-only validator would have missed entirely -- 33 Turkish, 29
+Spanish, 8 Russian, 5 Italian (97 English). That's direct, real-data
+confirmation that the 2026-08-25 multi-language validator work was worth
+doing, not just theoretically sound.
+
+Re-enabled the GitHub Actions `schedule:` trigger (paused earlier today to
+avoid racing a scheduled push against the local backfill run). Reports/
+exports regenerated and pushed. Project is now back to steady state:
+Actions running on its normal 4x/day schedule, LFS handling
+`data/incidents.db`, 96 sources across 21 countries, 6 supported
+languages (English, Spanish, Portuguese, Italian, French, Russian,
+Turkish), `candidate` status reserved for genuinely ambiguous cases.
+
+Natural next steps whenever picked back up: resume the backfill further
+back, add Arabic/Farsi language support (the biggest remaining
+unsupported-language gap given the source list's Iran/Arab-world
+coverage), or expand the domain list further.
+
 ## Update 2026-08-26 (7): two candidate-bucket fixes -- 65k rows reclassified
 
 Reviewing the actual `article_candidates` reason breakdown (prompted by

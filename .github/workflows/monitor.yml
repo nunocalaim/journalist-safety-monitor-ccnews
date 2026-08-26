@@ -1,16 +1,18 @@
 name: Journalist Safety Monitoring (CC-NEWS)
 on:
-  # Scheduled runs paused 2026-08-26 while running scripts/backfill_ccnews.py
-  # locally -- a live run committing/pushing data/incidents.db at the same
-  # time as a local backfill is in progress would race and diverge from it,
-  # same problem as earlier today. Re-enable by uncommenting the `schedule:`
-  # block below once the backfill is done and its results are pushed.
-  # schedule:
-  #   # Offset from the GDELT repo's 0,6,12,18 cron so the two don't collide.
-  #   # 4 runs/day x shard_count=4 x max_warc_files_per_run=1 processes ~4
-  #   # CC-NEWS WARC files/day, matching CC-NEWS's own ~16 files/day / 4
-  #   # shards publication rate -- see config.yaml's ccnews_collection.
-  #   - cron: '15 1,7,13,19 * * *'
+  schedule:
+    # Offset from the GDELT repo's 0,6,12,18 cron so the two don't collide.
+    # 4 runs/day x shard_count=4 x max_warc_files_per_run=1 processes ~4
+    # CC-NEWS WARC files/day, matching CC-NEWS's own ~16 files/day / 4
+    # shards publication rate -- see config.yaml's ccnews_collection.
+    #
+    # Paused 2026-08-26 through 2026-08-26 while scripts/backfill_ccnews.py
+    # ran locally (racing a scheduled push against a local backfill run was
+    # exactly what caused that day's data/incidents.db divergence -- see
+    # PLAN.md). Re-enabled once the backfill was deliberately stopped
+    # (172 incidents backfilled, 2026-05-27 through 2026-06-28) and its
+    # results committed and pushed.
+    - cron: '15 1,7,13,19 * * *'
   workflow_dispatch:
     inputs:
       shard_index:

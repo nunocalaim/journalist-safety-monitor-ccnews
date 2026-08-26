@@ -5,11 +5,11 @@ __pycache__/
 *.py[cod]
 
 # Runtime state and bulky generated exports
-data/exports/incidents_full_*.csv
-data/exports/incidents_full_*.json
-data/exports/incidents_30d_*.csv
 data/debug/
 
 # Local environment files
 .env
 .DS_Store
+
+# Local run logs (e.g. nohup output from scripts/backfill_ccnews.py)
+*.log

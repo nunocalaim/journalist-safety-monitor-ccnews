@@ -88,7 +88,7 @@ def test_candidate_export_writes_review_candidates(tmp_path):
                 "language": "Spanish",
                 "matched_query": 'near10:"journalist killed"',
                 "validation_status": "candidate",
-                "validation_reason": "non-English returned text lacks English validation evidence",
+                "validation_reason": "media subject found but no clear harm action in returned text",
                 "evidence_text": "Periodista asesinado en Mexico",
             }
         ])
@@ -98,7 +98,7 @@ def test_candidate_export_writes_review_candidates(tmp_path):
 
         exported = export_path.read_text()
         assert "https://example.com/candidate" in exported
-        assert "non-English returned text" in exported
+        assert "media subject found but no clear harm action" in exported
     finally:
         db.close()
 
@@ -116,7 +116,7 @@ def test_candidate_full_export_includes_older_review_candidates(tmp_path):
                 "language": "Spanish",
                 "matched_query": "historical_backfill",
                 "validation_status": "candidate",
-                "validation_reason": "non-English returned text lacks English validation evidence",
+                "validation_reason": "media subject found but no clear harm action in returned text",
                 "evidence_text": "Periodista asesinado en Mexico",
             }
         ])

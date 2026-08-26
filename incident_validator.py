@@ -284,12 +284,22 @@ LANGUAGES: Dict[str, _CompiledLanguage] = {
 _ENGLISH_ALIASES = {"", "en", "eng", "english"}
 
 
-def validate_incident(article: dict, matched_query: str = "") -> IncidentValidation:
+def validate_incident(article: dict) -> IncidentValidation:
     """
-    Validate only the article-list text returned by GDELT.
+    Validate the full extracted article text (title + body).
 
-    A GDELT query match can come from article body text that is not returned to
-    this app, so query-only matches are candidates rather than incidents.
+    Note: this originally took a `matched_query` argument, from when this
+    validator was shared with the GDELT-based sibling repo -- there, a
+    keyword-search match on a title/snippet with no other evidence was
+    genuinely ambiguous (the full article, which GDELT doesn't return, might
+    have confirmed it), so it was treated as a candidate rather than
+    rejected. This repo already validates the full extracted article body,
+    not a snippet, so "matched_query" carried no real signal here -- both
+    CC-NEWS and RSS collectors always set it to a constant per-domain label,
+    never a real search match -- and "no evidence anywhere in the full
+    text" is a confident rejection, not genuine uncertainty. Removed
+    2026-08-26 (see PLAN.md); see git history if the GDELT-style behavior
+    is ever needed again.
     """
     text = _article_text(article)
     if not text:
@@ -356,10 +366,10 @@ def validate_incident(article: dict, matched_query: str = "") -> IncidentValidat
 
     if not supported:
         return IncidentValidation(
-            status="candidate",
+            status="rejected",
             incident_type=None,
             severity=None,
-            reason="non-English returned text lacks English validation evidence",
+            reason="unsupported language; no term list to validate against yet",
             evidence_text=sentences[0].strip() if sentences else "",
         )
 
@@ -383,14 +393,6 @@ def validate_incident(article: dict, matched_query: str = "") -> IncidentValidat
             evidence_text=_first_matching_sentence(
                 sentences, lambda s: _has_media_subject(s, compiled.terms)
             ),
-        )
-
-    if matched_query:
-        return IncidentValidation(
-            status="candidate",
-            incident_type=None,
-            severity=None,
-            reason="query-only match; returned text lacks validation evidence",
         )
 
     return IncidentValidation(

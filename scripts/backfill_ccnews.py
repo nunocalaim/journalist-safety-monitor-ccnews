@@ -263,7 +263,7 @@ def main() -> int:
 
                 for article in articles:
                     matched_source = f"ccnews:{article.get('domain', '')}"
-                    validation = validate_incident(article, matched_query="historical_backfill")
+                    validation = validate_incident(article)
                     totals[validation.status] += 1
                     reasons[validation.reason] += 1
 

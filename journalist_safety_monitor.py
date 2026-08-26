@@ -53,7 +53,7 @@ class JournalistSafetyMonitor:
         self.validation_decisions = []
 
     def _validate_article(self, article: Dict, matched_source: str) -> Dict:
-        validation = validate_incident(article, matched_query=matched_source)
+        validation = validate_incident(article)
         decision = {
             'url': article.get('url', ''),
             'title': article.get('title', ''),

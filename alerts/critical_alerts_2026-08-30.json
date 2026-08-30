@@ -1,7 +1,26 @@
 {
-  "timestamp": "2026-08-30T06:44:14.456764",
-  "alert_count": 6,
+  "timestamp": "2026-08-30T13:06:49.214488",
+  "alert_count": 7,
   "incidents": [
+    {
+      "id": 189,
+      "url": "https://www.jornada.com.mx/2026/08/30/mundo/018n1mun?partner=rss",
+      "title": "Nepal y China prosiguen la b\u00fasqueda de 3 mil 550 desaparecidos por riadas",
+      "published_date": "Sun, 30 Aug 2026 07:28:04 GMT",
+      "domain": "www.jornada.com.mx",
+      "country": "MX",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "Por su parte, la Asociaci\u00f3n de la Industria Energ\u00e9tica inform\u00f3 que \"m\u00e1s de 934 personas, vinculadas a 11 proyectos hidroel\u00e9ctricos, siguen desaparecidas, incluidos los que est\u00e1n en construcci\u00f3n\", seg\u00fan el peri\u00f3dico Kathmandu Post.",
+      "language": "es",
+      "source_country": "MX",
+      "collected_at": "2026-08-30 13:06:47",
+      "matched_query": "rss:www.jornada.com.mx",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Por su parte, la Asociaci\u00f3n de la Industria Energ\u00e9tica inform\u00f3 que \"m\u00e1s de 934 personas, vinculadas a 11 proyectos hidroel\u00e9ctricos, siguen desaparecidas, incluidos los que est\u00e1n en construcci\u00f3n\", seg\u00fan el peri\u00f3dico Kathmandu Post.",
+      "incident_fingerprint": "por su parte la asociaci n de la industria energ tica inform"
+    },
     {
       "id": 182,
       "url": "https://www.abc.es/internacional/testimonios-busqueda-familiares-desaparecidos-nepal-20260828011356-nt.html",

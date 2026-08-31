@@ -1,5 +1,65 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-08-26 (9): domain list expanded 96 -> 205 by mining Roy's GDELT data
+
+Compared this repo against `RoyKrovel/journalist-safety-monitor` (the
+GDELT-based sibling, cloned read-only at `../Roy/journalist-safety-monitor`
+-- already existed from an earlier session, just needed a `git fetch` +
+`git merge origin/main` since `git pull` hit an unrelated ref-resolution
+quirk there). Findings from that comparison (10/12 of Roy's "validated"
+incidents hold up under our current validator; 2/12 are exactly the
+retrospective-headline false positives we already fixed; several real
+non-English incidents sit unrecognized in Roy's `candidate` bucket since
+Roy's validator has no language support) are recorded in the conversation,
+not repeated here -- what matters for this repo is the follow-up action.
+
+Re-ran Roy's entire dataset through our current `validate_incident()`:
+64,038 "legacy" rows (title-only, no body text -- these predate Roy's
+validator existing at all) plus 343 recent `candidate` rows (title +
+evidence_text). ~3 minutes runtime. 944 would now validate (936 + 8).
+Recall is necessarily lower than our own CC-NEWS pipeline's here, since
+GDELT's article-list API doesn't return full body text the way our
+collectors do -- title-only matching misses positive frames that need a
+full sentence. Still a large, useful discovery signal.
+
+Extracted the domains behind those 944, filtered to ones appearing >=2
+times (595 -> 164; a single hit is usually one wire story syndicated
+across many mirrors, not a reliably valuable recurring source -- e.g. a
+single "CBS news crew attacked" AP story appeared under dozens of
+US-local-affiliate domains, each once), and ran them through
+`scripts/discover_sources.py`. 113 came back classified (82 ccnews, 33
+rss; 2 excluded as pure content aggregators with no original reporting --
+`article.wn.com`, `bignewsnetwork.com`); the other 49 uncovered (CCBot-
+blocked, no feed) weren't recorded in `uncovered_domains` this round --
+lower value than the 2026-08-25 round's uncovered list since most are
+one-off US local-TV-affiliate domains, not worth the config bloat.
+
+Merging in generated four exact RSS duplicates -- same domain modulo a
+`www.` prefix, same `feed_url`, which would have made `RSSCollector` poll
+the identical feed twice under two labels every run (`thehindu.com`,
+`rappler.com`, `independent.co.uk`, `ansa.it`) -- removed the redundant
+copy of each. Left the `www.`/bare pairs where the entries are `ccnews`
+(hostname-exact-match filtering, so both forms just maximize real-URL
+catch rate with no downside) or where the feed URLs actually differ
+(`theguardian.com`'s new entry turned out to be the *Europe* edition feed,
+not a duplicate of the existing World edition one -- kept both, labeled).
+
+Result: **96 -> 205 sources, 21 -> 37 countries**. The 16 new countries
+(Argentina, Bulgaria, Canada, Chile, Colombia, Cuba, Israel, Kenya,
+Malaysia, Nigeria, New Zealand, Peru, Portugal, Senegal, Kosovo, South
+Africa) weren't part of the original curated priority list -- they only
+have sources because GDELT independently found real incidents there.
+Added a `priority_countries.additional` tier documenting this (that field
+isn't read by any code -- confirmed via grep -- so, like the existing
+tiers, it's purely informational).
+
+Deliberately did NOT insert Roy's 944 re-validated incidents into this
+repo's own `data/incidents.db`: they're GDELT-sourced, not CC-NEWS/RSS-
+sourced, and mixing origins into one database would undermine the ability
+to compare the two repos' output later, which was the whole point of
+pulling Roy's repo in. The re-validation was purely a discovery tool for
+new domains, not a data-merge operation.
+
 ## Update 2026-08-26 (8): backfill stopped, Actions resumed -- back to steady state
 
 Deliberately stopped the historical backfill (SIGINT both times, clean

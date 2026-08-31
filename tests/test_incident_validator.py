@@ -175,6 +175,69 @@ def test_validate_incident_fixture(article):
             "validated",
             "KILLING",
         ),
+        # Real false positives found reviewing live CRITICAL alerts
+        # (2026-08-26): MEDIA_SUBJECT_TERMS includes organizational nouns
+        # (newspaper, broadcaster) that can legitimately be victims ("the
+        # newspaper's office was raided") but far more often cite one --
+        # "China's state broadcaster said at least three people were
+        # killed" is a flood story, not a journalist-safety incident. Fixed
+        # by extending SOURCE_ATTRIBUTION_PATTERNS to organizational roles,
+        # not just person roles.
+        (
+            {
+                "title": "",
+                "description": "In Tibet, China's state broadcaster said at least three people were killed and 265 were missing.",
+            },
+            "rejected",
+            None,
+        ),
+        (
+            {
+                "title": "",
+                "description": "The newspaper \"Israel Hayom\" reported that two people were injured after a Hezbollah drone struck Misgav Am in the Galilee.",
+            },
+            "rejected",
+            None,
+        ),
+        # Relational/possessive false positive: the media-subject term names
+        # someone RELATED to the actual subject of the harm, not the harmed
+        # person -- "the mother of NBC journalist Savannah Guthrie
+        # disappeared" means Guthrie's mother disappeared, not Guthrie.
+        (
+            {
+                "title": "",
+                "description": "The 84-year-old mother of NBC journalist Savannah Guthrie disappeared from her Tucson, Arizona, home on January 31, 2026.",
+            },
+            "candidate",
+            None,
+        ),
+        # Source-attribution pattern was too strict (required the reporting
+        # verb to immediately follow the role noun) and missed real
+        # modifier-phrase cases like this one, where the journalist is the
+        # source describing OTHERS' arrests, not a detention victim
+        # themselves.
+        (
+            {
+                "title": "",
+                "description": "A journalist in Baghdad told Iran International that the arrests included current and former members of parliament.",
+            },
+            "rejected",
+            None,
+        ),
+        # Loosening that same pattern to fix the case above had to stop at a
+        # comma, or it wrongly attaches a reporting verb belonging to a
+        # different, distant clause: here "says" belongs to "Israel army"
+        # from earlier in the sentence, not to "journalist" -- this is a
+        # real validated KILLING (Al Jazeera's Ahmed Wishah) that a
+        # comma-blind version of the fix above would have wrongly rejected.
+        (
+            {
+                "title": "Israel army confirms killing of journalist in Gaza, says he was 'Hamas terrorist'",
+                "description": "The Israeli military said Saturday it had carried out a strike that killed Al Jazeera journalist Ahmed Wishah in Gaza, saying he was a \"Hamas terrorist\".",
+            },
+            "validated",
+            "KILLING",
+        ),
     ],
 )
 def test_validate_incident_types(article, expected_status, expected_type):
@@ -201,6 +264,13 @@ def test_validate_incident_types(article, expected_status, expected_type):
         ("es", "Una testigo dijo a los reporteros que su hijo fue asesinado en el ataque.", "rejected", None),
         ("es", "A un año del asesinato de la periodista, sigue sin justicia.", "candidate", None),
         ("es", "El periodista no fue asesinado durante la redada, según la policía.", "candidate", None),
+        # Real false positive (2026-08-26): a flood story citing a
+        # newspaper as its source ("según el periódico") was validating as
+        # a DISAPPEARANCE incident -- "periódico" is in media_subject_terms
+        # (can legitimately be a victim) but wasn't in the "según"
+        # source-attribution pattern, so citing one as a source didn't
+        # exclude the match the way citing a periodista/reportero already did.
+        ("es", "Según el periódico Kathmandu Post, más de 934 personas siguen desaparecidas tras las inundaciones.", "rejected", None),
 
         ("pt", "Jornalista foi assassinado a tiros na capital.", "validated", "KILLING"),
         ("pt", "Um repórter foi detido pela polícia durante o protesto.", "validated", "DETENTION"),

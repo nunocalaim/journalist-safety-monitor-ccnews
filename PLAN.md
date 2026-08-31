@@ -1,5 +1,73 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-08-26 (10): manual review found 4 real validator bug classes -- 32 of 191 incidents (17%) demoted
+
+Manually reviewed a batch of live CRITICAL alerts, expected to be a quick
+spot-check -- found 6 of 7 were false positives (a Nepal-Tibet flash-flood
+disaster story, nothing to do with journalists). Widened the check to all
+191 validated incidents and found the same shape of bug recurring: **32
+(17%) were false positives**, falling into four distinct, fixable causes:
+
+1. **Organizational source-as-subject (the largest class).** `MEDIA_SUBJECT_TERMS`
+   includes org nouns (newspaper, broadcaster) that can legitimately be
+   victims ("the newspaper's office was raided"), but far more often cite
+   one: "China's state broadcaster said at least three people were killed"
+   (a flood story) or "the newspaper reported that Iran has shot down 30
+   drones" (military hardware, matched as ATTACK). Worst instance: 7
+   duplicate Iran International articles all sharing one boilerplate
+   paragraph -- "Iran's state broadcaster reported transit has been
+   suspended" (a shipping-lane closure) -- misread as CENSORSHIP seven
+   times over. Fixed by extending `SOURCE_ATTRIBUTION_PATTERNS` to cover
+   organizational roles driving a reporting verb, not just person roles
+   (English and Spanish, the two languages with real demonstrated cases;
+   pt/it/fr/ru/tr have the same latent gap, not yet fixed -- no case
+   surfaced there yet).
+2. **Relational/possessive misattribution.** "The mother of NBC journalist
+   Savannah Guthrie disappeared" means Guthrie's *mother* disappeared, not
+   Guthrie -- 7 duplicate incidents, all the same ongoing story
+   re-collected across days, plus an independent real case (Indira
+   Lankesh, mother of slain journalist Gauri Lankesh, at her funeral).
+   Fixed with a new `exclusion_patterns` mechanism on `LanguageTerms` --
+   sentence-level patterns that block a positive-frame match regardless of
+   subject/action proximity, same architectural role as
+   `source_attribution_patterns` but for this different shape of
+   near-miss. English-only for now; a Portuguese case ("Tibetans can be
+   detained for talking to journalists") has the same shape but wasn't
+   fixed this pass.
+3. **Source-attribution regex too strict.** "A journalist in Baghdad told
+   Iran International that the arrests included members of parliament" --
+   the journalist is a source describing *others'* arrests, not a
+   detention victim, but the old pattern required the reporting verb to
+   *immediately* follow the role noun (`\s+` only), so "in Baghdad" broke
+   the match. 7 duplicate incidents. Loosening the adjacency window to
+   allow filler words introduced a new failure mode before it was caught:
+   "journalist in Gaza, **says** he was a 'Hamas terrorist'" -- a real
+   validated killing (Al Jazeera's Ahmed Wishah) -- started rejecting,
+   because "says" actually belongs to "Israel army" several words earlier,
+   across a comma, not to "journalist". Fixed by requiring the filler
+   window to not cross a comma -- a real clause-boundary signal, not just
+   a word-count tweak. Both the original bug and the fix's own near-miss
+   are now regression tests.
+4. **Word-sense ambiguity.** "Missing" as in emotionally longing for
+   someone ("journalists ran stories that Kasab was missing his sister")
+   vs. physically disappeared. One real case; folded into the same
+   `exclusion_patterns` mechanism as #2 since both are "superficial match,
+   not real harm" sentence-level exclusions.
+
+Reclassified all 32 (delete from `incidents`, insert into
+`article_candidates` with whatever the *current* validator actually
+produces for them, not a hand-written label) -- 191 -> 159 validated
+incidents, CRITICAL 50 -> 36. Every fix verified against the real
+discovered sentences before and after, not just the existing suite; 6 new
+regression tests added from those real cases (including the comma-boundary
+near-miss, so it can't silently regress back). Full existing suite still
+green throughout (73/73 after additions).
+
+Two known gaps left deliberately unfixed this pass, both single-case and
+lower-value to generalize from one example: the Portuguese relational case,
+and porting the organizational-source-attribution fix to pt/it/fr/ru/tr
+(only en/es have real demonstrated false positives so far).
+
 ## Update 2026-08-26 (9): domain list expanded 96 -> 205 by mining Roy's GDELT data
 
 Compared this repo against `RoyKrovel/journalist-safety-monitor` (the

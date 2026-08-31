@@ -51,6 +51,29 @@ priority_countries:
     - "DE"
     - "ES"
     - "IT"
+  # Not part of the originally-curated priority list -- these countries got
+  # sources added 2026-08-26 because domains for them independently
+  # surfaced real, validated incidents when RoyKrovel/journalist-safety-monitor's
+  # (GDELT-based) historical data was re-run through this repo's validator.
+  # This list isn't read by any code (like the tiers above, it's
+  # documentation), so its untiered shape is fine.
+  additional:
+    - "AR"  # Argentina
+    - "BG"  # Bulgaria
+    - "CA"  # Canada
+    - "CL"  # Chile
+    - "CO"  # Colombia
+    - "CU"  # Cuba
+    - "IL"  # Israel
+    - "KE"  # Kenya
+    - "MY"  # Malaysia
+    - "NG"  # Nigeria
+    - "NZ"  # New Zealand
+    - "PE"  # Peru
+    - "PT"  # Portugal
+    - "SN"  # Senegal
+    - "XK"  # Kosovo
+    - "ZA"  # South Africa
 
 # News sources by country, classified by source type -- see PLAN.md's
 # 2026-08-24 update for how this was derived; expanded 2026-08-25 using
@@ -91,6 +114,20 @@ ccnews_domains:
       source: "ccnews"
     - domain: "animalpolitico.com"  # independent
       source: "ccnews"
+    - domain: "eluniversal.com.mx"
+      source: "ccnews"
+    - domain: "ejecentral.com.mx"
+      source: "ccnews"
+    - domain: "tvnotas.com.mx"
+      source: "ccnews"
+    - domain: "tribuna.com.mx"
+      source: "ccnews"
+    - domain: "oem.com.mx"
+      source: "ccnews"
+    - domain: "elimparcial.com"
+      source: "ccnews"
+    - domain: "sopitas.com"
+      source: "ccnews"
   AF:
     - domain: "tolonews.com"
       source: "rss"
@@ -108,6 +145,8 @@ ccnews_domains:
       source: "ccnews"
     - domain: "theafghantimes.com"  # independent, human rights/women's issues focus
       source: "ccnews"
+    - domain: "khaama.com"
+      source: "ccnews"
   SY:
     - domain: "www.syriahr.com"
       source: "rss"
@@ -124,6 +163,8 @@ ccnews_domains:
       feed_url: "https://syrianobserver.com/feed"
       fetch_full_text: true
     - domain: "syriadirect.org"  # independent
+      source: "ccnews"
+    - domain: "naharnet.com"
       source: "ccnews"
   IQ:
     - domain: "www.rudaw.net"  # Kurdish, KDP-affiliated
@@ -156,6 +197,12 @@ ccnews_domains:
       source: "ccnews"
     - domain: "tribune.com.pk"
       source: "ccnews"
+    - domain: "journalismpakistan.com"
+      source: "ccnews"
+    - domain: "express.pk"
+      source: "ccnews"
+    - domain: "pakistanpressfoundation.org"
+      source: "ccnews"
   IN:
     - domain: "economictimes.indiatimes.com"
       source: "ccnews"
@@ -171,6 +218,18 @@ ccnews_domains:
       source: "ccnews"
     - domain: "www.newslaundry.com"  # independent, media watchdog
       source: "ccnews"
+    - domain: "ianslive.in"
+      source: "ccnews"
+    - domain: "moneycontrol.com"
+      source: "ccnews"
+    - domain: "indianexpress.com"
+      source: "ccnews"
+    - domain: "navbharattimes.indiatimes.com"
+      source: "ccnews"
+    - domain: "prokerala.com"
+      source: "rss"
+      feed_url: "https://feeds.feedburner.com/PK/Horoscope"
+      fetch_full_text: true
   PH:
     - domain: "www.rappler.com"
       source: "rss"
@@ -199,6 +258,14 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://apublica.org/feed/"
       fetch_full_text: false  # robots.txt unreachable
+    - domain: "terra.com.br"
+      source: "ccnews"
+    - domain: "g1.globo.com"
+      source: "ccnews"
+    - domain: "brasil247.com"
+      source: "rss"
+      feed_url: "https://www.brasil247.com/feed/"
+      fetch_full_text: true
   TR:
     - domain: "www.haberler.com"
       source: "ccnews"
@@ -209,6 +276,22 @@ ccnews_domains:
     - domain: "www.cumhuriyet.com.tr"  # last major independent daily
       source: "ccnews"
     - domain: "www.diken.com.tr"  # independent
+      source: "ccnews"
+    - domain: "haberhurriyeti.com"
+      source: "ccnews"
+    - domain: "birgun.net"
+      source: "ccnews"
+    - domain: "haberler.com"
+      source: "ccnews"
+    - domain: "yeniakit.com.tr"
+      source: "ccnews"
+    - domain: "onedio.com"
+      source: "ccnews"
+    - domain: "medyafaresi.com"
+      source: "ccnews"
+    - domain: "turktime.com"
+      source: "ccnews"
+    - domain: "t24.com.tr"
       source: "ccnews"
   EG:
     - domain: "www.almasryalyoum.com"
@@ -236,6 +319,12 @@ ccnews_domains:
       source: "ccnews"
     - domain: "mediazona.ca"  # independent, in exile
       source: "ccnews"
+    - domain: "m24.ru"
+      source: "ccnews"
+    - domain: "eng.kavkaz-uzel.eu"
+      source: "ccnews"
+    - domain: "nakanune.ru"
+      source: "ccnews"
   CN:
     - domain: "www.scmp.com"  # Hong Kong, English
       source: "ccnews"
@@ -260,6 +349,8 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://english.aawsat.com/feed/"
       fetch_full_text: false  # robots.txt unreachable
+    - domain: "arabnews.com"
+      source: "ccnews"
   IR:
     - domain: "www.irna.ir"  # state news agency
       source: "ccnews"
@@ -286,6 +377,84 @@ ccnews_domains:
       source: "ccnews"
     - domain: "www.motherjones.com"  # independent, investigative
       source: "ccnews"
+    - domain: "aljazeera.com"
+      source: "ccnews"
+    - domain: "eldiariony.com"
+      source: "ccnews"
+    - domain: "laopinion.com"
+      source: "ccnews"
+    - domain: "newsbusters.org"
+      source: "ccnews"
+    - domain: "gdnonline.com"
+      source: "ccnews"
+    - domain: "democracynow.org"
+      source: "ccnews"
+    - domain: "bnonews.com"
+      source: "ccnews"
+    - domain: "clickorlando.com"
+      source: "ccnews"
+    - domain: "listindiario.com"
+      source: "ccnews"
+    - domain: "news4jax.com"
+      source: "ccnews"
+    - domain: "wsbradio.com"
+      source: "ccnews"
+    - domain: "telesurtv.net"
+      source: "ccnews"
+    - domain: "kxxv.com"
+      source: "ccnews"
+    - domain: "krtv.com"
+      source: "ccnews"
+    - domain: "kpax.com"
+      source: "ccnews"
+    - domain: "ideastream.org"
+      source: "ccnews"
+    - domain: "theyeshivaworld.com"
+      source: "ccnews"
+    - domain: "abc15.com"
+      source: "ccnews"
+    - domain: "katc.com"
+      source: "ccnews"
+    - domain: "fox35orlando.com"
+      source: "ccnews"
+    - domain: "virginislandsnewsonline.com"
+      source: "ccnews"
+    - domain: "breitbart.com"
+      source: "ccnews"
+    - domain: "theblaze.com"
+      source: "ccnews"
+    - domain: "seattletimes.com"
+      source: "rss"
+      feed_url: "https://www.seattletimes.com/feed/"
+      fetch_full_text: false
+    - domain: "latimes.com"
+      source: "rss"
+      feed_url: "https://www.latimes.com/index.rss"
+      fetch_full_text: false
+    - domain: "mediaite.com"
+      source: "rss"
+      feed_url: "https://mediaite.com/feed/"
+      fetch_full_text: false
+    - domain: "abc7chicago.com"
+      source: "rss"
+      feed_url: "https://abc7chicago.com/feed/"
+      fetch_full_text: true
+    - domain: "newsday.com"
+      source: "rss"
+      feed_url: "https://www.newsday.com/api/rss/recent"
+      fetch_full_text: true
+    - domain: "whec.com"
+      source: "rss"
+      feed_url: "https://whec.com/feed/"
+      fetch_full_text: true
+    - domain: "truthout.org"
+      source: "rss"
+      feed_url: "https://truthout.org/feed/?withoutcomments=1"
+      fetch_full_text: false
+    - domain: "nypost.com"
+      source: "rss"
+      feed_url: "https://nypost.com/feed/"
+      fetch_full_text: true
   UK:
     - domain: "www.theguardian.com"
       source: "rss"
@@ -303,6 +472,14 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://www.telegraph.co.uk/rss.xml"
       fetch_full_text: false  # robots.txt unreachable
+    - domain: "theguardian.com"  # Europe edition feed, distinct from www.theguardian.com's World feed above
+      source: "rss"
+      feed_url: "https://www.theguardian.com/europe/rss"
+      fetch_full_text: true
+    - domain: "mirror.co.uk"
+      source: "rss"
+      feed_url: "https://www.mirror.co.uk/rss.xml"
+      fetch_full_text: true
   FR:
     - domain: "www.lemonde.fr"
       source: "rss"
@@ -315,6 +492,20 @@ ccnews_domains:
     - domain: "www.liberation.fr"
       source: "rss"
       feed_url: "https://www.liberation.fr/arc/outboundfeeds/rss/"
+      fetch_full_text: true
+    - domain: "laprovence.com"
+      source: "ccnews"
+    - domain: "sudouest.fr"
+      source: "rss"
+      feed_url: "https://www.sudouest.fr/rss.xml"
+      fetch_full_text: false
+    - domain: "paris.maville.com"
+      source: "rss"
+      feed_url: "https://paris.maville.com/flux/rss/meteo.php"
+      fetch_full_text: true
+    - domain: "20minutes.fr"
+      source: "rss"
+      feed_url: "https://www.20minutes.fr/feeds/rss-une.xml"
       fetch_full_text: true
   DE:
     - domain: "www.finanznachrichten.de"
@@ -346,6 +537,12 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://www.abc.es/rss/2.0/portada/"
       fetch_full_text: true
+    - domain: "english.elpais.com"
+      source: "ccnews"
+    - domain: "kaosenlared.net"
+      source: "ccnews"
+    - domain: "eldiario.es"
+      source: "ccnews"
   IT:
     - domain: "www.corriere.it"
       source: "rss"
@@ -361,6 +558,125 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://www.ansa.it/rss.xml"
       fetch_full_text: true
+    - domain: "zazoom.it"
+      source: "ccnews"
+    - domain: "ilfattoquotidiano.it"
+      source: "ccnews"
+    - domain: "secoloditalia.it"
+      source: "ccnews"
+    - domain: "ilpost.it"
+      source: "ccnews"
+    - domain: "ilmessaggero.it"
+      source: "rss"
+      feed_url: "https://www.ilmessaggero.it/rss/home.xml"
+      fetch_full_text: true
+    - domain: "greenme.it"
+      source: "rss"
+      feed_url: "https://greenme.it/feed/"
+      fetch_full_text: true
+    - domain: "lapresse.it"
+      source: "rss"
+      feed_url: "https://www.lapresse.it/feed/"
+      fetch_full_text: true
+    - domain: "lespresso.it"
+      source: "rss"
+      feed_url: "https://lespresso.it/feed/"
+      fetch_full_text: true
+
+  AR:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "perfil.com"
+      source: "ccnews"
+    - domain: "cadena3.com"
+      source: "ccnews"
+    - domain: "elciudadanoweb.com"
+      source: "ccnews"
+  BG:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "novinite.com"
+      source: "rss"
+      feed_url: "https://www.novinite.com/services/news_rdf.php"
+      fetch_full_text: true
+  CA:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "winnipegfreepress.com"
+      source: "rss"
+      feed_url: "https://www.winnipegfreepress.com/feed"
+      fetch_full_text: true
+    - domain: "lactualite.com"
+      source: "rss"
+      feed_url: "https://lactualite.com/feed/"
+      fetch_full_text: true
+  CL:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "adnradio.cl"
+      source: "ccnews"
+    - domain: "biobiochile.cl"
+      source: "ccnews"
+  CO:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "elcolombiano.com"
+      source: "ccnews"
+  CU:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "cubaheadlines.com"
+      source: "ccnews"
+  IL:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "israelnationalnews.com"
+      source: "ccnews"
+    - domain: "middleeasteye.net"
+      source: "ccnews"
+    - domain: "ynetnews.com"
+      source: "ccnews"
+    - domain: "themedialine.org"
+      source: "ccnews"
+  KE:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "standardmedia.co.ke"
+      source: "ccnews"
+  MY:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "thestar.com.my"
+      source: "ccnews"
+    - domain: "freemalaysiatoday.com"
+      source: "rss"
+      feed_url: "https://www.freemalaysiatoday.com/feeds/rss/headlines"
+      fetch_full_text: true
+  NG:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "allafrica.com"
+      source: "ccnews"
+    - domain: "dailypost.ng"
+      source: "ccnews"
+    - domain: "saharareporters.com"
+      source: "rss"
+      feed_url: "https://saharareporters.com/rss.xml"
+      fetch_full_text: true
+  NZ:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "home.nzcity.co.nz"
+      source: "ccnews"
+  PE:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "rpp.pe"
+      source: "rss"
+      feed_url: "https://rpp.pe/rss"
+      fetch_full_text: true
+  PT:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "dn.pt"
+      source: "ccnews"
+    - domain: "sabado.pt"
+      source: "rss"
+      feed_url: "https://sabado.pt/rss/"
+      fetch_full_text: false
+  SN:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "senego.com"
+      source: "ccnews"
+    - domain: "senenews.com"
+      source: "ccnews"
+    - domain: "seneweb.com"
+      source: "rss"
+      feed_url: "https://www.seneweb.com/feed"
+      fetch_full_text: true
+  XK:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "gazetaexpress.com"
+      source: "rss"
+      feed_url: "https://gazetaexpress.com/feed/"
+      fetch_full_text: true
+  ZA:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
+    - domain: "dailymaverick.co.za"
+      source: "rss"
+      feed_url: "https://dailymaverick.co.za/rss/"
+      fetch_full_text: false
 
 # Known gaps: CCBot-blocked with no usable RSS feed (checked directly and
 # via scripts/discover_sources.py, including a common-feed-path fallback).

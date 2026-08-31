@@ -203,3 +203,334 @@ www.abc.es:ES
 www.lastampa.it:IT
 www.ilfattoquotidiano.it:IT
 www.ansa.it:IT
+# Candidates surfaced by re-validating RoyKrovel/journalist-safety-monitor's
+# 64,038 legacy + 343 candidate rows through our current validator, 2026-08-26.
+# domain:country (country is a raw GDELT label, not yet an ISO code)
+# 16 incidents
+yahoo.com:United States
+# 13 incidents
+zazoom.it:Italy
+# 12 incidents
+zocalo.com.mx:Mexico
+# 11 incidents
+naharnet.com:Syria
+# 10 incidents
+winnipegfreepress.com:Canada
+# 9 incidents
+ianslive.in:India
+# 7 incidents
+independent.co.uk:United Kingdom
+# 7 incidents
+prokerala.com:India
+# 7 incidents
+ansa.it:Italy
+# 7 incidents
+israelnationalnews.com:Israel
+# 6 incidents
+aol.co.uk:United Kingdom
+# 6 incidents
+journalismpakistan.com:Pakistan
+# 6 incidents
+eluniversal.com.mx:Mexico
+# 5 incidents
+haberhurriyeti.com:Turkey
+# 5 incidents
+birgun.net:Turkey
+# 5 incidents
+khaama.com:Afghanistan
+# 5 incidents
+wcyb.com:United States
+# 5 incidents
+abcnews.com:United States
+# 5 incidents
+moneycontrol.com:India
+# 5 incidents
+allafrica.com:Nigeria
+# 5 incidents
+evrensel.net:Turkey
+# 4 incidents
+perfil.com:Argentina
+# 4 incidents
+thestar.com.my:Malaysia
+# 4 incidents
+terra.com.br:Brazil
+# 4 incidents
+seattletimes.com:United States
+# 4 incidents
+aljazeera.com:United States
+# 4 incidents
+middleeasteye.net:Israel
+# 4 incidents
+ifj.org:India
+# 4 incidents
+ilfattoquotidiano.it:Italy
+# 3 incidents
+foxbaltimore.com:United States
+# 3 incidents
+haberler.com:Turkey
+# 3 incidents
+jornada.com.mx:Mexico
+# 3 incidents
+latimes.com:United States
+# 3 incidents
+english.elpais.com:Spain
+# 3 incidents
+eldiariony.com:United States
+# 3 incidents
+mediaite.com:United States
+# 3 incidents
+marketscreener.com:UNKNOWN
+# 3 incidents
+elheraldo.co:Colombia
+# 3 incidents
+laopinion.com:United States
+# 3 incidents
+eltiempo.com:Colombia
+# 3 incidents
+fox17.com:United States
+# 3 incidents
+timesfreepress.com:United States
+# 3 incidents
+bignewsnetwork.com:United States
+# 3 incidents
+newschannel9.com:United States
+# 3 incidents
+theguardian.com:United Kingdom
+# 3 incidents
+newsbusters.org:United States
+# 3 incidents
+ejecentral.com.mx:Mexico
+# 3 incidents
+dw.com:Germany
+# 3 incidents
+m24.ru:Russia
+# 3 incidents
+english.wafa.ps:Israel
+# 3 incidents
+cadena3.com:Argentina
+# 3 incidents
+isp.netscape.com:United States
+# 3 incidents
+pilotonline.com:United States
+# 3 incidents
+indianexpress.com:India
+# 3 incidents
+gdnonline.com:United States
+# 3 incidents
+dailymaverick.co.za:South Africa
+# 3 incidents
+navbharattimes.indiatimes.com:India
+# 3 incidents
+dailypost.ng:Nigeria
+# 3 incidents
+thehindu.com:India
+# 3 incidents
+abc7chicago.com:United States
+# 3 incidents
+newsday.com:United States
+# 3 incidents
+ilmessaggero.it:Italy
+# 3 incidents
+g1.globo.com:Brazil
+# 3 incidents
+saharareporters.com:Nigeria
+# 3 incidents
+eng.kavkaz-uzel.eu:UNKNOWN
+# 3 incidents
+tvnotas.com.mx:Mexico
+# 2 incidents
+democracynow.org:United States
+# 2 incidents
+bnonews.com:United States
+# 2 incidents
+greenme.it:Italy
+# 2 incidents
+yeniakit.com.tr:Turkey
+# 2 incidents
+gazetaexpress.com:Kosovo
+# 2 incidents
+elcolombiano.com:Colombia
+# 2 incidents
+lasillarota.com:Mexico
+# 2 incidents
+clickorlando.com:United States
+# 2 incidents
+express.pk:Pakistan
+# 2 incidents
+spokesman.com:United States
+# 2 incidents
+rappler.com:Philippines
+# 2 incidents
+listindiario.com:United States
+# 2 incidents
+news4jax.com:United States
+# 2 incidents
+edition.cnn.com:United States
+# 2 incidents
+wsbradio.com:United States
+# 2 incidents
+telesurtv.net:United States
+# 2 incidents
+upi.com:United States
+# 2 incidents
+katv.com:United States
+# 2 incidents
+lapresse.it:Italy
+# 2 incidents
+secoloditalia.it:Italy
+# 2 incidents
+elciudadanoweb.com:Argentina
+# 2 incidents
+mirror.co.uk:United Kingdom
+# 2 incidents
+dailymail.co.uk:United Kingdom
+# 2 incidents
+sozcu.com.tr:Turkey
+# 2 incidents
+onedio.com:Turkey
+# 2 incidents
+sabado.pt:Portugal
+# 2 incidents
+standardmedia.co.ke:Kenya
+# 2 incidents
+haber3.com:Turkey
+# 2 incidents
+medyafaresi.com:Turkey
+# 2 incidents
+turktime.com:Turkey
+# 2 incidents
+senego.com:Senegal
+# 2 incidents
+senenews.com:Senegal
+# 2 incidents
+sandiegouniontribune.com:United States
+# 2 incidents
+dailypress.com:United States
+# 2 incidents
+tribuna.com.mx:Mexico
+# 2 incidents
+whec.com:United States
+# 2 incidents
+laprovence.com:France
+# 2 incidents
+freemalaysiatoday.com:Malaysia
+# 2 incidents
+truthout.org:United States
+# 2 incidents
+abc.net.au:Australia
+# 2 incidents
+home.nzcity.co.nz:New Zealand
+# 2 incidents
+haaretz.com:Israel
+# 2 incidents
+oem.com.mx:Mexico
+# 2 incidents
+skynews.com.au:Australia
+# 2 incidents
+kxxv.com:United States
+# 2 incidents
+krtv.com:United States
+# 2 incidents
+kpax.com:United States
+# 2 incidents
+ideastream.org:United States
+# 2 incidents
+theyeshivaworld.com:United States
+# 2 incidents
+hindustantimes.com:India
+# 2 incidents
+abc15.com:United States
+# 2 incidents
+katc.com:United States
+# 2 incidents
+fox35orlando.com:United States
+# 2 incidents
+virginislandsnewsonline.com:Virgin Islands
+# 2 incidents
+courant.com:United States
+# 2 incidents
+wlos.com:United States
+# 2 incidents
+presstelegram.com:United States
+# 2 incidents
+wsbt.com:United States
+# 2 incidents
+news3lv.com:United States
+# 2 incidents
+news-herald.com:United States
+# 2 incidents
+wusa9.com:United States
+# 2 incidents
+bakersfieldnow.com:United States
+# 2 incidents
+kare11.com:United States
+# 2 incidents
+lactualite.com:Canada
+# 2 incidents
+thv11.com:United States
+# 2 incidents
+myfox28columbus.com:United States
+# 2 incidents
+fox23maine.com:United States
+# 2 incidents
+pakistanpressfoundation.org:Pakistan
+# 2 incidents
+rpp.pe:Peru
+# 2 incidents
+fox11online.com:United States
+# 2 incidents
+ilpost.it:Italy
+# 2 incidents
+elimparcial.com:Mexico
+# 2 incidents
+kgw.com:United States
+# 2 incidents
+nypost.com:United States
+# 2 incidents
+sudouest.fr:France
+# 2 incidents
+ynetnews.com:Israel
+# 2 incidents
+nakanune.ru:Russia
+# 2 incidents
+breitbart.com:United States
+# 2 incidents
+globalmedia.mx:Mexico
+# 2 incidents
+paris.maville.com:France
+# 2 incidents
+aa.com.tr:Turkey
+# 2 incidents
+lespresso.it:UNKNOWN
+# 2 incidents
+theblaze.com:United States
+# 2 incidents
+article.wn.com:United States
+# 2 incidents
+seneweb.com:Senegal
+# 2 incidents
+20minutes.fr:France
+# 2 incidents
+brasil247.com:Brazil
+# 2 incidents
+kaosenlared.net:Spain
+# 2 incidents
+cubaheadlines.com:Cuba
+# 2 incidents
+themedialine.org:Israel
+# 2 incidents
+arabnews.com:Saudi Arabia
+# 2 incidents
+novinite.com:Bulgaria
+# 2 incidents
+adnradio.cl:Chile
+# 2 incidents
+t24.com.tr:Turkey
+# 2 incidents
+sopitas.com:Mexico
+# 2 incidents
+dn.pt:Portugal
+# 2 incidents
+biobiochile.cl:Chile
+# 2 incidents
+eldiario.es:Spain

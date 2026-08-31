@@ -154,7 +154,22 @@ SEVERITY_BY_TYPE = {
 
 
 SOURCE_ATTRIBUTION_PATTERNS = [
-    r"\b(?:journalist|reporter|correspondent|editor)\s+(?:reports?|reported|says?|said|writes?|wrote|claims?|claimed|told)\b",
+    # A small filler window (0-3 words) between the role noun and the verb --
+    # real text often inserts a modifier ("journalist in Baghdad told...",
+    # "reporter who witnessed the attack said...") that a strict \s+
+    # adjacency requirement misses. Found 2026-08-26: 7 real incidents all
+    # sharing "A journalist in Baghdad told Iran International..." (the
+    # journalist is the source describing others' arrests, not a victim)
+    # slipped through because "in Baghdad" broke the old immediate-adjacency
+    # pattern.
+    # Filler tokens must not cross a comma -- "journalist in Baghdad told" is
+    # one clause (journalist is the subject of "told"), but "journalist in
+    # Gaza, says he was..." has "says" belonging to a subject several words
+    # further back (Israel's military), not "journalist" -- the comma marks
+    # that clause boundary. Found and fixed together 2026-08-26: loosening
+    # this from strict \s+ adjacency to fix the Baghdad-shaped cases first
+    # broke this Gaza one, which is how the comma restriction was found.
+    r"\b(?:journalist|reporter|correspondent|editor)(?:\s+[^\s,]+){0,3}\s+(?:reports?|reported|says?|said|writes?|wrote|claims?|claimed|told)\b",
     r"\baccording to\s+(?:a|an|the)?\s*(?:journalist|reporter|correspondent|editor)\b",
     # Object-position phrasing ("X told reporters that Y was killed") -- the
     # subject-first pattern above misses this, and it's common in full
@@ -165,6 +180,19 @@ SOURCE_ATTRIBUTION_PATTERNS = [
     r"\bmedia reports?\b",
     r"\bpress release\b",
     r"\bpress conference\b",
+    # Organizational source terms (newspaper/broadcaster/outlet) cited as the
+    # SOURCE of a report, not its subject -- e.g. "China's state broadcaster
+    # said at least three people were killed" (a flood story, nothing to do
+    # with journalists) or "the newspaper 'Israel Hayom' reported that two
+    # people were injured" (a drone strike). These org nouns are also in
+    # MEDIA_SUBJECT_TERMS because they can legitimately be victims ("the
+    # newspaper's office was raided"), so this has to be attribution-shaped
+    # (org term immediately driving a reporting verb) to disambiguate, not a
+    # blanket exclusion. Found 2026-08-26: 15 real false positives across a
+    # Nepal/Tibet flood story cluster, a drone-strike story, and 7 duplicate
+    # Iran International articles all containing the same boilerplate
+    # paragraph about a shipping-lane closure misread as CENSORSHIP.
+    r"\b(?:newspaper|broadcasters?|news outlet|radio station|tv station|television station)\b(?:\s+[^\s,]+){0,5}\s+(?:reports?|reported|says?|said|writes?|wrote|claims?|claimed|confirms?|confirmed|states?|stated|notes?|noted)\b",
 ]
 
 
@@ -180,6 +208,24 @@ RETROSPECTIVE_PATTERNS = [
     r"\b(?:on this day|this day in history|history|historical)\b",
     r"\b(?:identified body|finally identifies body|remains identified)\b",
     r"\b(?:first journalist killed|battle of little bighorn)\b",
+]
+
+# Sentence-level exclusions: the sentence contains a media-subject term and
+# a harm-action term close together, but not describing harm TO that
+# subject. Two real shapes found 2026-08-26:
+ENGLISH_EXCLUSION_PATTERNS = [
+    # Relational/possessive: the media-subject term names someone RELATED
+    # to the actual subject of the harm, not the harmed person themselves --
+    # "the mother of NBC journalist Savannah Guthrie disappeared" means
+    # Guthrie's mother disappeared, not Guthrie. 5 real duplicate incidents
+    # (same ongoing story, re-collected across days) all matched "journalist"
+    # + "disappeared"/"missing" this way.
+    r"\b(?:mother|father|wife|husband|son|daughter|sister|brother|parent|relative|family member)s?\s+of(?:\s+(?:a|an|the))?(?:\s+[^\s,]+){0,3}\s+(?:journalist|reporter|correspondent|editor|photojournalist)\b",
+    r"\b(?:journalist|reporter|correspondent|editor|photojournalist)(?:'s|s')\s+(?:mother|father|wife|husband|son|daughter|sister|brother|parent|relative)\b",
+    # Word-sense: "missing" as in emotionally longing for someone, not
+    # physically disappeared -- "journalists ran stories that Kasab was
+    # missing his sister" is about homesickness, not a disappearance.
+    r"\bmissing\s+(?:his|her|their|my|your)\s+(?:mother|father|sister|brother|wife|husband|family|home|children|kids|parents)\b",
 ]
 
 # Negation attached directly to a harm-action term flips its meaning (e.g.
@@ -268,6 +314,7 @@ _ENGLISH_TERMS = LanguageTerms(
     retrospective_patterns=RETROSPECTIVE_PATTERNS,
     negation_prefixes=ENGLISH_NEGATION_PREFIXES,
     extra_negatable_actions=ENGLISH_EXTRA_NEGATABLE_ACTIONS,
+    exclusion_patterns=ENGLISH_EXCLUSION_PATTERNS,
 )
 
 # Language code -> compiled term set. "en" plus the 2026-08-25 non-English
@@ -448,6 +495,11 @@ def _has_source_attribution(text: str, terms: LanguageTerms) -> bool:
     return any(re.search(pattern, lowered) for pattern in terms.source_attribution_patterns)
 
 
+def _has_exclusion(text: str, terms: LanguageTerms) -> bool:
+    lowered = text.lower()
+    return any(re.search(pattern, lowered) for pattern in terms.exclusion_patterns)
+
+
 def _is_retrospective_context(text: str, terms: LanguageTerms) -> bool:
     lowered = text.lower()
     return any(re.search(pattern, lowered) for pattern in terms.retrospective_patterns)
@@ -457,7 +509,7 @@ def _find_positive_incident_frame(sentence: str, compiled: _CompiledLanguage) ->
     terms = compiled.terms
     lowered = sentence.lower()
 
-    if _has_source_attribution(lowered, terms):
+    if _has_source_attribution(lowered, terms) or _has_exclusion(lowered, terms):
         return None
 
     for incident_type, actions in terms.action_terms_by_type.items():

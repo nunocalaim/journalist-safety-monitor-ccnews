@@ -1,26 +1,7 @@
 {
-  "timestamp": "2026-08-31T07:08:20.010278",
-  "alert_count": 7,
+  "timestamp": "2026-08-31T13:28:53.016414",
+  "alert_count": 3,
   "incidents": [
-    {
-      "id": 189,
-      "url": "https://www.jornada.com.mx/2026/08/30/mundo/018n1mun?partner=rss",
-      "title": "Nepal y China prosiguen la b\u00fasqueda de 3 mil 550 desaparecidos por riadas",
-      "published_date": "Sun, 30 Aug 2026 07:28:04 GMT",
-      "domain": "www.jornada.com.mx",
-      "country": "MX",
-      "severity": "CRITICAL",
-      "incident_type": "DISAPPEARANCE",
-      "description": "Por su parte, la Asociaci\u00f3n de la Industria Energ\u00e9tica inform\u00f3 que \"m\u00e1s de 934 personas, vinculadas a 11 proyectos hidroel\u00e9ctricos, siguen desaparecidas, incluidos los que est\u00e1n en construcci\u00f3n\", seg\u00fan el peri\u00f3dico Kathmandu Post.",
-      "language": "es",
-      "source_country": "MX",
-      "collected_at": "2026-08-30 13:06:47",
-      "matched_query": "rss:www.jornada.com.mx",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "Por su parte, la Asociaci\u00f3n de la Industria Energ\u00e9tica inform\u00f3 que \"m\u00e1s de 934 personas, vinculadas a 11 proyectos hidroel\u00e9ctricos, siguen desaparecidas, incluidos los que est\u00e1n en construcci\u00f3n\", seg\u00fan el peri\u00f3dico Kathmandu Post.",
-      "incident_fingerprint": "por su parte la asociaci n de la industria energ tica inform"
-    },
     {
       "id": 182,
       "url": "https://www.abc.es/internacional/testimonios-busqueda-familiares-desaparecidos-nepal-20260828011356-nt.html",
@@ -39,25 +20,6 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "\u00abAyer trat\u00e9 de acercarme en moto, pero a la altura de Trishuli, a 70 kil\u00f3metros de Katmand\u00fa, las fuerzas de seguridad me cortaron el paso y tuve que dar media vuelta\u00bb Ariyan Pradhan Familiar de desaparecidos Hay preguntas que un reportero debe ahorrarse, no ya por empat\u00eda sino por falta de necesidad: su rostro y sus gestos no manifiestan la crispaci\u00f3n de la ansiedad, sino la quietud de la resignaci\u00f3n.",
       "incident_fingerprint": "ayer trat de acercarme en moto pero la altura de trishuli 70"
-    },
-    {
-      "id": 179,
-      "url": "https://www.thehindu.com/news/international/nepal-flash-floods-death-toll-surges-nearly-1500-missing-fresh-flood-threat-glacier-collapse-live-updates-august-28-2026/article71398953.ece",
-      "title": "Nepal flash floods LIVE: Death toll rises to 547; fear of fresh floods looms",
-      "published_date": "Fri, 28 Aug 2026 18:14:38 +0530",
-      "domain": "www.thehindu.com",
-      "country": "IN",
-      "severity": "CRITICAL",
-      "incident_type": "DISAPPEARANCE",
-      "description": "the disaster has caused five deaths and 558 people are missing,\" state broadcaster CCTV said.",
-      "language": "en",
-      "source_country": "IN",
-      "collected_at": "2026-08-28 12:56:43",
-      "matched_query": "rss:www.thehindu.com",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "the disaster has caused five deaths and 558 people are missing,\" state broadcaster CCTV said.",
-      "incident_fingerprint": "disaster has caused five deaths 558 people are missing state broadcaster cctv"
     },
     {
       "id": 173,
@@ -96,44 +58,6 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Speaking to reporters here, he called for swift action to locate those missing and stranded, safely bring back survivors and repatraite bodies of the deceased.",
       "incident_fingerprint": "speaking reporters here called for swift action locate those missing stranded safely"
-    },
-    {
-      "id": 175,
-      "url": "https://www.theguardian.com/world/2026/aug/26/major-casualties-feared-after-flash-floods-along-nepal-tibet-border",
-      "title": "Flash floods on Nepal-Tibet border leave scores dead and hundreds missing",
-      "published_date": "Wed, 26 Aug 2026 18:28:51 GMT",
-      "domain": "www.theguardian.com",
-      "country": "UK",
-      "severity": "CRITICAL",
-      "incident_type": "KILLING",
-      "description": "In Tibet, China's state broadcaster said at least three people were killed and 265 were missing.",
-      "language": "en",
-      "source_country": "UK",
-      "collected_at": "2026-08-27 11:17:39",
-      "matched_query": "rss:www.theguardian.com",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "In Tibet, China's state broadcaster said at least three people were killed and 265 were missing.",
-      "incident_fingerprint": "tibet china s state broadcaster least three people killed 265 missing"
-    },
-    {
-      "id": 176,
-      "url": "https://www.bbc.co.uk/news/articles/cd948kn02e5o?at_medium=RSS&at_campaign=rss",
-      "title": "What we know about deadly Nepal-Tibet floods",
-      "published_date": "Thu, 27 Aug 2026 09:55:02 GMT",
-      "domain": "www.bbc.com",
-      "country": "UK",
-      "severity": "CRITICAL",
-      "incident_type": "DISAPPEARANCE",
-      "description": "Meanwhile, China's state broadcaster CCTV said on Thursday that the number of people missing in the mudslide disaster in Tibet's Gyirong county had risen to 558.",
-      "language": "en",
-      "source_country": "UK",
-      "collected_at": "2026-08-27 11:17:39",
-      "matched_query": "rss:www.bbc.com",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "Meanwhile, China's state broadcaster CCTV said on Thursday that the number of people missing in the mudslide disaster in Tibet's Gyirong county had risen to 558.",
-      "incident_fingerprint": "meanwhile china s state broadcaster cctv thursday that number people missing mudslide"
     }
   ]
 }

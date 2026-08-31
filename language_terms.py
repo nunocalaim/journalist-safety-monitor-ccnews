@@ -54,6 +54,16 @@ class LanguageTerms:
     negation_prefixes: List[str] = field(default_factory=list)
     negated_action_terms: List[str] = field(default_factory=list)
     extra_negatable_actions: List[str] = field(default_factory=list)
+    # Sentence-level patterns that block a positive-frame match regardless of
+    # subject/action proximity, same role as source_attribution_patterns but
+    # for other "looks like a match, isn't" shapes found in real data
+    # (2026-08-26): a media-subject term naming someone *related to* the
+    # actual victim rather than the victim itself ("the mother of journalist
+    # X disappeared" -- X's mother disappeared, not X), and an action term
+    # used in a non-harm sense ("missing his sister" -- longing, not
+    # disappearance). English-only for now; extend as real cases surface in
+    # other languages.
+    exclusion_patterns: List[str] = field(default_factory=list)
 
 
 SPANISH = LanguageTerms(
@@ -126,7 +136,13 @@ SPANISH = LanguageTerms(
     },
     source_attribution_patterns=[
         r"\b(?:periodista|reportero|reportera|corresponsal|editor|editora)\s+(?:informa|inform[oó]|dice|dijo|escribe|escribi[oó]|afirma|afirm[oó])\b",
-        r"\bseg[uú]n\s+(?:un|una|el|la)?\s*(?:periodista|reportero|reportera|corresponsal)\b",
+        # "periódico" included alongside the person roles below: found
+        # 2026-08-26 that "según el periódico Kathmandu Post" (a Nepal
+        # floods story citing a newspaper as its source) was validating as
+        # a real DISAPPEARANCE incident -- same organizational-source-as-
+        # subject bug as incident_validator.py's English patterns, just not
+        # yet ported to the other languages.
+        r"\bseg[uú]n\s+(?:un|una|el|la)?\s*(?:periodista|reportero|reportera|corresponsal|peri[oó]dico)\b",
         r"\bdijo\s+a\s+(?:los\s+|las\s+)?(?:periodistas|reporteros|reporteras|corresponsales|la prensa)\b",
         r"\bhabl[oó]\s+con\s+(?:periodistas|reporteros|la prensa)\b",
         r"\breportes?\s+de\s+(?:prensa|medios)\b",

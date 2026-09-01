@@ -1,5 +1,79 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-09-01 (11): GDELT added as a third live collector
+
+Sent the comparison write-up (see 2026-08-26 update below) to the OsloMet
+colleagues on this project; decided not to wait for their reply before
+combining the two approaches -- GDELT now runs as a third collector
+alongside CC-NEWS and RSS in this same repo, rather than living only in the
+sibling repo for comparison purposes.
+
+**Design question resolved before building:** GDELT's DOC 2.0 API
+(`http://api.gdeltproject.org/api/v2/doc/doc`, public, no key needed --
+confirmed live) only returns metadata (`url`, `title`, `seendate`, `domain`,
+`language`, `sourcecountry`) -- no body text, no snippet field at all
+(verified against a real query, not assumed). Roy's original validator has
+a safety net for this (short text -> "candidate", not "rejected") that this
+repo deliberately removed, since CC-NEWS/RSS always supply full text.
+Feeding GDELT's title-only hits into the current validator as-is would
+silently reintroduce that problem, scoped to GDELT. Resolved (user's call):
+for each GDELT hit, fetch the full article page ourselves first (same
+`session.get` + `trafilatura.extract` pattern `RSSCollector._fetch_full_text`
+already uses), falling back to GDELT's title only if that fetch fails.
+Makes GDELT "just another URL source" feeding the same full-text pipeline,
+architecturally consistent with the rest of this repo, rather than a
+second, structurally weaker-evidence path needing its own special-cased
+validator logic.
+
+New `gdelt_collector.py` (`GDELTCollector`, `GDELTAPIWrapper`,
+`build_gdelt_queries()`), query-building and API wrapper ported from
+`RoyKrovel/journalist-safety-monitor`'s `journalist_safety_monitor.py`
+almost verbatim -- both already solid there (retry/backoff on 429, no auth
+needed). New `gdelt_queries` config section, adapted from Roy's (subject/
+action term cross-product via GDELT's `near10:"..."` proximity syntax, plus
+exact/context queries) -- still English-only query terms, same as Roy's
+original; extending them to the other six supported languages is a natural
+follow-up, not done this pass. Wired into `journalist_safety_monitor.py`
+alongside the existing two collectors -- no changes needed to
+`_validate_article`'s `matched_source` labeling (`f"{source}:{domain}"`
+already generic, so GDELT hits get labeled `gdelt:domain.com` for free) or
+to the validator itself.
+
+Verified against real, live GDELT queries before considering it done, not
+just unit-tested: fetched full text successfully (2,130-15,612 chars per
+article, not just titles), detected language correctly across Indonesian/
+English hits, and a slightly larger real batch (24 articles across 4
+queries) produced several genuinely correct validations spanning multiple
+languages -- a Jordan-intelligence journalist arrest (English), Gaza
+journalists describing their detention after release (English), and two
+Spanish/Italian detention-adjacent stories -- confirming the whole chain
+(GDELT query -> full-text fetch -> language detection -> validate_incident())
+works end to end, non-English sources included.
+
+New `scripts/merge_gdelt_backlog.py` -- the committed, repeatable version
+of the one-off re-validation analysis from the comparison below, now
+actually merging into this repo's own database rather than just counting.
+Reads another instance's database directly and read-only (default
+`../Roy/journalist-safety-monitor/data/incidents.db`), re-validates every
+`legacy`/`candidate` row through the current validator, and inserts
+whatever confirms via the existing `bulk_insert_incidents`/
+`bulk_insert_candidates` (exact-URL dedup already handled there, no new
+dedup logic needed). Known, deliberately-unfixed limitation: the
+database's fuzzy-dedup check (`_has_similar_incident`) only looks at the
+last 14 days *relative to now*, so it never fires for this months-old
+data -- near-duplicate stories about the same event from different URLs
+(e.g. the 6 Spanish regional papers found during the comparison, all
+covering one incident) can each get inserted separately. Documented rather
+than fixed this pass -- revisit after running it once and inspecting real
+results, same discipline used throughout this session for known,
+lower-priority gaps.
+
+Confirmed while re-checking Roy's repo for this work that it's actively
+being modified by others too, not just passively accumulating: its
+`legacy`-row count had already dropped from 64,038 to 60,666 between two
+checks a few days apart (likely someone else's cleanup there) -- the merge
+script always reads that database fresh at run time, never a cached count.
+
 ## Update 2026-08-26 (10): manual review found 4 real validator bug classes -- 32 of 191 incidents (17%) demoted
 
 Manually reviewed a batch of live CRITICAL alerts, expected to be a quick

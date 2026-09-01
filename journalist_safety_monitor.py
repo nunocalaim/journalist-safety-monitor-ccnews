@@ -13,6 +13,7 @@ from database import IncidentDatabase
 from incident_validator import validate_incident
 from ccnews_collector import CCNewsCollector
 from rss_collector import RSSCollector
+from gdelt_collector import GDELTCollector
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -38,11 +39,20 @@ class JournalistSafetyMonitor:
         # WARC files, so every shard polls all of them rather than sharding.
         self.rss = RSSCollector(CONFIG)
 
+        # GDELT queries are sharded the same way CC-NEWS WARC files are --
+        # each shard runs a disjoint slice of the query list.
+        self.gdelt = GDELTCollector(
+            CONFIG,
+            shard_count=self.shard_count,
+            shard_index=self.shard_index,
+        )
+
         self.validation_config = CONFIG.get('validation', {})
         self.start_time = datetime.now()
         self.stats = {
             'ccnews_files_processed': 0,
             'rss_feeds_polled': 0,
+            'gdelt_queries_executed': 0,
             'articles_collected': 0,
             'new_incidents': 0,
             'duplicate_incidents': 0,
@@ -107,13 +117,20 @@ class JournalistSafetyMonitor:
         except Exception as e:
             logger.error(f"RSS collection failed: {e}")
 
+        try:
+            gdelt_articles = self.gdelt.collect()
+            articles.extend(gdelt_articles)
+            self.stats['gdelt_queries_executed'] = self.gdelt.last_queries_executed
+        except Exception as e:
+            logger.error(f"GDELT collection failed: {e}")
+
         return articles
 
     def collect_incidents(self):
         logger.info("Starting incident collection...")
         articles = self._collect_articles()
         self.stats['articles_collected'] = len(articles)
-        logger.info(f"Collected {len(articles)} articles from CC-NEWS + RSS")
+        logger.info(f"Collected {len(articles)} articles from CC-NEWS + RSS + GDELT")
 
         all_incidents = []
         for article in articles:
@@ -204,7 +221,8 @@ class JournalistSafetyMonitor:
 
         print(f"Collected {len(articles)} articles in dry-run mode "
               f"({self.stats['ccnews_files_processed']} CC-NEWS files, "
-              f"{self.stats['rss_feeds_polled']} RSS feeds)")
+              f"{self.stats['rss_feeds_polled']} RSS feeds, "
+              f"{self.stats['gdelt_queries_executed']} GDELT queries)")
         print("-" * 80)
 
         for article in articles:
@@ -269,6 +287,7 @@ class JournalistSafetyMonitor:
             f.write(f"- CC-NEWS shard: {self.shard_index + 1}/{self.shard_count}\n")
             f.write(f"- CC-NEWS files processed: {self.stats['ccnews_files_processed']}\n")
             f.write(f"- RSS feeds polled: {self.stats['rss_feeds_polled']}\n")
+            f.write(f"- GDELT queries executed: {self.stats['gdelt_queries_executed']}\n")
             f.write(f"- Articles collected: {self.stats['articles_collected']}\n")
             f.write(f"- Validated articles: {self.stats['validated_articles']}\n")
             f.write(f"- Candidate articles: {self.stats['candidate_articles']}\n")
@@ -331,7 +350,11 @@ class JournalistSafetyMonitor:
     def save_statistics(self, analysis: Dict):
         today = datetime.now().strftime('%Y-%m-%d')
         stats = analysis['statistics']
-        stats['queries_executed'] = self.stats['ccnews_files_processed'] + self.stats['rss_feeds_polled']
+        stats['queries_executed'] = (
+            self.stats['ccnews_files_processed']
+            + self.stats['rss_feeds_polled']
+            + self.stats['gdelt_queries_executed']
+        )
         self.db.save_daily_stats(today, stats)
         logger.info("Statistics saved")
 
@@ -339,7 +362,7 @@ class JournalistSafetyMonitor:
         status = 'ERROR'
         try:
             logger.info("=" * 80)
-            logger.info("JOURNALIST SAFETY MONITORING SYSTEM (CC-NEWS)")
+            logger.info("JOURNALIST SAFETY MONITORING SYSTEM (CC-NEWS + RSS + GDELT)")
             logger.info("=" * 80)
 
             incidents = self.collect_incidents()
@@ -364,19 +387,24 @@ class JournalistSafetyMonitor:
                 execution_time = (datetime.now() - self.start_time).total_seconds()
                 self.db.log_collection_run({
                     'run_date': datetime.now().isoformat(),
-                    'queries_executed': self.stats['ccnews_files_processed'] + self.stats['rss_feeds_polled'],
+                    'queries_executed': (
+                        self.stats['ccnews_files_processed']
+                        + self.stats['rss_feeds_polled']
+                        + self.stats['gdelt_queries_executed']
+                    ),
                     'articles_collected': self.stats['articles_collected'],
                     'new_incidents': self.stats['new_incidents'],
                     'execution_time': execution_time,
                     'status': status,
                 })
             self.rss.close()
+            self.gdelt.close()
             if self.db:
                 self.db.close()
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Run the journalist safety monitor (CC-NEWS + RSS)")
+    parser = argparse.ArgumentParser(description="Run the journalist safety monitor (CC-NEWS + RSS + GDELT)")
     parser.add_argument('--dry-run', action='store_true', help='Collect and validate without writing files or database rows')
     parser.add_argument('--max-articles', type=int, default=None, help='Limit the number of collected articles, useful with --dry-run')
     parser.add_argument('--shard-count', type=int, default=1, help='Split CC-NEWS WARC files into this many shards')
@@ -391,6 +419,7 @@ if __name__ == '__main__':
     if args.dry_run:
         results = monitor.dry_run(max_articles=args.max_articles)
         monitor.rss.close()
+        monitor.gdelt.close()
     else:
         results = monitor.run()
 

@@ -52,26 +52,50 @@ priority_countries:
     - "ES"
     - "IT"
   # Not part of the originally-curated priority list -- these countries got
-  # sources added 2026-08-26 because domains for them independently
-  # surfaced real, validated incidents when RoyKrovel/journalist-safety-monitor's
-  # (GDELT-based) historical data was re-run through this repo's validator.
-  # This list isn't read by any code (like the tiers above, it's
-  # documentation), so its untiered shape is fine.
+  # sources added either 2026-08-26 (domains independently surfaced real,
+  # validated incidents when RoyKrovel/journalist-safety-monitor's GDELT-
+  # based historical data was re-run through this repo's validator) or
+  # 2026-09-01 (domains found by sampling real CC-NEWS WARC files and
+  # diffing against the existing allowlist -- see PLAN.md). This list isn't
+  # read by any code (like the tiers above, it's documentation), so its
+  # untiered shape is fine.
   additional:
+    - "AE"  # United Arab Emirates
     - "AR"  # Argentina
+    - "AU"  # Australia
+    - "BD"  # Bangladesh
     - "BG"  # Bulgaria
+    - "BY"  # Belarus
     - "CA"  # Canada
+    - "CH"  # Switzerland
     - "CL"  # Chile
     - "CO"  # Colombia
     - "CU"  # Cuba
+    - "CZ"  # Czech Republic
+    - "DO"  # Dominican Republic
+    - "GH"  # Ghana
+    - "GR"  # Greece
+    - "HN"  # Honduras
+    - "HR"  # Croatia
     - "IL"  # Israel
+    - "JO"  # Jordan
     - "KE"  # Kenya
+    - "KR"  # South Korea
+    - "LB"  # Lebanon
     - "MY"  # Malaysia
     - "NG"  # Nigeria
+    - "NI"  # Nicaragua
     - "NZ"  # New Zealand
+    - "PA"  # Panama
     - "PE"  # Peru
     - "PT"  # Portugal
+    - "RS"  # Serbia
+    - "SG"  # Singapore
     - "SN"  # Senegal
+    - "TW"  # Taiwan
+    - "UA"  # Ukraine
+    - "UZ"  # Uzbekistan
+    - "VN"  # Vietnam
     - "XK"  # Kosovo
     - "ZA"  # South Africa
 
@@ -127,6 +151,22 @@ ccnews_domains:
     - domain: "elimparcial.com"
       source: "ccnews"
     - domain: "sopitas.com"
+      source: "ccnews"
+    - domain: "www.sdpnoticias.com"
+      source: "ccnews"
+    - domain: "www.cronica.com.mx"
+      source: "ccnews"
+    - domain: "www.noroeste.com.mx"
+      source: "ccnews"
+    - domain: "www.cuartopoder.mx"
+      source: "ccnews"
+    - domain: "www.unotv.com"
+      source: "ccnews"
+    - domain: "www.elsiglodedurango.com.mx"
+      source: "ccnews"
+    - domain: "www.heraldo.mx"
+      source: "ccnews"
+    - domain: "www.razon.com.mx"
       source: "ccnews"
   AF:
     - domain: "tolonews.com"
@@ -230,6 +270,18 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://feeds.feedburner.com/PK/Horoscope"
       fetch_full_text: true
+    - domain: "www.amarujala.com"
+      source: "ccnews"
+    - domain: "www.jagran.com"
+      source: "ccnews"
+    - domain: "zeenews.india.com"
+      source: "ccnews"
+    - domain: "www.indiatoday.in"
+      source: "ccnews"
+    - domain: "www.timesnownews.com"
+      source: "ccnews"
+    - domain: "www.aajtak.in"
+      source: "ccnews"
   PH:
     - domain: "www.rappler.com"
       source: "rss"
@@ -266,6 +318,14 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://www.brasil247.com/feed/"
       fetch_full_text: true
+    - domain: "www.correiobraziliense.com.br"
+      source: "ccnews"
+    - domain: "sampi.net.br"
+      source: "ccnews"
+    - domain: "opopular.com.br"
+      source: "ccnews"
+    - domain: "www.correio24horas.com.br"
+      source: "ccnews"
   TR:
     - domain: "www.haberler.com"
       source: "ccnews"
@@ -293,6 +353,16 @@ ccnews_domains:
       source: "ccnews"
     - domain: "t24.com.tr"
       source: "ccnews"
+    - domain: "www.yenicaggazetesi.com"
+      source: "ccnews"
+    - domain: "www.turkiyegazetesi.com.tr"
+      source: "ccnews"
+    - domain: "halktv.com.tr"
+      source: "ccnews"
+    - domain: "yerel-haberler.haberturk.com"
+      source: "ccnews"
+    - domain: "www.sabah.com.tr"
+      source: "ccnews"
   EG:
     - domain: "www.almasryalyoum.com"
       source: "ccnews"
@@ -303,6 +373,10 @@ ccnews_domains:
     - domain: "english.ahram.org.eg"  # state-affiliated
       source: "ccnews"
     - domain: "egyptindependent.com"  # independent
+      source: "ccnews"
+    - domain: "www.elbalad.news"
+      source: "ccnews"
+    - domain: "www.shorouknews.com"
       source: "ccnews"
   RU:
     - domain: "www.kommersant.ru"
@@ -324,6 +398,12 @@ ccnews_domains:
     - domain: "eng.kavkaz-uzel.eu"
       source: "ccnews"
     - domain: "nakanune.ru"
+      source: "ccnews"
+    - domain: "www.kp.ru"
+      source: "ccnews"
+    - domain: "radio1.ru"
+      source: "ccnews"
+    - domain: "vz.ru"
       source: "ccnews"
   CN:
     - domain: "www.scmp.com"  # Hong Kong, English
@@ -351,6 +431,8 @@ ccnews_domains:
       fetch_full_text: false  # robots.txt unreachable
     - domain: "arabnews.com"
       source: "ccnews"
+    - domain: "www.okaz.com.sa"
+      source: "ccnews"
   IR:
     - domain: "www.irna.ir"  # state news agency
       source: "ccnews"
@@ -366,6 +448,10 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://iranwire.com/fa/feed/"
       fetch_full_text: true
+    - domain: "www.mehrnews.com"
+      source: "ccnews"
+    - domain: "www.tabnak.ir"
+      source: "ccnews"
   US:
     - domain: "theintercept.com"  # independent, investigative
       source: "rss"
@@ -507,6 +593,8 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://www.20minutes.fr/feeds/rss-une.xml"
       fetch_full_text: true
+    - domain: "www.m6.fr"
+      source: "ccnews"
   DE:
     - domain: "www.finanznachrichten.de"
       source: "ccnews"
@@ -542,6 +630,18 @@ ccnews_domains:
     - domain: "kaosenlared.net"
       source: "ccnews"
     - domain: "eldiario.es"
+      source: "ccnews"
+    - domain: "www.farodevigo.es"
+      source: "ccnews"
+    - domain: "www.lne.es"
+      source: "ccnews"
+    - domain: "www.independentespanol.com"
+      source: "ccnews"
+    - domain: "www.europapress.es"
+      source: "ccnews"
+    - domain: "www.regio7.cat"
+      source: "ccnews"
+    - domain: "www.lasexta.com"
       source: "ccnews"
   IT:
     - domain: "www.corriere.it"
@@ -590,11 +690,21 @@ ccnews_domains:
       source: "ccnews"
     - domain: "elciudadanoweb.com"
       source: "ccnews"
+    - domain: "www.lanacion.com.ar"
+      source: "ccnews"
+    - domain: "www.infobae.com"
+      source: "ccnews"
+    - domain: "www.pagina12.com.ar"
+      source: "ccnews"
+    - domain: "tn.com.ar"
+      source: "ccnews"
   BG:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
     - domain: "novinite.com"
       source: "rss"
       feed_url: "https://www.novinite.com/services/news_rdf.php"
       fetch_full_text: true
+    - domain: "fakti.bg"
+      source: "ccnews"
   CA:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
     - domain: "winnipegfreepress.com"
       source: "rss"
@@ -609,8 +719,22 @@ ccnews_domains:
       source: "ccnews"
     - domain: "biobiochile.cl"
       source: "ccnews"
+    - domain: "www.meganoticias.cl"
+      source: "ccnews"
+    - domain: "www.cooperativa.cl"
+      source: "ccnews"
+    - domain: "www.cnnchile.com"
+      source: "ccnews"
+    - domain: "www.chilevision.cl"
+      source: "ccnews"
   CO:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
     - domain: "elcolombiano.com"
+      source: "ccnews"
+    - domain: "caracol.com.co"
+      source: "ccnews"
+    - domain: "www.elespectador.com"
+      source: "ccnews"
+    - domain: "www.bluradio.com"
       source: "ccnews"
   CU:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
     - domain: "cubaheadlines.com"
@@ -624,6 +748,12 @@ ccnews_domains:
       source: "ccnews"
     - domain: "themedialine.org"
       source: "ccnews"
+    - domain: "www.ynet.co.il"
+      source: "ccnews"
+    - domain: "www.timesofisrael.com"
+      source: "rss"
+      feed_url: "https://www.timesofisrael.com/feed/"
+      fetch_full_text: false
   KE:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
     - domain: "standardmedia.co.ke"
       source: "ccnews"
@@ -643,14 +773,24 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://saharareporters.com/rss.xml"
       fetch_full_text: true
+    - domain: "www.thisdaylive.com"
+      source: "ccnews"
   NZ:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
     - domain: "home.nzcity.co.nz"
+      source: "ccnews"
+    - domain: "www.odt.co.nz"
       source: "ccnews"
   PE:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
     - domain: "rpp.pe"
       source: "rss"
       feed_url: "https://rpp.pe/rss"
       fetch_full_text: true
+    - domain: "elcomercio.pe"
+      source: "ccnews"
+    - domain: "larepublica.pe"
+      source: "ccnews"
+    - domain: "diariocorreo.pe"
+      source: "ccnews"
   PT:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
     - domain: "dn.pt"
       source: "ccnews"
@@ -658,6 +798,8 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://sabado.pt/rss/"
       fetch_full_text: false
+    - domain: "tvi.iol.pt"
+      source: "ccnews"
   SN:  # added 2026-08-26 from re-validating RoyKrovel/journalist-safety-monitor data
     - domain: "senego.com"
       source: "ccnews"
@@ -677,6 +819,121 @@ ccnews_domains:
       source: "rss"
       feed_url: "https://dailymaverick.co.za/rss/"
       fetch_full_text: false
+
+  AE:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "www.albayan.ae"
+      source: "ccnews"
+    - domain: "www.emaratalyoum.com"
+      source: "ccnews"
+  AU:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "www.perthnow.com.au"
+      source: "ccnews"
+  BD:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "www.prothomalo.com"
+      source: "ccnews"
+  BY:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "ctv.by"
+      source: "ccnews"
+    - domain: "charter97.org"
+      source: "ccnews"
+  CH:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "www.blick.ch"
+      source: "ccnews"
+  CZ:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "www.idnes.cz"
+      source: "ccnews"
+  DO:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "www.diariolibre.com"
+      source: "ccnews"
+  GH:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "www.myjoyonline.com"
+      source: "ccnews"
+  GR:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "www.newsit.gr"
+      source: "ccnews"
+    - domain: "www.newsbeast.gr"
+      source: "ccnews"
+    - domain: "www.zougla.gr"
+      source: "ccnews"
+    - domain: "www.thestival.gr"
+      source: "ccnews"
+    - domain: "www.enikos.gr"
+      source: "rss"
+      feed_url: "https://www.enikos.gr/feed/"
+      fetch_full_text: false
+  HN:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "www.elheraldo.hn"
+      source: "ccnews"
+    - domain: "www.laprensa.hn"
+      source: "ccnews"
+  HR:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "www.24sata.hr"
+      source: "ccnews"
+    - domain: "net.hr"
+      source: "ccnews"
+  JO:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "www.khaberni.com"
+      source: "ccnews"
+  KR:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "news.sbs.co.kr"
+      source: "ccnews"
+    - domain: "www.seoul.co.kr"
+      source: "ccnews"
+  LB:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "www.lebanon24.com"
+      source: "ccnews"
+  NI:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "nuevaya.com.ni"
+      source: "ccnews"
+  PA:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "www.tvn-2.com"
+      source: "ccnews"
+    - domain: "www.telemetro.com"
+      source: "ccnews"
+    - domain: "www.laestrella.com.pa"
+      source: "ccnews"
+  RS:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "www.kurir.rs"
+      source: "ccnews"
+    - domain: "www.novosti.rs"
+      source: "ccnews"
+    - domain: "atvbl.rs"
+      source: "ccnews"
+  SG:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "www.channelnewsasia.com"
+      source: "ccnews"
+  TW:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "udn.com"
+      source: "ccnews"
+  UA:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "unn.ua"
+      source: "ccnews"
+    - domain: "tsn.ua"
+      source: "ccnews"
+    - domain: "24tv.ua"
+      source: "ccnews"
+    - domain: "www.rbc.ua"
+      source: "rss"
+      feed_url: "https://www.rbc.ua/static/rss/all.rus.rss.xml"
+      fetch_full_text: false
+    - domain: "censor.net"
+      source: "rss"
+      feed_url: "https://assets.censor.net/rss/censor.net/rss_uk_feed.xml"
+      fetch_full_text: false
+  UZ:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "zamin.uz"
+      source: "ccnews"
+  VN:  # added 2026-09-01 from sampling real CC-NEWS WARC files
+    - domain: "vov.vn"
+      source: "ccnews"
+    - domain: "www.24h.com.vn"
+      source: "ccnews"
+    - domain: "tienphong.vn"
+      source: "ccnews"
+    - domain: "soha.vn"
+      source: "ccnews"
+    - domain: "vietnamnet.vn"
+      source: "ccnews"
 
 # Known gaps: CCBot-blocked with no usable RSS feed (checked directly and
 # via scripts/discover_sources.py, including a common-feed-path fallback).

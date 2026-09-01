@@ -534,3 +534,125 @@ dn.pt:Portugal
 biobiochile.cl:Chile
 # 2 incidents
 eldiario.es:Spain
+# Candidates surfaced by sampling real CC-NEWS WARC files (3 files,
+# 2026-08-31, 63,003 response records, 2,436 distinct domains) and diffing
+# against config.yaml's existing allowlist -- see PLAN.md's 2026-09-01
+# update. Curated from the ~280 most frequent new domains: excluded sports,
+# entertainment, retail, ad-tech (tollbit.*), and the dozens of small US
+# local public-radio/TV affiliates that showed up (legitimate journalism,
+# but too numerous and low-priority for this project's threat model).
+# domain:country
+
+# --- existing priority countries ---
+www.kp.ru:RU
+radio1.ru:RU
+vz.ru:RU
+www.mehrnews.com:IR
+www.tabnak.ir:IR
+www.amarujala.com:IN
+www.hindustantimes.com:IN
+www.jagran.com:IN
+www.tribuneindia.com:IN
+zeenews.india.com:IN
+www.indiatoday.in:IN
+www.dailyexcelsior.com:IN
+ndtv.in:IN
+www.timesnownews.com:IN
+www.aajtak.in:IN
+www.yenicaggazetesi.com:TR
+www.turkiyegazetesi.com.tr:TR
+halktv.com.tr:TR
+yerel-haberler.haberturk.com:TR
+www.sozcu.com.tr:TR
+www.sabah.com.tr:TR
+www.sdpnoticias.com:MX
+www.cronica.com.mx:MX
+www.noroeste.com.mx:MX
+www.cuartopoder.mx:MX
+www.unotv.com:MX
+www.elsiglodedurango.com.mx:MX
+www.heraldo.mx:MX
+www.razon.com.mx:MX
+www.correiobraziliense.com.br:BR
+sampi.net.br:BR
+opopular.com.br:BR
+www.correio24horas.com.br:BR
+www.okaz.com.sa:SA
+www.elbalad.news:EG
+www.shorouknews.com:EG
+www.farodevigo.es:ES
+www.lne.es:ES
+www.independentespanol.com:ES
+www.europapress.es:ES
+www.regio7.cat:ES
+www.lasexta.com:ES
+www.m6.fr:FR
+
+# --- already-added "additional" tier countries (2026-08-26 round) ---
+www.lanacion.com.ar:AR
+www.infobae.com:AR
+www.pagina12.com.ar:AR
+tn.com.ar:AR
+caracol.com.co:CO
+www.elespectador.com:CO
+www.bluradio.com:CO
+www.noticiasrcn.com:CO
+www.ntn24.com:CO
+www.meganoticias.cl:CL
+www.cooperativa.cl:CL
+www.cnnchile.com:CL
+www.chilevision.cl:CL
+www.timesofisrael.com:IL
+www.ynet.co.il:IL
+www.thisdaylive.com:NG
+fakti.bg:BG
+www.odt.co.nz:NZ
+
+# --- new countries, clear press-freedom relevance or major outlets ---
+ctv.by:BY
+charter97.org:BY
+www.prothomalo.com:BD
+elcomercio.pe:PE
+larepublica.pe:PE
+diariocorreo.pe:PE
+zamin.uz:UZ
+unn.ua:UA
+www.rbc.ua:UA
+tsn.ua:UA
+censor.net:UA
+24tv.ua:UA
+news.sbs.co.kr:KR
+www.seoul.co.kr:KR
+www.channelnewsasia.com:SG
+vov.vn:VN
+www.24h.com.vn:VN
+tienphong.vn:VN
+soha.vn:VN
+vietnamnet.vn:VN
+www.lebanon24.com:LB
+nuevaya.com.ni:NI
+tvi.iol.pt:PT
+www.elheraldo.hn:HN
+www.laprensa.hn:HN
+www.diariolibre.com:DO
+www.tvn-2.com:PA
+www.telemetro.com:PA
+www.laestrella.com.pa:PA
+www.kurir.rs:RS
+www.novosti.rs:RS
+atvbl.rs:RS
+www.albayan.ae:AE
+www.emaratalyoum.com:AE
+www.khaberni.com:JO
+udn.com:TW
+www.newsit.gr:GR
+www.enikos.gr:GR
+www.newsbeast.gr:GR
+www.zougla.gr:GR
+www.thestival.gr:GR
+www.idnes.cz:CZ
+www.24sata.hr:HR
+net.hr:HR
+www.perthnow.com.au:AU
+www.myjoyonline.com:GH
+www.blick.ch:CH

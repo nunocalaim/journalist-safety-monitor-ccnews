@@ -1,0 +1,63 @@
+{
+  "timestamp": "2026-09-01T06:25:59.176349",
+  "alert_count": 3,
+  "incidents": [
+    {
+      "id": 182,
+      "url": "https://www.abc.es/internacional/testimonios-busqueda-familiares-desaparecidos-nepal-20260828011356-nt.html",
+      "title": "\u00abNo queda nada, solo barro\u00bb: la desesperada b\u00fasqueda de los familiares de los desaparecidos en Nepal",
+      "published_date": "Sat, 29 Aug 2026 01:13:56 +0200",
+      "domain": "www.abc.es",
+      "country": "ES",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "\u00abAyer trat\u00e9 de acercarme en moto, pero a la altura de Trishuli, a 70 kil\u00f3metros de Katmand\u00fa, las fuerzas de seguridad me cortaron el paso y tuve que dar media vuelta\u00bb Ariyan Pradhan Familiar de desaparecidos Hay preguntas que un reportero debe ahorrarse, no ya por empat\u00eda sino por falta de necesidad: su rostro y sus gestos no manifiestan la crispaci\u00f3n de la ansiedad, sino la quietud de la resignaci\u00f3n.",
+      "language": "es",
+      "source_country": "ES",
+      "collected_at": "2026-08-29 07:56:51",
+      "matched_query": "rss:www.abc.es",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "\u00abAyer trat\u00e9 de acercarme en moto, pero a la altura de Trishuli, a 70 kil\u00f3metros de Katmand\u00fa, las fuerzas de seguridad me cortaron el paso y tuve que dar media vuelta\u00bb Ariyan Pradhan Familiar de desaparecidos Hay preguntas que un reportero debe ahorrarse, no ya por empat\u00eda sino por falta de necesidad: su rostro y sus gestos no manifiestan la crispaci\u00f3n de la ansiedad, sino la quietud de la resignaci\u00f3n.",
+      "incident_fingerprint": "ayer trat de acercarme en moto pero la altura de trishuli 70"
+    },
+    {
+      "id": 173,
+      "url": "https://syrianobserver.com/syrian-actors/investigation-underway-in-northern-aleppo-following-murder-of-local-sufi-imam.html",
+      "title": "Investigation Underway in Northern Aleppo Following Murder of Local Sufi Imam",
+      "published_date": "Wed, 26 Aug 2026 21:00:57 +0000",
+      "domain": "syrianobserver.com",
+      "country": "SY",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "According to the Syrian Network for Human Rights (SNHR), at least 428 civilians\u2014including 80 children, 33 women, eight medical personnel, and two journalists\u2014were killed across Syria during the first half of 2026.",
+      "language": "en",
+      "source_country": "SY",
+      "collected_at": "2026-08-27 11:17:39",
+      "matched_query": "rss:syrianobserver.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "According to the Syrian Network for Human Rights (SNHR), at least 428 civilians\u2014including 80 children, 33 women, eight medical personnel, and two journalists\u2014were killed across Syria during the first half of 2026.",
+      "incident_fingerprint": "according syrian network for human rights snhr least 428 civilians including 80"
+    },
+    {
+      "id": 174,
+      "url": "https://www.thehindu.com/news/international/nepal-flash-floods-increasing-death-toll-many-missing-rescuers-search-for-survivors-live-updates-august-27-2026/article71394802.ece",
+      "title": "Nepal flash floods LIVE: High alert in parts of Indian States as rivers are being monitored; India steps up rescue efforts",
+      "published_date": "Thu, 27 Aug 2026 16:29:40 +0530",
+      "domain": "www.thehindu.com",
+      "country": "IN",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "Speaking to reporters here, he called for swift action to locate those missing and stranded, safely bring back survivors and repatraite bodies of the deceased.",
+      "language": "en",
+      "source_country": "IN",
+      "collected_at": "2026-08-27 11:17:39",
+      "matched_query": "rss:www.thehindu.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Speaking to reporters here, he called for swift action to locate those missing and stranded, safely bring back survivors and repatraite bodies of the deceased.",
+      "incident_fingerprint": "speaking reporters here called for swift action locate those missing stranded safely"
+    }
+  ]
+}

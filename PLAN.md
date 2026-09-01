@@ -1,5 +1,44 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-09-01 (12): domain list expanded 205 -> 306 by sampling real WARC files
+
+Came out of explaining *why* CC-NEWS is restricted to a curated allowlist
+rather than accepting every domain the crawl touches (country attribution
+is a hard dependency -- `domain_source.country` in `ccnews_collector.py`
+is looked up from the manual mapping, never inferred from content; CC-NEWS
+also doesn't publish its own crawled-domain list, so anything outside the
+allowlist is simply unvetted, not deliberately excluded) -- the natural
+follow-up being: sample real WARC files and see what's actually in there
+that we're missing.
+
+Streamed 3 real, current WARC files (63,003 response records) and counted
+distinct hostnames: **2,436 distinct domains**, only 141 of which we track.
+Confirms the curation is doing real work -- CC-NEWS's crawl is not
+news-only: top hits by frequency included a Russian interior-design
+retailer, an Islamic scripture site, a Russian electronics retailer, a
+content-bookmarking aggregator, and `tollbit.*`-prefixed ad-tech/paywall
+redirect domains, alongside genuine news.
+
+Curated the ~280 most frequent new domains by hand (same discipline as the
+two earlier rounds): excluded sports, entertainment, retail, ad-tech, and
+-- a new category this round -- the dozens of small US local public-radio/
+TV affiliates that showed up (legitimate journalism, but too numerous and
+too low-priority for this project's threat model to catalog individually).
+Kept 108 candidates, classified with `discover_sources.py`: **101 usable**
+(97 ccnews, 4 rss) -- a much higher hit rate than either previous round,
+which makes sense in hindsight: these domains were found *because* they
+already appeared in a real CC-NEWS crawl, so by definition they aren't
+CCBot-blocked.
+
+Result: **205 -> 306 sources, 37 -> 59 countries.** 22 more countries in
+the `additional` tier, several with clear press-freedom relevance beyond
+just "another market" -- Belarus (state TV `ctv.by` paired with exile
+outlet `charter97.org`, the same state+independent pairing pattern used
+throughout this project), Ukraine, Lebanon, Nicaragua. Checked for the
+same www./bare-domain duplicate class the last round produced -- this
+batch introduced none; the existing ones are the same 6 already reviewed
+and judged harmless.
+
 ## Update 2026-09-01 (11): GDELT added as a third live collector
 
 Sent the comparison write-up (see 2026-08-26 update below) to the OsloMet

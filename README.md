@@ -34,7 +34,7 @@ Turkish — and the same `data/incidents.db`.
 Live: a GitHub Actions workflow (`.github/workflows/monitor.yml`) runs the
 pipeline on a schedule, shards CC-NEWS WARC files and GDELT queries across
 runs, and commits results (`data/incidents.db`, `data/exports/`, `reports/`)
-back to the repo automatically. 205 CC-NEWS/RSS sources across 37 countries,
+back to the repo automatically. 306 CC-NEWS/RSS sources across 59 countries,
 plus whatever GDELT's live search independently turns up.
 
 ## Where the results are

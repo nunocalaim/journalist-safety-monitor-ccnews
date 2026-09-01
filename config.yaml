@@ -727,15 +727,52 @@ rss_collection:
   max_entries_per_feed: 25
   request_timeout_seconds: 20
 
-# CC-NEWS collection parameters (replaces gdelt_queries's rate-limit/retry block)
+# CC-NEWS collection parameters
 ccnews_collection:
-  # WARC files are sharded across scheduled runs, same idea as the GDELT
-  # repo's --shard-count/--shard-index, but sharding files instead of queries.
+  # WARC files are sharded across scheduled runs, same idea as GDELTCollector
+  # below's query sharding, but sharding files instead of queries.
   shard_count: 4
   max_warc_files_per_run: 1
   request_timeout_seconds: 60
   max_retries: 2
   retry_backoff_seconds: 30
+
+# GDELT queries (2026-09-01: reintroduced as a third live collector, ported
+# from RoyKrovel/journalist-safety-monitor's gdelt_queries config -- see
+# gdelt_collector.py's module docstring and PLAN.md's 2026-09-01 update for
+# why. Query terms are still English-only, same as Roy's original config;
+# GDELT's own translation index means this can still surface non-English
+# articles, but the terms themselves haven't been extended to the other six
+# supported languages yet -- worth doing as a follow-up, same spirit as the
+# CC-NEWS domain-language work.
+gdelt_queries:
+  proximity_distance: 10
+  subject_terms:
+    - "journalist"
+    - "reporter"
+    - "photojournalist"
+  action_terms:
+    - "killed"
+    - "attacked"
+    - "detained"
+    - "arrested"
+  exact_queries:
+    - "near10:\"media worker killed\""
+    - "near10:\"news crew attacked\""
+    - "near10:\"editor arrested\""
+    - "near10:\"newspaper office raided\""
+    - "near10:\"newsroom raided\""
+  context_queries:
+    - "near10:\"war correspondent killed\""
+  max_results_per_query: 50
+  rate_limit_seconds: 30
+  request_timeout_seconds: 30
+  max_retries: 2
+  retry_backoff_seconds: 120
+  # Timeout for fetching each hit's full article page ourselves (separate
+  # from request_timeout_seconds above, which times the GDELT API call
+  # itself) -- see gdelt_collector.py's GDELTCollector._fetch_full_text.
+  fetch_timeout_seconds: 20
 
 # Validation/debug output (unchanged from the GDELT-based repo)
 validation:

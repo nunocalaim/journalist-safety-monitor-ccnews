@@ -1,31 +1,41 @@
-# Journalist Safety Monitor (Common Crawl News)
+# Journalist Safety Monitor (Common Crawl News + GDELT)
 
 Monitors journalist-safety incidents (killings, detentions, attacks, threats,
-censorship) using [Common Crawl News (CC-NEWS)](https://commoncrawl.org/) and
-RSS feeds as sources, instead of the GDELT-based approach used in the sibling
-[journalist-safety-monitor](https://github.com/nunocalaim/journalist-safety-monitor)
-repo.
+censorship) from three sources feeding the same validator and database:
+[Common Crawl News (CC-NEWS)](https://commoncrawl.org/), RSS feeds, and
+GDELT's keyword search. Started as a CC-NEWS-only parallel approach to the
+GDELT-based [journalist-safety-monitor](https://github.com/nunocalaim/journalist-safety-monitor)
+repo; as of 2026-09-01, GDELT is a third collector here too, so this repo
+combines both approaches rather than just comparing them.
 
-See [PLAN.md](PLAN.md) for the full design history, the CC-NEWS data
-investigation that informed it, and a dated log of every major decision.
+See [PLAN.md](PLAN.md) for the full design history and a dated log of every
+major decision, including the comparison that led to combining the two.
 
-## Key difference from the GDELT version
+## How the three sources differ
 
-CC-NEWS has no keyword or domain search API — every WARC file has to be
-downloaded and scanned. This repo streams and filters CC-NEWS WARC files by a
-curated domain allowlist (`config.yaml`'s `ccnews_domains`), extracts article
-text from the raw HTML with `trafilatura`, detects its language, and validates
-it with `incident_validator.py` — a rule-based validator supporting English,
-Spanish, Portuguese, Italian, French, Russian, and Turkish. A second collector
-(`rss_collector.py`) polls RSS feeds for outlets that block CCBot but publish
-a public feed.
+- **CC-NEWS** (`ccnews_collector.py`) has no keyword or domain search API —
+  every WARC file has to be downloaded and scanned. Streams and filters WARC
+  files by a curated domain allowlist (`config.yaml`'s `ccnews_domains`),
+  extracts article text from the raw HTML with `trafilatura`.
+- **RSS** (`rss_collector.py`) polls feeds for outlets that block CCBot in
+  `robots.txt` but publish a public feed instead.
+- **GDELT** (`gdelt_collector.py`) runs keyword/proximity queries against
+  GDELT's DOC 2.0 API (public, no key needed) — broad reach across sources
+  neither of the above track, but the API only ever returns a title, no body
+  text, so this collector fetches each hit's full article page itself before
+  validating (falling back to GDELT's title if that fetch fails).
+
+All three feed into `incident_validator.py` — a rule-based validator
+supporting English, Spanish, Portuguese, Italian, French, Russian, and
+Turkish — and the same `data/incidents.db`.
 
 ## Status
 
 Live: a GitHub Actions workflow (`.github/workflows/monitor.yml`) runs the
-pipeline on a schedule, shards WARC files across runs, and commits results
-(`data/incidents.db`, `data/exports/`, `reports/`) back to the repo
-automatically. 96 sources across 21 priority countries.
+pipeline on a schedule, shards CC-NEWS WARC files and GDELT queries across
+runs, and commits results (`data/incidents.db`, `data/exports/`, `reports/`)
+back to the repo automatically. 205 CC-NEWS/RSS sources across 37 countries,
+plus whatever GDELT's live search independently turns up.
 
 ## Where the results are
 
@@ -87,6 +97,30 @@ git add data/incidents.db data/ccnews_backfill_state.json
 git commit -m "Backfill historical CC-NEWS incidents"
 git push
 ```
+
+### Merging in another repo's historical data
+
+`scripts/merge_gdelt_backlog.py` re-validates another journalist-safety-monitor
+instance's already-collected data (e.g. `RoyKrovel/journalist-safety-monitor`'s
+GDELT backlog) against this repo's *current* validator and merges whatever
+confirms into `data/incidents.db` — the committed version of the one-off
+analysis described in PLAN.md's 2026-08-26 comparison update. Reads the other
+repo's database directly and read-only; never writes to it.
+
+```bash
+# Preview first, no writes (defaults to ../Roy/journalist-safety-monitor):
+python3 scripts/merge_gdelt_backlog.py --dry-run
+
+# The real run:
+python3 scripts/merge_gdelt_backlog.py
+
+# Against a different source database:
+python3 scripts/merge_gdelt_backlog.py --source-db /path/to/other/incidents.db
+```
+
+Only exact-URL duplicates are skipped automatically — near-duplicate stories
+covering the same event from different URLs are not deduplicated. See the
+script's own docstring and PLAN.md for why.
 
 ### Adding new sources
 

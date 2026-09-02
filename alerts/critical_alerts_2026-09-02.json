@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-02T06:23:20.026983",
+  "timestamp": "2026-09-02T12:29:47.643672",
   "alert_count": 20,
   "incidents": [
     {
@@ -20,6 +20,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "In 2018, Saudi journalist Jamal Khashoggi was killed inside the Saudi consulate in Istanbul.",
       "incident_fingerprint": "2018 saudi journalist jamal khashoggi killed inside saudi consulate istanbul"
+    },
+    {
+      "id": 823,
+      "url": "https://www.thehindu.com/news/international/nepal-flash-floods-live-updates-rescue-operations-relief-death-toll-missing-persons-news-september-2-2026/article71417912.ece",
+      "title": "Nepal flash floods aftermath LIVE: Good chance that trapped workers are still alive in Nepal hydropower plant, official says",
+      "published_date": "Wed, 02 Sep 2026 17:14:58 +0530",
+      "domain": "www.thehindu.com",
+      "country": "IN",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "Before the road reopened today, China had been airdropping equipment and supplies to frontline rescuers, while soldiers used life-detection equipment to search for the missing, according to Chinese state broadcaster CCTV.",
+      "language": "en",
+      "source_country": "IN",
+      "collected_at": "2026-09-02 12:29:45",
+      "matched_query": "rss:www.thehindu.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Before the road reopened today, China had been airdropping equipment and supplies to frontline rescuers, while soldiers used life-detection equipment to search for the missing, according to Chinese state broadcaster CCTV.",
+      "incident_fingerprint": "before road reopened today china had been airdropping equipment supplies frontline rescuers"
     },
     {
       "id": 197,
@@ -362,25 +381,6 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "\u0412 \u0419\u043e\u0445\u0430\u043d\u043d\u0435\u0441\u0431\u0443\u0440\u0433\u0435 \u043f\u043e\u0445\u0438\u0449\u0435\u043d \u0438 \u0443\u0431\u0438\u0442 \u0435\u0432\u0440\u0435\u0439\u0441\u043a\u0438\u0439 \u0436\u0443\u0440\u043d\u0430\u043b\u0438\u0441\u0442",
       "incident_fingerprint": ""
-    },
-    {
-      "id": 325,
-      "url": "https://pajhwok.com/2026/03/29/3-journalists-killed-in-israeli-strikes-in-lebanon/",
-      "title": "3 journalists killed in Israeli strikes in Lebanon",
-      "published_date": "20260329T080000Z",
-      "domain": "pajhwok.com",
-      "country": "Afghanistan",
-      "severity": "CRITICAL",
-      "incident_type": "KILLING",
-      "description": "3 journalists killed in Israeli strikes in Lebanon",
-      "language": "English",
-      "source_country": "",
-      "collected_at": "2026-09-01 11:19:20",
-      "matched_query": "gdelt_legacy_backfill",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "3 journalists killed in Israeli strikes in Lebanon",
-      "incident_fingerprint": "3 journalists killed israeli strikes lebanon"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-03T12:30:33.849393",
+  "timestamp": "2026-09-03T17:29:49.450290",
   "alert_count": 20,
   "incidents": [
     {
@@ -193,6 +193,44 @@
       "incident_fingerprint": "la fundaci n daphne caruana galizia ha lamentado la absoluci n de"
     },
     {
+      "id": 881,
+      "url": "https://www.france24.com/en/i-m-devastated-by-the-verdict-says-tom-gibson-deputy-dir-for-committee-to-protect-journalists",
+      "title": "Murder of Daphne Caruana Galizia: Campaigner 'devastated' at tycoon's acquittal",
+      "published_date": "Thu, 03 Sep 2026 15:15:00 GMT",
+      "domain": "www.france24.com",
+      "country": "FR",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Murder of Daphne Caruana Galizia: Campaigner 'devastated' at tycoon's acquittal A campaigner who has worked on the case of murdered Maltese journalist Daphne Caruana Galizia since she was killed by a car bomb in 2017 has spoken of his devastation at the not guilty verdict.",
+      "language": "en",
+      "source_country": "FR",
+      "collected_at": "2026-09-03 17:29:47",
+      "matched_query": "rss:www.france24.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Murder of Daphne Caruana Galizia: Campaigner 'devastated' at tycoon's acquittal A campaigner who has worked on the case of murdered Maltese journalist Daphne Caruana Galizia since she was killed by a car bomb in 2017 has spoken of his devastation at the not guilty verdict.",
+      "incident_fingerprint": "murder daphne caruana galizia campaigner devastated tycoon s acquittal campaigner who has"
+    },
+    {
+      "id": 883,
+      "url": "https://www.ansa.it/sito/notizie/mondo/2026/09/03/metsola-lo-abbiamo-promesso-a-caruana-non-permetteremo-alcun-insabbiamento_7e9ff956-c98c-4828-b915-1819b0780490.html",
+      "title": "Metsola: \"Lo abbiamo promesso a Caruana, non permetteremo alcun insabbiamento\"",
+      "published_date": "Thu, 3 Sep 2026 16:04:59 +0200",
+      "domain": "www.ansa.it",
+      "country": "IT",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Lo scrive su X la presidente del Pe, Roberta Mestola, in merito all'assoluzione del magnate maltese Yorgen Fenech, a processo con l'accusa di essere il mandate dell'omicidio della giornalista Daphne Caruana Galizia, uccisa con una bomba piazzata nella sua auto il 16 ottobre 2017.",
+      "language": "it",
+      "source_country": "IT",
+      "collected_at": "2026-09-03 17:29:47",
+      "matched_query": "rss:www.ansa.it",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Lo scrive su X la presidente del Pe, Roberta Mestola, in merito all'assoluzione del magnate maltese Yorgen Fenech, a processo con l'accusa di essere il mandate dell'omicidio della giornalista Daphne Caruana Galizia, uccisa con una bomba piazzata nella sua auto il 16 ottobre 2017.",
+      "incident_fingerprint": "lo scrive su x la presidente del pe roberta mestola merito all"
+    },
+    {
       "id": 821,
       "url": "https://www.thedailystar.net/slow-reads/geopolitical-insights/news/the-carter-doctrine-the-mecca-pact-changing-gulf-security-order-4262226",
       "title": "The Mecca Pact : A New Era for Gulf Security",
@@ -343,44 +381,6 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Joe Rogan battles with journalist over whether Epstein was murdered * WorldNetDaily * by Jason Cohen , Daily Caller News Foundation",
       "incident_fingerprint": "joe rogan battles with journalist over whether epstein murdered worldnetdaily by jason"
-    },
-    {
-      "id": 234,
-      "url": "https://www.independent.co.uk/news/world/americas/us-politics/donald-trump-iran-war-dead-soldiers-b2939177.html",
-      "title": "Trump gets testy as reporters ask him about deploying troops and service members killed during Iran war",
-      "published_date": "20260316T110000Z",
-      "domain": "independent.co.uk",
-      "country": "United Kingdom",
-      "severity": "CRITICAL",
-      "incident_type": "KILLING",
-      "description": "Trump gets testy as reporters ask him about deploying troops and service members killed during Iran war",
-      "language": "English",
-      "source_country": "",
-      "collected_at": "2026-09-01 11:18:58",
-      "matched_query": "gdelt_legacy_backfill",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "Trump gets testy as reporters ask him about deploying troops and service members killed during Iran war",
-      "incident_fingerprint": "trump gets testy as reporters ask him about deploying troops service members"
-    },
-    {
-      "id": 236,
-      "url": "https://katv.com/news/local/craig-renauds-film-uses-final-footage-to-honor-brent-first-foreign-journalist-killed-in-war",
-      "title": "Craig Renaud film uses final footage to honor Brent , first foreign journalist killed in war",
-      "published_date": "20260316T050000Z",
-      "domain": "katv.com",
-      "country": "United States",
-      "severity": "CRITICAL",
-      "incident_type": "KILLING",
-      "description": "Craig Renaud film uses final footage to honor Brent , first foreign journalist killed in war",
-      "language": "English",
-      "source_country": "",
-      "collected_at": "2026-09-01 11:18:58",
-      "matched_query": "gdelt_legacy_backfill",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "Craig Renaud film uses final footage to honor Brent , first foreign journalist killed in war",
-      "incident_fingerprint": "craig renaud film uses final footage honor brent first foreign journalist killed"
     }
   ]
 }

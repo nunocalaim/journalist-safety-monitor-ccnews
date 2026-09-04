@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-04T17:44:43.404632",
+  "timestamp": "2026-09-04T22:11:16.434975",
   "alert_count": 20,
   "incidents": [
     {
@@ -96,6 +96,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Art in the shadow of tragedy Two paintings from \"The Masks\" on show depict figures with children or babies \u2014 a possible reference to Reyes's own child, who was reported by journalist Diego Garz\u00f3n to have been killed in front of her in Paraguay, just months after she gave birth in the early 1940s.",
       "incident_fingerprint": "art shadow tragedy two paintings from masks show depict figures with children"
+    },
+    {
+      "id": 902,
+      "url": "https://www.winnipegfreepress.com/arts-and-life/entertainment/2026/09/04/argentine-court-clears-return-of-nazi-looted-portrait-to-jewish-dealers-heir",
+      "title": "Argentine court clears return of Nazi-looted portrait to Jewish dealer\u2019s heir",
+      "published_date": "Fri, 04 Sep 2026 20:38:08 +0000",
+      "domain": "winnipegfreepress.com",
+      "country": "CA",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "The listing disappeared within hours of the Rotterdam-based newspaper Algemeen Dagblad publishing its findings.",
+      "language": "en",
+      "source_country": "CA",
+      "collected_at": "2026-09-04 22:11:13",
+      "matched_query": "rss:winnipegfreepress.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "The listing disappeared within hours of the Rotterdam-based newspaper Algemeen Dagblad publishing its findings.",
+      "incident_fingerprint": "listing disappeared within hours rotterdam based newspaper algemeen dagblad publishing its findings"
     },
     {
       "id": 862,
@@ -362,25 +381,6 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Before the road reopened today, China had been airdropping equipment and supplies to frontline rescuers, while soldiers used life-detection equipment to search for the missing, according to Chinese state broadcaster CCTV.",
       "incident_fingerprint": "before road reopened today china had been airdropping equipment supplies frontline rescuers"
-    },
-    {
-      "id": 853,
-      "url": "https://www.bbc.co.uk/news/articles/c5ye295pxgxo?at_medium=RSS&at_campaign=rss",
-      "title": "Maltese tycoon acquitted of orchestrating murder of renowned journalist",
-      "published_date": "Wed, 02 Sep 2026 19:05:31 GMT",
-      "domain": "www.bbc.com",
-      "country": "UK",
-      "severity": "CRITICAL",
-      "incident_type": "KILLING",
-      "description": "During the trial, the jury heard that Fenech had wanted the journalist killed because she was about to reveal information about him.",
-      "language": "en",
-      "source_country": "UK",
-      "collected_at": "2026-09-02 22:10:21",
-      "matched_query": "rss:www.bbc.com",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "During the trial, the jury heard that Fenech had wanted the journalist killed because she was about to reveal information about him.",
-      "incident_fingerprint": "during trial jury heard that fenech had wanted journalist killed because about"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-05T12:01:30.241733",
+  "timestamp": "2026-09-05T16:52:56.525869",
   "alert_count": 20,
   "incidents": [
     {
@@ -20,6 +20,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "It isn't every day that a journalist is brutally murdered in Europe.",
       "incident_fingerprint": "it isn t every day that journalist is brutally murdered europe"
+    },
+    {
+      "id": 914,
+      "url": "https://www.elmundo.es/espana/2026/09/05/6a9c3366e9cf4aec5f8b4597.html",
+      "title": "Un espa\u00f1ol, secuestrado en Burkina Faso por un supuesto grupo terrorista",
+      "published_date": "Sat, 05 Sep 2026 17:37:30 +0200",
+      "domain": "www.elmundo.es",
+      "country": "ES",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "El \u00faltimo caso de especial relevancia relacionado con ciudadanos espa\u00f1oles se remonta al 26 de abril de 2021, cuando los periodistas espa\u00f1oles David Beriain y Roberto Fraile, junto al periodista irland\u00e9s Rory Young, fueron asesinados en un ataque armado en el este del pa\u00eds.",
+      "language": "es",
+      "source_country": "ES",
+      "collected_at": "2026-09-05 16:52:53",
+      "matched_query": "rss:www.elmundo.es",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "El \u00faltimo caso de especial relevancia relacionado con ciudadanos espa\u00f1oles se remonta al 26 de abril de 2021, cuando los periodistas espa\u00f1oles David Beriain y Roberto Fraile, junto al periodista irland\u00e9s Rory Young, fueron asesinados en un ataque armado en el este del pa\u00eds.",
+      "incident_fingerprint": "el ltimo caso de especial relevancia relacionado con ciudadanos espa oles se"
     },
     {
       "id": 888,
@@ -362,25 +381,6 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Lo scrive su X la presidente del Pe, Roberta Mestola, in merito all'assoluzione del magnate maltese Yorgen Fenech, a processo con l'accusa di essere il mandate dell'omicidio della giornalista Daphne Caruana Galizia, uccisa con una bomba piazzata nella sua auto il 16 ottobre 2017.",
       "incident_fingerprint": "lo scrive su x la presidente del pe roberta mestola merito all"
-    },
-    {
-      "id": 821,
-      "url": "https://www.thedailystar.net/slow-reads/geopolitical-insights/news/the-carter-doctrine-the-mecca-pact-changing-gulf-security-order-4262226",
-      "title": "The Mecca Pact : A New Era for Gulf Security",
-      "published_date": "20260901T193000Z",
-      "domain": "thedailystar.net",
-      "country": "Bangladesh",
-      "severity": "CRITICAL",
-      "incident_type": "KILLING",
-      "description": "In 2018, Saudi journalist Jamal Khashoggi was killed inside the Saudi consulate in Istanbul.",
-      "language": "en",
-      "source_country": "Bangladesh",
-      "collected_at": "2026-09-02 06:23:18",
-      "matched_query": "gdelt:thedailystar.net",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "In 2018, Saudi journalist Jamal Khashoggi was killed inside the Saudi consulate in Istanbul.",
-      "incident_fingerprint": "2018 saudi journalist jamal khashoggi killed inside saudi consulate istanbul"
     }
   ]
 }

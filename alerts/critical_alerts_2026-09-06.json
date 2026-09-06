@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-06T16:46:44.390489",
+  "timestamp": "2026-09-06T22:02:42.911493",
   "alert_count": 20,
   "incidents": [
     {
@@ -20,6 +20,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "F\u00e1brica de Periodista destac\u00f3 el apoyo que Sara Mendiola dio a periodistas agredidos y a las familias de los periodistas asesinados.",
       "incident_fingerprint": "f brica de periodista destac el apoyo que sara mendiola dio periodistas"
+    },
+    {
+      "id": 933,
+      "url": "https://www.abc.es/internacional/gaza-entierra-muertos-mil-dias-20260906203911-nt.html",
+      "title": "Gaza entierra a los muertos de hace mil d\u00edas",
+      "published_date": "Sun, 06 Sep 2026 20:52:01 +0200",
+      "domain": "www.abc.es",
+      "country": "ES",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "Gaza entierra a los muertos de hace mil d\u00edas Gaza entierra a los muertos de hace mil d\u00edas La Franja despide a cien v\u00edctimas recuperadas tras casi tres a\u00f1os bajo los escombros, mientras entre 8.000 y 14.000 personas contin\u00faan desaparecidas entre las ruinas Corresponsal en Estambul Gaza vive en un estado de duelo permanente desde que Israel lanz\u00f3 la operaci\u00f3n de venganza tras el ataque de Ham\u00e1s del 7 de octubre de 2023.",
+      "language": "es",
+      "source_country": "ES",
+      "collected_at": "2026-09-06 22:02:36",
+      "matched_query": "rss:www.abc.es",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Gaza entierra a los muertos de hace mil d\u00edas Gaza entierra a los muertos de hace mil d\u00edas La Franja despide a cien v\u00edctimas recuperadas tras casi tres a\u00f1os bajo los escombros, mientras entre 8.000 y 14.000 personas contin\u00faan desaparecidas entre las ruinas Corresponsal en Estambul Gaza vive en un estado de duelo permanente desde que Israel lanz\u00f3 la operaci\u00f3n de venganza tras el ataque de Ham\u00e1s del 7 de octubre de 2023.",
+      "incident_fingerprint": "gaza entierra los muertos de hace mil d as gaza entierra los"
     },
     {
       "id": 903,
@@ -362,25 +381,6 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "La Fundaci\u00f3n Daphne Caruana Galizia ha lamentado la absoluci\u00f3n de Fenech \"nueve a\u00f1os\" despu\u00e9s de que la periodista haya sido asesinada, \"neg\u00e1ndole la justicia que merece\".",
       "incident_fingerprint": "la fundaci n daphne caruana galizia ha lamentado la absoluci n de"
-    },
-    {
-      "id": 881,
-      "url": "https://www.france24.com/en/i-m-devastated-by-the-verdict-says-tom-gibson-deputy-dir-for-committee-to-protect-journalists",
-      "title": "Murder of Daphne Caruana Galizia: Campaigner 'devastated' at tycoon's acquittal",
-      "published_date": "Thu, 03 Sep 2026 15:15:00 GMT",
-      "domain": "www.france24.com",
-      "country": "FR",
-      "severity": "CRITICAL",
-      "incident_type": "KILLING",
-      "description": "Murder of Daphne Caruana Galizia: Campaigner 'devastated' at tycoon's acquittal A campaigner who has worked on the case of murdered Maltese journalist Daphne Caruana Galizia since she was killed by a car bomb in 2017 has spoken of his devastation at the not guilty verdict.",
-      "language": "en",
-      "source_country": "FR",
-      "collected_at": "2026-09-03 17:29:47",
-      "matched_query": "rss:www.france24.com",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "Murder of Daphne Caruana Galizia: Campaigner 'devastated' at tycoon's acquittal A campaigner who has worked on the case of murdered Maltese journalist Daphne Caruana Galizia since she was killed by a car bomb in 2017 has spoken of his devastation at the not guilty verdict.",
-      "incident_fingerprint": "murder daphne caruana galizia campaigner devastated tycoon s acquittal campaigner who has"
     }
   ]
 }

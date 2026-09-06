@@ -1,7 +1,26 @@
 {
-  "timestamp": "2026-09-06T06:33:21.838891",
+  "timestamp": "2026-09-06T12:30:46.177906",
   "alert_count": 20,
   "incidents": [
+    {
+      "id": 924,
+      "url": "https://www.proceso.com.mx/nacional/2026/9/6/fallece-sara-mendiola-abogada-dedicada-a-la-defensa-de-periodistas-en-mexico-379474.html",
+      "title": "Fallece Sara Mendiola , abogada dedicada a la defensa de periodistas en M\u00e9xico",
+      "published_date": "20260906T071500Z",
+      "domain": "proceso.com.mx",
+      "country": "Mexico",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "F\u00e1brica de Periodista destac\u00f3 el apoyo que Sara Mendiola dio a periodistas agredidos y a las familias de los periodistas asesinados.",
+      "language": "es",
+      "source_country": "Mexico",
+      "collected_at": "2026-09-06 12:30:43",
+      "matched_query": "gdelt:proceso.com.mx",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "F\u00e1brica de Periodista destac\u00f3 el apoyo que Sara Mendiola dio a periodistas agredidos y a las familias de los periodistas asesinados.",
+      "incident_fingerprint": "f brica de periodista destac el apoyo que sara mendiola dio periodistas"
+    },
     {
       "id": 903,
       "url": "https://www.indexoncensorship.org/2026/09/search-for-justice-in-daphne-caruana-galizia-case-continues-after-not-guilty-verdict/",
@@ -362,25 +381,6 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Murder of Daphne Caruana Galizia: Campaigner 'devastated' at tycoon's acquittal A campaigner who has worked on the case of murdered Maltese journalist Daphne Caruana Galizia since she was killed by a car bomb in 2017 has spoken of his devastation at the not guilty verdict.",
       "incident_fingerprint": "murder daphne caruana galizia campaigner devastated tycoon s acquittal campaigner who has"
-    },
-    {
-      "id": 883,
-      "url": "https://www.ansa.it/sito/notizie/mondo/2026/09/03/metsola-lo-abbiamo-promesso-a-caruana-non-permetteremo-alcun-insabbiamento_7e9ff956-c98c-4828-b915-1819b0780490.html",
-      "title": "Metsola: \"Lo abbiamo promesso a Caruana, non permetteremo alcun insabbiamento\"",
-      "published_date": "Thu, 3 Sep 2026 16:04:59 +0200",
-      "domain": "www.ansa.it",
-      "country": "IT",
-      "severity": "CRITICAL",
-      "incident_type": "KILLING",
-      "description": "Lo scrive su X la presidente del Pe, Roberta Mestola, in merito all'assoluzione del magnate maltese Yorgen Fenech, a processo con l'accusa di essere il mandate dell'omicidio della giornalista Daphne Caruana Galizia, uccisa con una bomba piazzata nella sua auto il 16 ottobre 2017.",
-      "language": "it",
-      "source_country": "IT",
-      "collected_at": "2026-09-03 17:29:47",
-      "matched_query": "rss:www.ansa.it",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "Lo scrive su X la presidente del Pe, Roberta Mestola, in merito all'assoluzione del magnate maltese Yorgen Fenech, a processo con l'accusa di essere il mandate dell'omicidio della giornalista Daphne Caruana Galizia, uccisa con una bomba piazzata nella sua auto il 16 ottobre 2017.",
-      "incident_fingerprint": "lo scrive su x la presidente del pe roberta mestola merito all"
     }
   ]
 }

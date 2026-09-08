@@ -23,5 +23,23 @@
     "title": "Police detain reporter covering demonstration",
     "description": "",
     "expected": "validated"
+  },
+  {
+    "_comment": "Real false positive (2026-09-07, GDELT): aggregator sites like newsx.com bundle an unrelated 'Also Read' teaser and the current article's own author bio into the extracted text with no sentence boundary, so the byline reads as a media subject sitting right next to a harm action from the unrelated teaser.",
+    "title": "Woman Driver Arrested for Reckless Driving on Highway",
+    "description": "Woman Driver Arrested for Reckless Driving on Highway. Khalid Lateef is a Sub-Editor at NewsX, covering national affairs.",
+    "expected": "candidate"
+  },
+  {
+    "_comment": "Real false positive (2026-09-07, GDELT): 'In 2018, journalist X was killed' framing inside an unrelated current story (a Gulf-security article mentioning Khashoggi's 2018 murder in passing).",
+    "title": "Gulf security officials meet to discuss regional tensions",
+    "description": "In 2018, journalist Jamal Khashoggi was killed at the Saudi consulate in Istanbul, an event still referenced in regional diplomacy.",
+    "expected": "candidate"
+  },
+  {
+    "_comment": "Real false positive (2026-09-07, GDELT): a jury verdict/trial about a years-old killing (Daphne Caruana Galizia, killed 2017) independently picked up by ~10 outlets as a fresh CRITICAL killing.",
+    "title": "Jury acquits businessman in journalist murder trial",
+    "description": "A jury on Wednesday acquitted the businessman accused of ordering the 2017 car bomb killing that murdered investigative journalist Daphne Caruana Galizia.",
+    "expected": "candidate"
   }
 ]

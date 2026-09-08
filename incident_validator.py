@@ -208,6 +208,23 @@ RETROSPECTIVE_PATTERNS = [
     r"\b(?:on this day|this day in history|history|historical)\b",
     r"\b(?:identified body|finally identifies body|remains identified)\b",
     r"\b(?:first journalist killed|battle of little bighorn)\b",
+    # "In 2018, journalist X was killed" -- a different retrospective shape
+    # than "X years ago": naming the specific past year directly, common
+    # when an old killing is mentioned in passing within an unrelated
+    # current story (found 2026-09-07 via GDELT: a Gulf-security article
+    # mentioning Khashoggi's 2018 murder, a US-detention story mentioning
+    # Shireen Abu Akleh's 2022 killing). Deliberately doesn't check the
+    # year is actually in the past -- if a genuinely fresh story happens to
+    # use "In 2026, ..." framing, downgrading it to candidate is the safe
+    # failure mode (still reviewable), not losing it outright.
+    r"\bin\s+(?:19|20)\d{2},?\s+(?:\S+\s+){0,10}(?:killed|murdered|assassinated|arrested|detained|kidnapped|abducted)\b",
+    # Legal proceedings ABOUT a past killing (verdict/trial/acquittal) --
+    # distinct from a fresh incident. Found 2026-09-07: a single 2017
+    # murder's 2026 trial verdict (Daphne Caruana Galizia) was independently
+    # picked up by GDELT from ~10 different outlets, every one validating
+    # as a fresh CRITICAL killing.
+    r"\b(?:jury|court|trial|acquit(?:s|ted|tal)?|convict(?:s|ed|ion)?|found (?:not )?guilty|verdict)\b(?:\s+\S+){0,10}\s+(?:murder(?:ed|er)?|killing|killed|assassinat(?:ion|ed))\b",
+    r"\b(?:murder(?:ed|er)?|killing|killed|assassinat(?:ion|ed))\b(?:\s+\S+){0,10}\s+(?:trial|verdict|acquit(?:s|ted|tal)?|convict(?:s|ed|ion)?|jury)\b",
 ]
 
 # Sentence-level exclusions: the sentence contains a media-subject term and
@@ -226,6 +243,21 @@ ENGLISH_EXCLUSION_PATTERNS = [
     # physically disappeared -- "journalists ran stories that Kasab was
     # missing his sister" is about homesickness, not a disappearance.
     r"\bmissing\s+(?:his|her|their|my|your)\s+(?:mother|father|sister|brother|wife|husband|family|home|children|kids|parents)\b",
+    # Byline/bio noise -- found 2026-09-07 auditing GDELT-sourced incidents:
+    # aggregator-style pages (e.g. newsx.com) bundle an unrelated "Also
+    # Read: ..." teaser and the CURRENT article's own author bio directly
+    # into the extracted text, with no sentence boundary between them --
+    # "...Woman Driver Arrested Khalid Lateef is a Sub-Editor at NewsX..."
+    # reads as a media subject sitting right next to a harm action, but
+    # "editor" is the byline of the article being read, not a victim of the
+    # unrelated teaser's arrest. Uses a character-window (not a word-token
+    # window like the other exclusion patterns) because the role noun is
+    # often hyphenated ("Sub-Editor") -- a \S+-based filler either swallows
+    # the whole hyphenated token as one "word" or doesn't touch it at all,
+    # so it can never land the match on the "-Editor" tail the way a lazy
+    # character window can.
+    r"\bis\s+an?\b.{0,30}?\b(?:editor|correspondent|reporter|journalist)s?\b.{0,30}?\b(?:at|for|with)\b",
+    r"\beditor'?s note\b",
 ]
 
 # Negation attached directly to a harm-action term flips its meaning (e.g.

@@ -271,6 +271,16 @@ def test_validate_incident_types(article, expected_status, expected_type):
         # source-attribution pattern, so citing one as a source didn't
         # exclude the match the way citing a periodista/reportero already did.
         ("es", "Según el periódico Kathmandu Post, más de 934 personas siguen desaparecidas tras las inundaciones.", "rejected", None),
+        # Real false positives (2026-09-07, GDELT): "según"/"de acuerdo con"
+        # tolerating filler words before the role noun, the same
+        # too-strict-adjacency shape already fixed for English's
+        # "journalist ... told" pattern.
+        ("es", "Según explicó el periodista, la víctima fue secuestrada por hombres armados.", "rejected", None),
+        ("es", "De acuerdo con reportes del periodista Carlos Jiménez, el alcalde fue detenido esta mañana.", "rejected", None),
+        # Real false positive (2026-09-07, GDELT): a jury verdict about a
+        # years-old killing (Daphne Caruana Galizia, killed 2017) picked up
+        # as a fresh CRITICAL killing.
+        ("es", "Un jurado absolvió al empresario acusado de ordenar el asesinato de la periodista en 2017.", "candidate", None),
 
         ("pt", "Jornalista foi assassinado a tiros na capital.", "validated", "KILLING"),
         ("pt", "Um repórter foi detido pela polícia durante o protesto.", "validated", "DETENTION"),
@@ -283,12 +293,22 @@ def test_validate_incident_types(article, expected_status, expected_type):
         ("it", "Un testimone ha detto ai giornalisti che suo figlio è stato ucciso nell'attacco.", "rejected", None),
         ("it", "Ad un anno dall'omicidio della giornalista, la giustizia resta assente.", "candidate", None),
         ("it", "Il giornalista non è stato ucciso durante l'operazione, secondo la polizia.", "candidate", None),
+        # Real false positive (2026-09-07, GDELT): a jury acquittal over a
+        # years-old killing (Daphne Caruana Galizia, killed 2017), matched
+        # as same-sentence co-occurrence since real GDELT text for this
+        # cluster came back as long run-on sentences with the legal term
+        # and "uccisa" far apart -- see language_terms.py's comment on this
+        # pattern for why it doesn't use a token-window like the others.
+        ("it", "Una giuria ha assolto l'imprenditore maltese dalle accuse relative all'attentato del 2017 in cui fu uccisa la giornalista investigativa.", "candidate", None),
 
         ("fr", "Le journaliste a été tué par balles dans la capitale.", "validated", "KILLING"),
         ("fr", "Un correspondant a été arrêté par la police pendant la manifestation.", "validated", "DETENTION"),
         ("fr", "Un témoin a dit aux journalistes que son fils a été tué dans l'attaque.", "rejected", None),
         ("fr", "Un an après l'assassinat du journaliste, la justice reste absente.", "candidate", None),
         ("fr", "Le journaliste n'a pas été tué pendant l'opération, selon la police.", "candidate", None),
+        # Real false positive (2026-09-07, GDELT): a trial verdict about a
+        # years-old killing, same Daphne Caruana Galizia cluster.
+        ("fr", "Le tycoon maltais a été acquitté du meurtre de la journaliste survenu en 2017.", "candidate", None),
 
         ("ru", "Журналист был застрелен в столице.", "validated", "KILLING"),
         ("ru", "Репортёр был задержан полицией во время протеста.", "validated", "DETENTION"),

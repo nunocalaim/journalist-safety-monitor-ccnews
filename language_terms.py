@@ -142,7 +142,16 @@ SPANISH = LanguageTerms(
         # a real DISAPPEARANCE incident -- same organizational-source-as-
         # subject bug as incident_validator.py's English patterns, just not
         # yet ported to the other languages.
-        r"\bseg[uú]n\s+(?:un|una|el|la)?\s*(?:periodista|reportero|reportera|corresponsal|peri[oó]dico)\b",
+        # Filler tokens allowed between "según"/"de acuerdo con" and the
+        # role noun -- found 2026-09-07 auditing GDELT-sourced incidents:
+        # "Según explicó el periodista, ..." (a journalist explaining what
+        # happened to someone ELSE) and "De acuerdo con reportes del
+        # periodista Carlos Jiménez, ..." both slipped through the old
+        # strict-adjacency versions of these patterns, the same
+        # too-strict-adjacency shape already fixed for English's
+        # "journalist ... told" pattern.
+        r"\bseg[uú]n\s+(?:[^\s,]+\s+){0,2}(?:un|una|el|la)?\s*(?:periodista|reportero|reportera|corresponsal|peri[oó]dico)\b",
+        r"\bde acuerdo con\s+(?:[^\s,]+\s+){0,3}(?:periodista|reportero|reportera|corresponsal|peri[oó]dico)\b",
         r"\bdijo\s+a\s+(?:los\s+|las\s+)?(?:periodistas|reporteros|reporteras|corresponsales|la prensa)\b",
         r"\bhabl[oó]\s+con\s+(?:periodistas|reporteros|la prensa)\b",
         r"\breportes?\s+de\s+(?:prensa|medios)\b",
@@ -154,6 +163,14 @@ SPANISH = LanguageTerms(
         r"\baniversario\b",
         r"\brecordando\b|\ba un a[nñ]o (?:de|del)\b",
         r"\ben esta fecha\b|\bhace \d+ a[nñ]os?\b",
+        # Legal proceedings about a past killing (verdict/trial/acquittal),
+        # not a fresh incident -- found 2026-09-07: a single 2017 murder's
+        # 2026 trial verdict (Daphne Caruana Galizia) was independently
+        # picked up by GDELT across ~10 outlets/languages, all validating
+        # as fresh CRITICAL killings. See incident_validator.py's English
+        # version of this pattern for the fuller story.
+        r"\b(?:jurado|juicio|absuelv[eo]|absoluci[oó]n|condena)\b(?:\s+\S+){0,10}\s+(?:asesinat[oa]|homicidio)\b",
+        r"\b(?:asesinat[oa]|homicidio)\b(?:\s+\S+){0,10}\s+(?:jurado|juicio|absuelv[eo]|absoluci[oó]n)\b",
     ],
     negation_prefixes=[r"\bno", r"\bnunca", r"\bjam[aá]s"],
     extra_negatable_actions=["da[nñ]ado", "da[nñ]ada", "lastimado", "lastimada"],
@@ -327,6 +344,22 @@ ITALIAN = LanguageTerms(
         # boundary right after "da" would miss the contracted form.
         r"\bricordando\b|\bad un anno da",
         r"\bin questo giorno\b",
+        # Legal proceedings about a past killing (verdict/trial/acquittal),
+        # not a fresh incident -- see incident_validator.py's English
+        # version of this pattern for the fuller story (a single 2017
+        # murder's 2026 trial verdict picked up as ~10 separate fresh
+        # CRITICAL killings across outlets/languages via GDELT). Unlike the
+        # English/Spanish/French versions, this checks same-sentence
+        # co-occurrence with no adjacency/distance requirement (two
+        # lookaheads, order-independent) rather than a token window: real
+        # GDELT Italian text for this cluster (the Daphne Caruana Galizia
+        # trial) came back as long, punctuation-stripped run-on "sentences"
+        # where the legal term and the kill term are 15-40 words apart, and
+        # often uses the verb "uccisa/uccise" (was killed) rather than the
+        # noun "omicidio/assassinio". A same-sentence check is still safe:
+        # over-suppressing into "candidate" is the intended safe failure
+        # mode here, not losing the article outright.
+        r"(?=.*\b(?:giuria|processo|assolv[eo]|assolt[oa]|assoluzione|condann[ao])\b)(?=.*\b(?:omicidio|assassinio|uccis[ao])\b)",
     ],
     negation_prefixes=[r"\bnon", r"\bmai"],
     extra_negatable_actions=["danneggiato", "danneggiata", "leso", "lesa"],
@@ -414,6 +447,13 @@ FRENCH = LanguageTerms(
         r"\banniversaire\b",
         r"\ben souvenir\b|\bun an apr[eè]s\b",
         r"\bce jour-l[àa]\b",
+        # Legal proceedings about a past killing (verdict/trial/acquittal),
+        # not a fresh incident -- see incident_validator.py's English
+        # version of this pattern for the fuller story (a single 2017
+        # murder's 2026 trial verdict picked up as ~10 separate fresh
+        # CRITICAL killings across outlets/languages via GDELT).
+        r"\b(?:jury|proc[eè]s|acquitt[eé]|acquittement|condamn[eé])\b(?:\s+\S+){0,10}\s+(?:meurtre|assassinat)\b",
+        r"\b(?:meurtre|assassinat)\b(?:\s+\S+){0,10}\s+(?:jury|proc[eè]s|acquitt[eé]|acquittement|condamn[eé])\b",
     ],
     negation_prefixes=[r"\bpas", r"\bjamais", r"\bplus"],
     extra_negatable_actions=["endommag[eé]", "endommag[eé]e", "bless[eé]", "bless[eé]e"],

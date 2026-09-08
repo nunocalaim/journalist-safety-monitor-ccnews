@@ -1,5 +1,92 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-09-08 (13): 4 more validator bug classes, mostly GDELT -- 35 of 907 (3.9%) demoted
+
+A status check after 6 days away ("pull remote, tell me if this is
+working") turned into another manual audit, same discipline as the
+2026-08-26 round: pulled 25 commits (143 new incidents), then manually
+reviewed all 38 GDELT-live incidents rather than trusting a quick glance --
+found **~55-60% were false positives**, a much higher rate than CC-NEWS/RSS
+ever showed, across four new causes:
+
+1. **Byline/bio noise from aggregator pages (the largest class).** Sites
+   like newsx.com and indianexpress.com bundle an unrelated "Also Read"
+   teaser plus the *current* article's own author bio into the extracted
+   text with no sentence boundary: "...Woman Driver Arrested ... Khalid
+   Lateef is a Sub-Editor at NewsX..." reads as a media subject sitting
+   right next to a harm action, but the editor is the article's byline, not
+   a victim of the unrelated arrest story. Fixed with a new
+   `ENGLISH_EXCLUSION_PATTERNS` entry -- had to use a character-window
+   (`.{0,30}?`) rather than the usual token-window, since the role noun is
+   often hyphenated ("Sub-Editor") and a `\S+`-based filler can't partially
+   consume a token to land on the "-Editor" tail.
+2. **"In YYYY, journalist X was killed" retrospective framing.** A
+   different shape than the already-handled "N years later": naming the
+   specific past year directly, inside an unrelated current story (a
+   Gulf-security piece mentioning Khashoggi's 2018 murder in passing; a
+   US-detention story mentioning Shireen Abu Akleh's 2022 killing). New
+   `RETROSPECTIVE_PATTERNS` entry, deliberately not checking the year is
+   actually in the past -- a genuinely fresh "In 2026, ..." story getting
+   downgraded to candidate is the safe failure mode, not losing it outright.
+3. **Legal proceedings about a years-old killing, not a fresh one.** One
+   2017 murder's 2026 trial verdict (Daphne Caruana Galizia) was
+   independently picked up by GDELT from ~10 outlets across 4 languages,
+   every one validating as a fresh CRITICAL killing. Added a
+   jury/trial/verdict/acquittal <-> murder/killing pattern pair to English,
+   Spanish, and French (token-windowed, matching the existing style). Had
+   to debug the English version twice: bare noun forms
+   (murder/killing/assassination) don't match inside their own inflected
+   verb forms ("murdered" has no `\b` before "-ed"), so added
+   `murder(?:ed|er)?`/`killed`/`assassinat(?:ion|ed)`.
+   **Italian needed a different design**, not just translated vocabulary:
+   real GDELT text for this exact cluster came back as long,
+   punctuation-stripped run-on "sentences" with the legal term and the kill
+   term 15-40 words apart, and often used the verb "uccisa/uccise" (was
+   killed) instead of the noun "omicidio/assassinio". A token-window
+   pattern couldn't span that; switched to two lookaheads checking
+   same-sentence co-occurrence with no distance limit at all -- still safe,
+   since over-suppressing into "candidate" is the intended failure mode
+   here, not losing the article.
+4. **Spanish source-attribution too strict.** Same too-strict-adjacency
+   shape already fixed once for English's "journalist ... told" pattern,
+   recurring in Spanish: "Según explicó el periodista, ..." (a journalist
+   explaining what happened to someone *else*) and "De acuerdo con reportes
+   del periodista Carlos Jiménez, ..." both slipped through the old
+   strict-adjacency "según" pattern, which had no "de acuerdo con" form at
+   all. Loosened the filler window (comma-boundary-safe, per the earlier
+   fix's lesson) and added the missing pattern.
+
+Widened the fix-verification the same way as before: after fixing the
+sampled cases, swept **all 907 validated incidents** (not just the 38
+GDELT ones originally sampled) through the current validator to find the
+true scope -- **35 (3.9%) no longer validate**, spread across every
+source, not just GDELT (20 gdelt, 7 ccnews, 5 rss, 3
+gdelt_legacy_backfill). Reclassified all 35 (delete from `incidents`,
+insert into `article_candidates` with whatever the *current* validator
+actually produces, not a hand-written label) -- **907 -> 872 validated
+incidents, CRITICAL 245 -> 224**; GDELT-live specifically went 38 -> 18,
+confirming the originally-observed ~55-60% false-positive rate. Every fix
+verified against the real discovered text before and after; 8 new
+regression tests added from those real cases (byline noise, "In YYYY"
+framing, the multi-language legal-verdict cluster, Spanish según/de
+acuerdo con). Full existing suite still green throughout (81/81 after
+additions). Reports/exports regenerated from the cleaned database.
+
+Known gaps left deliberately unfixed this pass: one case (id 820,
+"the George Floyd-spurred rioting", no explicit year present) can't be
+caught by either new pattern -- a named historical event without a year is
+a fundamentally hard-to-generalize shape, not worth building a
+historical-event knowledge base for one case. Also newly observed but not
+addressed: GDELT's `title` field can have apostrophes stripped/mangled in
+a way its `description` field does not (e.g. Italian "dell'omicidio"
+becoming "dellomicidio" in a title only), which can make a `\b`-bounded
+pattern miss a match if the *only* occurrence of a trigger word falls
+inside the mangled portion -- lower-priority GDELT-specific data-quality
+issue, not this validator's problem to solve. The Italian/French
+legal-verdict pattern hasn't been ported to Portuguese/Russian/Turkish --
+no demonstrated false positive there yet, same "wait for a real case"
+discipline as every other per-language gap in this file.
+
 ## Update 2026-09-01 (12): domain list expanded 205 -> 306 by sampling real WARC files
 
 Came out of explaining *why* CC-NEWS is restricted to a curated allowlist

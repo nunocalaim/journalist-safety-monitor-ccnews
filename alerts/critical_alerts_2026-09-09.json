@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-09-09T06:48:12.468521",
-  "alert_count": 8,
+  "timestamp": "2026-09-09T13:01:39.185080",
+  "alert_count": 9,
   "incidents": [
     {
       "id": 959,
@@ -39,6 +39,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "\u00abLas teor\u00edas alternativas de Alc\u00e0sser no est\u00e1n respaldadas por pruebas, sino por posibilidades que surgieron a partir de las lagunas o los fallos de la propia investigaci\u00f3n\u00bb Christi\u00e1n Borja Campos Periodista y miembro de SOS Desaparecidos Ayer, hoy y ma\u00f1ana, esta enfermedad que Campos desvela en su libro desgarra familias y comunidades.",
       "incident_fingerprint": "las teor as alternativas de alc sser no est n respaldadas por"
+    },
+    {
+      "id": 964,
+      "url": "https://www.theguardian.com/global-development/2026/sep/09/taliban-afghanistan-women-iran",
+      "title": "\u2018One day the Taliban will need women to be educated\u2019: three sisters on being forced back to Afghanistan",
+      "published_date": "Wed, 09 Sep 2026 09:00:05 GMT",
+      "domain": "theguardian.com",
+      "country": "UK",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "She admired two Afghan journalists: Yama Siawash, who has since been assassinated, and Farahnaz Forotan, who now lives in exile.",
+      "language": "en",
+      "source_country": "UK",
+      "collected_at": "2026-09-09 13:01:31",
+      "matched_query": "rss:theguardian.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "She admired two Afghan journalists: Yama Siawash, who has since been assassinated, and Farahnaz Forotan, who now lives in exile.",
+      "incident_fingerprint": "admired two afghan journalists yama siawash who has since been assassinated farahnaz"
     },
     {
       "id": 924,

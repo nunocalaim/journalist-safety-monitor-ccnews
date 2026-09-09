@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-09-09T17:52:55.855723",
-  "alert_count": 9,
+  "timestamp": "2026-09-09T22:32:24.679756",
+  "alert_count": 10,
   "incidents": [
     {
       "id": 959,
@@ -172,6 +172,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Ispirato all'omonima pi\u00e8ce di James Graham, gran successo sia nel West End sia a Broadway, racconta l'ascesa nell'editoria del magnate australiano Rupert Murdoch (oggi 95enne, \u00e8 interpretato da Guy Pearce) che nel 1969 affid\u00f2 la direzione del tabloid britannico The Sun al giornalista Larry Lamb (scomparso nel 2000, lo fa rivivere Jack O' Connell) facendone il quotidiano pi\u00f9 innovativo, spregiudicato e venduto della storia, il primo a puntare sul sensazionalismo e a mettere una ragazza nuda a pagina 3.",
       "incident_fingerprint": "ispirato all omonima pi ce di james graham gran successo sia nel"
+    },
+    {
+      "id": 971,
+      "url": "https://allafrica.com/stories/202609030001.html",
+      "title": "Sudanese Journalists' Syndicate Demands Answers On Five Missing Reporters",
+      "published_date": "2026-09-03",
+      "domain": "allafrica.com",
+      "country": "NG",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "Sudanese Journalists' Syndicate Demands Answers On Five Missing Reporters Khartoum \u2014 The Sudanese Journalists' Syndicate says five of its members remain victims of enforced disappearance, with their fate and whereabouts still unknown.",
+      "language": "en",
+      "source_country": "NG",
+      "collected_at": "2026-09-09 22:32:21",
+      "matched_query": "ccnews:allafrica.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Sudanese Journalists' Syndicate Demands Answers On Five Missing Reporters Khartoum \u2014 The Sudanese Journalists' Syndicate says five of its members remain victims of enforced disappearance, with their fate and whereabouts still unknown.",
+      "incident_fingerprint": "sudanese journalists syndicate demands answers five missing reporters khartoum sudanese journalists syndicate"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-09-10T17:43:38.701442",
-  "alert_count": 12,
+  "timestamp": "2026-09-10T22:16:53.323866",
+  "alert_count": 13,
   "incidents": [
     {
       "id": 980,
@@ -58,6 +58,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Sarebbero stati arrestati oppure uccisi, cos\u00ec come \u00e8 accaduto ad altri 200 giornalisti a Gaza.",
       "incident_fingerprint": "sarebbero stati arrestati oppure uccisi cos come accaduto ad altri 200 giornalisti"
+    },
+    {
+      "id": 1001,
+      "url": "https://www.mirror.co.uk/news/world-news/switzerland-tourist-bus-crash-deaths-37649887",
+      "title": "Several dead after tourist coach with 48 passengers crashes in Switzerland",
+      "published_date": "Thu, 10 Sep 2026 19:56:54 +0000",
+      "domain": "mirror.co.uk",
+      "country": "UK",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "We cannot yet say exactly how many people have been killed or injured\" the spokesperson told the Dutch newspaper De Telegraaf.",
+      "language": "en",
+      "source_country": "UK",
+      "collected_at": "2026-09-10 22:16:46",
+      "matched_query": "rss:mirror.co.uk",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "We cannot yet say exactly how many people have been killed or injured\" the spokesperson told the Dutch newspaper De Telegraaf.",
+      "incident_fingerprint": "we cannot yet say exactly how many people have been killed injured"
     },
     {
       "id": 959,

@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-09-10T13:00:39.770040",
-  "alert_count": 9,
+  "timestamp": "2026-09-10T17:43:38.701442",
+  "alert_count": 12,
   "incidents": [
     {
       "id": 980,
@@ -20,6 +20,44 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Desaparecimento de crian\u00e7as no Maranh\u00e3o pode chegar \u00e0 Interpol Lucas Pordeus Le\u00f3n \u2013 Rep\u00f3rter da Ag\u00eancia Brasil A m\u00e3e das crian\u00e7as desaparecidas h\u00e1 mais de oito meses em Bacabal, no Maranh\u00e3o, pediu \u00e0 Pol\u00edcia Federal (PF) para incluir \u00c1gatha Isabelly, de 6 anos, e Allan Michael, de 4 anos, na Difus\u00e3o Amarela da Organiza\u00e7\u00e3o Internacional de Pol\u00edcia Criminal (Interpol).",
       "incident_fingerprint": "desaparecimento de crian as no maranh o pode chegar interpol lucas pordeus"
+    },
+    {
+      "id": 996,
+      "url": "https://www.ansa.it/sito/notizie/cronaca/2026/09/10/si-e-uccisa-denise-la-figlia-di-lea-garofalo-testimone-di-giustizia_17abbcfc-3c0f-4582-bf35-cac7fc8438ef.html",
+      "title": "Si \u00e8 uccisa Denise, la figlia di Lea Garofalo testimone di giustizia",
+      "published_date": "Thu, 10 Sep 2026 18:42:18 +0200",
+      "domain": "www.ansa.it",
+      "country": "IT",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Si \u00e8 uccisa Denise, la figlia di Lea Garofalo testimone di giustizia La madre aveva la stessa et\u00e0 quando fu assassinata dalla 'ndrangheta 10 settembre 2026, 18:42 Redazione ANSA Condividi Link copiato Lea Garofalo, testimone di giustizia, foto d 'archivio",
+      "language": "it",
+      "source_country": "IT",
+      "collected_at": "2026-09-10 17:43:35",
+      "matched_query": "rss:www.ansa.it",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Si \u00e8 uccisa Denise, la figlia di Lea Garofalo testimone di giustizia La madre aveva la stessa et\u00e0 quando fu assassinata dalla 'ndrangheta 10 settembre 2026, 18:42 Redazione ANSA Condividi Link copiato Lea Garofalo, testimone di giustizia, foto d 'archivio",
+      "incident_fingerprint": "si uccisa denise la figlia di lea garofalo testimone di giustizia la"
+    },
+    {
+      "id": 997,
+      "url": "https://www.ansa.it/sito/notizie/cultura/2026/09/10/venezia-i-registi-di-naza-verso-gaza-una-deumanizzazione-simile-allolocausto_afdcaf25-af8a-4eab-bca8-e4d70f77d69f.html",
+      "title": "Venezia, i registi di Naza: 'Verso Gaza una deumanizzazione simile all'Olocausto'",
+      "published_date": "Thu, 10 Sep 2026 17:33:42 +0200",
+      "domain": "www.ansa.it",
+      "country": "IT",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Sarebbero stati arrestati oppure uccisi, cos\u00ec come \u00e8 accaduto ad altri 200 giornalisti a Gaza.",
+      "language": "it",
+      "source_country": "IT",
+      "collected_at": "2026-09-10 17:43:35",
+      "matched_query": "rss:www.ansa.it",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Sarebbero stati arrestati oppure uccisi, cos\u00ec come \u00e8 accaduto ad altri 200 giornalisti a Gaza.",
+      "incident_fingerprint": "sarebbero stati arrestati oppure uccisi cos come accaduto ad altri 200 giornalisti"
     },
     {
       "id": 959,
@@ -172,6 +210,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "The listing disappeared within hours of the Rotterdam-based newspaper Algemeen Dagblad publishing its findings.",
       "incident_fingerprint": "listing disappeared within hours rotterdam based newspaper algemeen dagblad publishing its findings"
+    },
+    {
+      "id": 994,
+      "url": "https://www.lanacion.com.ar/el-mundo/hallan-muerto-de-un-disparo-a-un-diputado-federal-mexicano-en-de-su-auto-en-veracruz-nid04092026/",
+      "title": "Hallan muerto de un disparo a un diputado federal mexicano en de su auto en Veracruz",
+      "published_date": "2026-09-04",
+      "domain": "www.lanacion.com.ar",
+      "country": "AR",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "En Veracruz fue asesinada hace dos meses una periodista.",
+      "language": "es",
+      "source_country": "AR",
+      "collected_at": "2026-09-10 17:43:35",
+      "matched_query": "ccnews:www.lanacion.com.ar",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "En Veracruz fue asesinada hace dos meses una periodista.",
+      "incident_fingerprint": "en veracruz fue asesinada hace dos meses una periodista"
     }
   ]
 }

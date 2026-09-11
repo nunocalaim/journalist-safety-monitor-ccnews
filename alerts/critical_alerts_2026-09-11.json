@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-09-11T12:53:33.667694",
-  "alert_count": 10,
+  "timestamp": "2026-09-11T17:36:02.538553",
+  "alert_count": 11,
   "incidents": [
     {
       "id": 980,
@@ -191,6 +191,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "El \u00faltimo caso de especial relevancia relacionado con ciudadanos espa\u00f1oles se remonta al 26 de abril de 2021, cuando los periodistas espa\u00f1oles David Beriain y Roberto Fraile, junto al periodista irland\u00e9s Rory Young, fueron asesinados en un ataque armado en el este del pa\u00eds.",
       "incident_fingerprint": "el ltimo caso de especial relevancia relacionado con ciudadanos espa oles se"
+    },
+    {
+      "id": 1011,
+      "url": "https://www.infobae.com/mexico/2026/09/05/tijuana-y-reynosa-municipios-con-mas-reportes-de-personas-desaparecidas-en-el-pais/",
+      "title": "Tijuana y Reynosa, municipios con m\u00e1s reportes de personas desaparecidas en el pa\u00eds",
+      "published_date": "2026-09-05",
+      "domain": "www.infobae.com",
+      "country": "AR",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "PUBLICIDAD La red, integrada por organizaciones como Serapaz, los centros de derechos humanos de la Monta\u00f1a Tlachinollan y Zeferino Ladrillero y la Red TDT, advirti\u00f3 que desde 2024 y hasta la fecha al menos 60 personas defensoras de derechos humanos y 17 periodistas han sido asesinados en M\u00e9xico.",
+      "language": "es",
+      "source_country": "AR",
+      "collected_at": "2026-09-11 17:35:54",
+      "matched_query": "ccnews:www.infobae.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "PUBLICIDAD La red, integrada por organizaciones como Serapaz, los centros de derechos humanos de la Monta\u00f1a Tlachinollan y Zeferino Ladrillero y la Red TDT, advirti\u00f3 que desde 2024 y hasta la fecha al menos 60 personas defensoras de derechos humanos y 17 periodistas han sido asesinados en M\u00e9xico.",
+      "incident_fingerprint": "publicidad la red integrada por organizaciones como serapaz los centros de derechos"
     }
   ]
 }

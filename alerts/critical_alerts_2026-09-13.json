@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-09-13T07:02:39.064825",
-  "alert_count": 9,
+  "timestamp": "2026-09-13T13:20:52.980633",
+  "alert_count": 11,
   "incidents": [
     {
       "id": 1023,
@@ -20,6 +20,44 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "A Fundamedios contabilizou seis jornalistas e comunicadores assassinados em 2025 e 231 agress\u00c3\u00b5es \u00c3 liberdade de express\u00c3\u00a3o e outros direitos relacionados.",
       "incident_fingerprint": "fundamedios contabilizou seis jornalistas e comunicadores assassinados em 2025 e 231 agress"
+    },
+    {
+      "id": 1025,
+      "url": "https://www.thehindu.com/news/international/indonesia-passenger-vessel-with-243-people-reportedmissing-agency-says/article71462492.ece",
+      "title": "Indonesia says six killed, 130 missing after ferry capsizes off Java",
+      "published_date": "Sun, 13 Sep 2026 17:12:27 +0530",
+      "domain": "www.thehindu.com",
+      "country": "IN",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "On Monday (September 7, 2026), a speedboat carrying eight people, including five journalists working for local and international news agencies, went missing near a volcano, Mount Anak Krakatau, in Banten province.",
+      "language": "en",
+      "source_country": "IN",
+      "collected_at": "2026-09-13 13:20:44",
+      "matched_query": "rss:www.thehindu.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "On Monday (September 7, 2026), a speedboat carrying eight people, including five journalists working for local and international news agencies, went missing near a volcano, Mount Anak Krakatau, in Banten province.",
+      "incident_fingerprint": "monday september 7 2026 speedboat carrying eight people including five journalists working"
+    },
+    {
+      "id": 1027,
+      "url": "https://www.theguardian.com/world/2026/sep/13/indonesian-rescue-crews-searching-for-140-people-after-ferry-hit-bad-weather",
+      "title": "At least six dead and 130 missing after Indonesian ferry capsizes, officials say",
+      "published_date": "Sun, 13 Sep 2026 12:18:49 GMT",
+      "domain": "www.theguardian.com",
+      "country": "UK",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "On Monday, a speedboat carrying eight people, including five journalists working for local and international news agencies, went missing near a volcano, Mount Anak Krakatau, in Lampung province.",
+      "language": "en",
+      "source_country": "UK",
+      "collected_at": "2026-09-13 13:20:44",
+      "matched_query": "rss:www.theguardian.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "On Monday, a speedboat carrying eight people, including five journalists working for local and international news agencies, went missing near a volcano, Mount Anak Krakatau, in Lampung province.",
+      "incident_fingerprint": "monday speedboat carrying eight people including five journalists working for local international"
     },
     {
       "id": 1016,

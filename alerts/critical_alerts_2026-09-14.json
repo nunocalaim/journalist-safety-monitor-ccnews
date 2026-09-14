@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-09-14T07:03:36.227065",
-  "alert_count": 12,
+  "timestamp": "2026-09-14T14:35:56.817393",
+  "alert_count": 13,
   "incidents": [
     {
       "id": 1036,
@@ -20,6 +20,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "S\u00c3\u00ac, lo facciamo anche noi\u00e2 Il presidente degli Stati Uniti Donald Trump ha commentato la notizia secondo cui l'Iran avrebbe ricevuto immagini satellitari della base in Giordania da fonti cinesi prima dell'attacco in cui sono rimasti uccisi tre soldati americani, dichiarando ai giornalisti a bordo dell'Air Force One: \"Sapete, quando la gente dice che la Cina ci spia, io dico 'avete ragione', e anche noi spiamo loro.",
       "incident_fingerprint": "s lo facciamo anche noi il presidente degli stati uniti donald trump"
+    },
+    {
+      "id": 1039,
+      "url": "https://www.freemalaysiatoday.com/category/highlight/2026/09/14/indonesia-extends-search-for-missing-journalists-on-volcano-mission",
+      "title": "Indonesia extends search for missing journalists on volcano mission",
+      "published_date": "Mon, 14 Sep 2026 13:11:33 GMT",
+      "domain": "freemalaysiatoday.com",
+      "country": "MY",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "Indonesia extends search for missing journalists on volcano mission The Indonesian journalists were on a trip to take photos and videos of the eruption of Mount Anak Krakatau, which blanketed cities in volcanic ash and prompted multiple airports to close.",
+      "language": "en",
+      "source_country": "MY",
+      "collected_at": "2026-09-14 14:35:45",
+      "matched_query": "rss:freemalaysiatoday.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Indonesia extends search for missing journalists on volcano mission The Indonesian journalists were on a trip to take photos and videos of the eruption of Mount Anak Krakatau, which blanketed cities in volcanic ash and prompted multiple airports to close.",
+      "incident_fingerprint": "indonesia extends search for missing journalists volcano mission indonesian journalists trip take"
     },
     {
       "id": 1023,

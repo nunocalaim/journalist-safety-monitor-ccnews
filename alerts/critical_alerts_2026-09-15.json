@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-09-15T13:25:20.118641",
-  "alert_count": 14,
+  "timestamp": "2026-09-15T18:24:52.423741",
+  "alert_count": 16,
   "incidents": [
     {
       "id": 1052,
@@ -20,6 +20,44 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Quelques heures plus tard, souligne toutefois le journal, son mari a \u00e9t\u00e9 retrouv\u00e9 mort, \u00ab pendu dans une maison voisine \u00bb de celle o\u00f9 il vivait avec son \u00e9pouse, ses parents et leur gar\u00e7onnet.",
       "incident_fingerprint": "quelques heures plus tard souligne toutefois le journal son mari t retrouv"
+    },
+    {
+      "id": 1058,
+      "url": "https://www.theguardian.com/film/2026/sep/15/naza-directors-yuval-abraham-rachel-szor-film-industry-support",
+      "title": "\u2018This should be condemned by any thinking human\u2019: film industry rallies behind NAZA directors",
+      "published_date": "Tue, 15 Sep 2026 16:44:12 GMT",
+      "domain": "theguardian.com",
+      "country": "UK",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "\"Despite the alarming nature of these current threats, it is important to emphasise that Israel has killed over 200 Palestinian journalists in Gaza and has normalised the murder of journalists.\" Meanwhile Nan Goldin, the US photographer and activist who worked with Poitras on the 2022 Oscar-nominated documentary All the Beauty and Bloodshed, said she applauded NAZA's directors \"for their enormous courage in presenting a film that shows irrefutable proof of Israel's war crimes at their own great risk.\" British film industry veterans offering their support include director Richard Eyre, who said he was \"beyond shocked by anything that the Israeli government does\", and the novelist and screenwriter Hanif Kureishi, who called the pair \"both brave and admirable, standing up to state oppression, steadfast in their pursuit of the truth\".",
+      "language": "en",
+      "source_country": "UK",
+      "collected_at": "2026-09-15 18:24:48",
+      "matched_query": "rss:theguardian.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "\"Despite the alarming nature of these current threats, it is important to emphasise that Israel has killed over 200 Palestinian journalists in Gaza and has normalised the murder of journalists.\" Meanwhile Nan Goldin, the US photographer and activist who worked with Poitras on the 2022 Oscar-nominated documentary All the Beauty and Bloodshed, said she applauded NAZA's directors \"for their enormous courage in presenting a film that shows irrefutable proof of Israel's war crimes at their own great risk.\" British film industry veterans offering their support include director Richard Eyre, who said he was \"beyond shocked by anything that the Israeli government does\", and the novelist and screenwriter Hanif Kureishi, who called the pair \"both brave and admirable, standing up to state oppression, steadfast in their pursuit of the truth\".",
+      "incident_fingerprint": "despite alarming nature these current threats it is important emphasise that israel"
+    },
+    {
+      "id": 1061,
+      "url": "https://www.ansa.it/toscana/notizie/2026/09/15/firenze-omaggia-oriana-fallaci-nei-20-anni-dalla-morte_0d32b0b3-da20-4e0f-bd93-d541130a47db.html",
+      "title": "Firenze omaggia Oriana Fallaci nei 20 anni dalla morte",
+      "published_date": "Tue, 15 Sep 2026 17:15:49 +0200",
+      "domain": "www.ansa.it",
+      "country": "IT",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "Firenze omaggia Oriana Fallaci nei 20 anni dalla morte Una cerimonia con la deposizione di una corona alla memoria di Oriana Fallaci questa mattina a Firenze, al cimitero degli Allori, dove \u00e8 sepolta, ha aperto le celebrazioni per i 20 anni dalla scomparsa della scrittrice e giornalista.",
+      "language": "it",
+      "source_country": "IT",
+      "collected_at": "2026-09-15 18:24:48",
+      "matched_query": "rss:www.ansa.it",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Firenze omaggia Oriana Fallaci nei 20 anni dalla morte Una cerimonia con la deposizione di una corona alla memoria di Oriana Fallaci questa mattina a Firenze, al cimitero degli Allori, dove \u00e8 sepolta, ha aperto le celebrazioni per i 20 anni dalla scomparsa della scrittrice e giornalista.",
+      "incident_fingerprint": "firenze omaggia oriana fallaci nei 20 anni dalla morte una cerimonia con"
     },
     {
       "id": 1036,

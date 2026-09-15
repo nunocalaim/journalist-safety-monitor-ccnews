@@ -1,7 +1,26 @@
 {
-  "timestamp": "2026-09-15T07:02:22.662421",
-  "alert_count": 13,
+  "timestamp": "2026-09-15T13:25:20.118641",
+  "alert_count": 14,
   "incidents": [
+    {
+      "id": 1052,
+      "url": "https://www.seneweb.com/fr/news/Societe/nuit-dhorreur-a-diourbel-il-poignarde-son-epouse-endormie-avant-detre-retrouve-pendu_n_504302.html",
+      "title": "Nuit d'horreur \u00e0 Diourbel : il poignarde son \u00e9pouse endormie avant d'\u00eatre retrouv\u00e9 pendu",
+      "published_date": "Tue, 15 Sep 2026 09:17:04 +0000",
+      "domain": "seneweb.com",
+      "country": "SN",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Quelques heures plus tard, souligne toutefois le journal, son mari a \u00e9t\u00e9 retrouv\u00e9 mort, \u00ab pendu dans une maison voisine \u00bb de celle o\u00f9 il vivait avec son \u00e9pouse, ses parents et leur gar\u00e7onnet.",
+      "language": "fr",
+      "source_country": "SN",
+      "collected_at": "2026-09-15 13:25:09",
+      "matched_query": "rss:seneweb.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Quelques heures plus tard, souligne toutefois le journal, son mari a \u00e9t\u00e9 retrouv\u00e9 mort, \u00ab pendu dans une maison voisine \u00bb de celle o\u00f9 il vivait avec son \u00e9pouse, ses parents et leur gar\u00e7onnet.",
+      "incident_fingerprint": "quelques heures plus tard souligne toutefois le journal son mari t retrouv"
+    },
     {
       "id": 1036,
       "url": "https://www.lastampa.it/esteri/2026/09/14/diretta/guerra_iran_usa_israele_news_oggi-15738515/",

@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-09-16T13:27:40.209216",
-  "alert_count": 15,
+  "timestamp": "2026-09-16T18:20:37.090955",
+  "alert_count": 16,
   "incidents": [
     {
       "id": 1075,
@@ -39,6 +39,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Journalist and pilot among three killed after news helicopter crashes in LA Journalist and pilot among three killed after news helicopter crashes in LA",
       "incident_fingerprint": "journalist pilot among three killed after news helicopter crashes la journalist pilot"
+    },
+    {
+      "id": 1079,
+      "url": "https://abc7ny.com/post/los-angeles-crash-helicopter-crashes-site-deadly-bus-collision-chatsworth-california/19837494/",
+      "title": "Reporter, pilot and pedestrian ID'd as 3 killed in Los Angeles TV news helicopter crash",
+      "published_date": "Wed, 16 Sep 2026 16:07:23 +0000",
+      "domain": "abc7chicago.com",
+      "country": "US",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Reporter, pilot and pedestrian ID'd as 3 killed in Los Angeles TV news helicopter crash LOS ANGELES -- Three people were killed after an NBC4 news helicopter crashed near the scene of a deadly bus collision in Chatsworth, California, on Tuesday evening, authorities said.",
+      "language": "en",
+      "source_country": "US",
+      "collected_at": "2026-09-16 18:20:32",
+      "matched_query": "rss:abc7chicago.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Reporter, pilot and pedestrian ID'd as 3 killed in Los Angeles TV news helicopter crash LOS ANGELES -- Three people were killed after an NBC4 news helicopter crashed near the scene of a deadly bus collision in Chatsworth, California, on Tuesday evening, authorities said.",
+      "incident_fingerprint": "reporter pilot pedestrian id d as 3 killed los angeles tv news"
     },
     {
       "id": 1052,

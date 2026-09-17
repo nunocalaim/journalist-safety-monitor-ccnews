@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-09-17T18:18:48.982858",
-  "alert_count": 16,
+  "timestamp": "2026-09-17T22:44:39.918034",
+  "alert_count": 17,
   "incidents": [
     {
       "id": 1083,
@@ -77,6 +77,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Abducted South African journalist found dead with gunshot wounds Abducted South African journalist found dead with gunshot wounds",
       "incident_fingerprint": "abducted south african journalist found dead with gunshot wounds abducted south african"
+    },
+    {
+      "id": 1095,
+      "url": "https://nypost.com/2026/09/17/us-news/driver-who-allegedly-killed-2-in-metro-bus-crash-charged-with-murder/",
+      "title": "Woman who slammed into LA Metro bus, killing 2 before deadly helicopter crash, was allegedly high on drugs",
+      "published_date": "Thu, 17 Sep 2026 17:30:55 -0400",
+      "domain": "nypost.com",
+      "country": "US",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "He also mentioned the NBC news helicopter crash that killed reporter Eliana Moreno and pilot George Marciniw.",
+      "language": "en",
+      "source_country": "US",
+      "collected_at": "2026-09-17 22:44:36",
+      "matched_query": "rss:nypost.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "He also mentioned the NBC news helicopter crash that killed reporter Eliana Moreno and pilot George Marciniw.",
+      "incident_fingerprint": "also mentioned nbc news helicopter crash that killed reporter eliana moreno pilot"
     },
     {
       "id": 1075,

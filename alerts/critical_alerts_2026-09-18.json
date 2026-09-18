@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-18T13:01:03.479284",
+  "timestamp": "2026-09-18T17:42:34.550581",
   "alert_count": 20,
   "incidents": [
     {
@@ -96,6 +96,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "\u00abLe Livre des souterrains\u00bb de Ph\u0153be Hadjimarkos Clarke : femme ou ne plus l'\u00eatre Le journal d'une artiste disparue qui explose les fronti\u00e8res par l'\u00e9crivaine franco-am\u00e9ricaine.",
       "incident_fingerprint": "le livre des souterrains de ph be hadjimarkos clarke femme ou ne"
+    },
+    {
+      "id": 1112,
+      "url": "https://www.whec.com/ap-top-news/indonesian-divers-recover-3-bodies-from-capsized-ferry-as-salvage-operation-begins/",
+      "title": "Indonesian divers recover 3 bodies from capsized ferry as salvage operation begins",
+      "published_date": "Fri, 18 Sep 2026 15:17:43 +0000",
+      "domain": "whec.com",
+      "country": "US",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "Authorities on Thursday ended an unsuccessful, 10-day search for eight people, including five photojournalists, who disappeared while traveling by speedboat to Anak Krakatau volcano to report on its eruption.",
+      "language": "en",
+      "source_country": "US",
+      "collected_at": "2026-09-18 17:42:29",
+      "matched_query": "rss:whec.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Authorities on Thursday ended an unsuccessful, 10-day search for eight people, including five photojournalists, who disappeared while traveling by speedboat to Anak Krakatau volcano to report on its eruption.",
+      "incident_fingerprint": "authorities thursday ended unsuccessful 10 day search for eight people including five"
     },
     {
       "id": 1083,
@@ -362,25 +381,6 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "A Fundamedios contabilizou seis jornalistas e comunicadores assassinados em 2025 e 231 agress\u00c3\u00b5es \u00c3 liberdade de express\u00c3\u00a3o e outros direitos relacionados.",
       "incident_fingerprint": "fundamedios contabilizou seis jornalistas e comunicadores assassinados em 2025 e 231 agress"
-    },
-    {
-      "id": 1025,
-      "url": "https://www.thehindu.com/news/international/indonesia-passenger-vessel-with-243-people-reportedmissing-agency-says/article71462492.ece",
-      "title": "Indonesia says six killed, 130 missing after ferry capsizes off Java",
-      "published_date": "Sun, 13 Sep 2026 17:12:27 +0530",
-      "domain": "www.thehindu.com",
-      "country": "IN",
-      "severity": "CRITICAL",
-      "incident_type": "DISAPPEARANCE",
-      "description": "On Monday (September 7, 2026), a speedboat carrying eight people, including five journalists working for local and international news agencies, went missing near a volcano, Mount Anak Krakatau, in Banten province.",
-      "language": "en",
-      "source_country": "IN",
-      "collected_at": "2026-09-13 13:20:44",
-      "matched_query": "rss:www.thehindu.com",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "On Monday (September 7, 2026), a speedboat carrying eight people, including five journalists working for local and international news agencies, went missing near a volcano, Mount Anak Krakatau, in Banten province.",
-      "incident_fingerprint": "monday september 7 2026 speedboat carrying eight people including five journalists working"
     }
   ]
 }

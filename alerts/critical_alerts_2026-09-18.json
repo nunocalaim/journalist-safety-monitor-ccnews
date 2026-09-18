@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-18T06:32:13.551850",
+  "timestamp": "2026-09-18T13:01:03.479284",
   "alert_count": 20,
   "incidents": [
     {
@@ -58,6 +58,44 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Indonesia calls off search for journalists missing while covering volcano eruption JAKARTA, Sept 18 (Reuters)&nbsp;-&nbsp;Indonesian rescuers called off a search on its 10th day for eight people missing at sea, including five journalists who were covering the eruption of Mount&nbsp;Anak Krakatau&nbsp;earlier this month.",
       "incident_fingerprint": "indonesia calls off search for journalists missing while covering volcano eruption jakarta"
+    },
+    {
+      "id": 1106,
+      "url": "https://www.theguardian.com/books/2026/sep/18/olga-tokarczuk-j-m-coetzee-lead-calls-for-release-of-disappeared-eritrean-writers",
+      "title": "\u2018We demand the truth\u2019: Olga Tokarczuk and JM Coetzee lead calls for proof of life of disappeared Eritrean writers",
+      "published_date": "Fri, 18 Sep 2026 08:30:12 GMT",
+      "domain": "www.theguardian.com",
+      "country": "UK",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "\"No writer or journalist should be disappeared for peacefully expressing their views.\" Eritrea operates as a repressive dictatorship under Afwerki, with no national elections held since independence in 1993.",
+      "language": "en",
+      "source_country": "UK",
+      "collected_at": "2026-09-18 13:00:46",
+      "matched_query": "rss:www.theguardian.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "\"No writer or journalist should be disappeared for peacefully expressing their views.\" Eritrea operates as a repressive dictatorship under Afwerki, with no national elections held since independence in 1993.",
+      "incident_fingerprint": "no writer journalist should be disappeared for peacefully expressing views eritrea operates"
+    },
+    {
+      "id": 1107,
+      "url": "https://www.liberation.fr/culture/livres/le-livre-des-souterrains-de-phoebe-hadjimarkos-clarke-femme-ou-ne-plus-letre-20260918_4TBQCUS3WRFM5N6HB3HOBDF56I/",
+      "title": "\u00abLe Livre des souterrains\u00bb de Ph\u0153be Hadjimarkos\u00a0Clarke : femme ou ne plus l\u2019\u00eatre",
+      "published_date": "Fri, 18 Sep 2026 11:36:00 +0000",
+      "domain": "www.liberation.fr",
+      "country": "FR",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "\u00abLe Livre des souterrains\u00bb de Ph\u0153be Hadjimarkos Clarke : femme ou ne plus l'\u00eatre Le journal d'une artiste disparue qui explose les fronti\u00e8res par l'\u00e9crivaine franco-am\u00e9ricaine.",
+      "language": "fr",
+      "source_country": "FR",
+      "collected_at": "2026-09-18 13:00:46",
+      "matched_query": "rss:www.liberation.fr",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "\u00abLe Livre des souterrains\u00bb de Ph\u0153be Hadjimarkos Clarke : femme ou ne plus l'\u00eatre Le journal d'une artiste disparue qui explose les fronti\u00e8res par l'\u00e9crivaine franco-am\u00e9ricaine.",
+      "incident_fingerprint": "le livre des souterrains de ph be hadjimarkos clarke femme ou ne"
     },
     {
       "id": 1083,
@@ -343,44 +381,6 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "On Monday (September 7, 2026), a speedboat carrying eight people, including five journalists working for local and international news agencies, went missing near a volcano, Mount Anak Krakatau, in Banten province.",
       "incident_fingerprint": "monday september 7 2026 speedboat carrying eight people including five journalists working"
-    },
-    {
-      "id": 1027,
-      "url": "https://www.theguardian.com/world/2026/sep/13/indonesian-rescue-crews-searching-for-140-people-after-ferry-hit-bad-weather",
-      "title": "At least six dead and 130 missing after Indonesian ferry capsizes, officials say",
-      "published_date": "Sun, 13 Sep 2026 12:18:49 GMT",
-      "domain": "www.theguardian.com",
-      "country": "UK",
-      "severity": "CRITICAL",
-      "incident_type": "DISAPPEARANCE",
-      "description": "On Monday, a speedboat carrying eight people, including five journalists working for local and international news agencies, went missing near a volcano, Mount Anak Krakatau, in Lampung province.",
-      "language": "en",
-      "source_country": "UK",
-      "collected_at": "2026-09-13 13:20:44",
-      "matched_query": "rss:www.theguardian.com",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "On Monday, a speedboat carrying eight people, including five journalists working for local and international news agencies, went missing near a volcano, Mount Anak Krakatau, in Lampung province.",
-      "incident_fingerprint": "monday speedboat carrying eight people including five journalists working for local international"
-    },
-    {
-      "id": 1016,
-      "url": "https://davaotoday.com/headline/amid-threats-to-press-freedom-davao-journalists-push-for-renewed-focus-on-ethical-reporting/",
-      "title": "Amid threats to press freedom , Davao journalists push for renewed focus on ethical reporting",
-      "published_date": "20260911T134500Z",
-      "domain": "davaotoday.com",
-      "country": "Philippines",
-      "severity": "CRITICAL",
-      "incident_type": "KILLING",
-      "description": "And year after year, a journalist still gets killed,\" Soriano said.",
-      "language": "en",
-      "source_country": "Philippines",
-      "collected_at": "2026-09-12 06:35:36",
-      "matched_query": "gdelt:davaotoday.com",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "And year after year, a journalist still gets killed,\" Soriano said.",
-      "incident_fingerprint": "year after year journalist still gets killed soriano"
     }
   ]
 }

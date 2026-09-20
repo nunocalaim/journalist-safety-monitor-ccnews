@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-20T07:13:37.281894",
+  "timestamp": "2026-09-20T13:05:31.537515",
   "alert_count": 20,
   "incidents": [
     {
@@ -20,6 +20,44 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "There was Paul Klebnikov, an American journalist and historian, murdered in Moscow in 2004.",
       "incident_fingerprint": "there paul klebnikov american journalist historian murdered moscow 2004"
+    },
+    {
+      "id": 1143,
+      "url": "https://www.jornada.com.mx/2026/09/20/estados/020n3est?partner=rss",
+      "title": "Estancadas, pesquisas  del crimen de periodista oaxaque\u00f1o: familiares",
+      "published_date": "Sun, 20 Sep 2026 08:39:29 GMT",
+      "domain": "www.jornada.com.mx",
+      "country": "MX",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Estancadas, pesquisas del crimen de periodista oaxaque\u00f1o: familiares Oaxaca, Oax., Familiares del periodista oaxaque\u00f1o Alejandro Leyva Aguilar, asesinado en julio pasado en el fraccionamiento La Esmeralda de San Pablo Etla, reprocharon que las investigaciones por el homicidio se encuentran estancadas.",
+      "language": "es",
+      "source_country": "MX",
+      "collected_at": "2026-09-20 13:05:20",
+      "matched_query": "rss:www.jornada.com.mx",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Estancadas, pesquisas del crimen de periodista oaxaque\u00f1o: familiares Oaxaca, Oax., Familiares del periodista oaxaque\u00f1o Alejandro Leyva Aguilar, asesinado en julio pasado en el fraccionamiento La Esmeralda de San Pablo Etla, reprocharon que las investigaciones por el homicidio se encuentran estancadas.",
+      "incident_fingerprint": "estancadas pesquisas del crimen de periodista oaxaque o familiares oaxaca oax familiares"
+    },
+    {
+      "id": 1144,
+      "url": "https://oglobo.globo.com/mundo/noticia/2026/09/20/susy-aponte-quem-era-a-jornalista-e-candidata-a-governadora-assassinada-a-tiros-durante-ato-de-campanha-no-peru.ghtml",
+      "title": "Susy Aponte: quem era a jornalista e candidata a governadora assassinada a tiros durante ato de campanha no Peru",
+      "published_date": "Sun, 20 Sep 2026 09:26:05 -0000",
+      "domain": "oglobo.globo.com",
+      "country": "BR",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Susy Aponte: quem era a jornalista e candidata a governadora assassinada a tiros durante ato de campanha no Peru Susy Aponte: quem era a jornalista e candidata a governadora assassinada a tiros durante ato de campanha no Peru Mulher de 44 anos foi atacada enquanto percorria um mercado com apoiadores; cinco pessoas ficaram feridas e um homem foi detido Por O Globo e AFP \u2014 Lima Atualizado A jornalista e candidata ao governo do departamento de \u00c1ncash, no Peru, Susy Aponte, de 44 anos, foi assassinada a tiros neste s\u00e1bado enquanto participava de um ato de campanha em um mercado no distrito de Caraz.",
+      "language": "pt",
+      "source_country": "BR",
+      "collected_at": "2026-09-20 13:05:20",
+      "matched_query": "rss:oglobo.globo.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Susy Aponte: quem era a jornalista e candidata a governadora assassinada a tiros durante ato de campanha no Peru Susy Aponte: quem era a jornalista e candidata a governadora assassinada a tiros durante ato de campanha no Peru Mulher de 44 anos foi atacada enquanto percorria um mercado com apoiadores; cinco pessoas ficaram feridas e um homem foi detido Por O Globo e AFP \u2014 Lima Atualizado A jornalista e candidata ao governo do departamento de \u00c1ncash, no Peru, Susy Aponte, de 44 anos, foi assassinada a tiros neste s\u00e1bado enquanto participava de um ato de campanha em um mercado no distrito de Caraz.",
+      "incident_fingerprint": "susy aponte quem era jornalista e candidata governadora assassinada tiros durante ato"
     },
     {
       "id": 1102,
@@ -343,44 +381,6 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Firenze omaggia Oriana Fallaci nei 20 anni dalla morte Una cerimonia con la deposizione di una corona alla memoria di Oriana Fallaci questa mattina a Firenze, al cimitero degli Allori, dove \u00e8 sepolta, ha aperto le celebrazioni per i 20 anni dalla scomparsa della scrittrice e giornalista.",
       "incident_fingerprint": "firenze omaggia oriana fallaci nei 20 anni dalla morte una cerimonia con"
-    },
-    {
-      "id": 1036,
-      "url": "https://www.lastampa.it/esteri/2026/09/14/diretta/guerra_iran_usa_israele_news_oggi-15738515/",
-      "title": "Ben Gvir contro i registi di Naza premiato a Venezia: \u201cSiete una vergogna, andatevene\u201d",
-      "published_date": "Sun, 13 Sep 2026 22:06:00 +0200",
-      "domain": "www.lastampa.it",
-      "country": "IT",
-      "severity": "CRITICAL",
-      "incident_type": "KILLING",
-      "description": "S\u00c3\u00ac, lo facciamo anche noi\u00e2 Il presidente degli Stati Uniti Donald Trump ha commentato la notizia secondo cui l'Iran avrebbe ricevuto immagini satellitari della base in Giordania da fonti cinesi prima dell'attacco in cui sono rimasti uccisi tre soldati americani, dichiarando ai giornalisti a bordo dell'Air Force One: \"Sapete, quando la gente dice che la Cina ci spia, io dico 'avete ragione', e anche noi spiamo loro.",
-      "language": "it",
-      "source_country": "IT",
-      "collected_at": "2026-09-14 07:03:32",
-      "matched_query": "rss:www.lastampa.it",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "S\u00c3\u00ac, lo facciamo anche noi\u00e2 Il presidente degli Stati Uniti Donald Trump ha commentato la notizia secondo cui l'Iran avrebbe ricevuto immagini satellitari della base in Giordania da fonti cinesi prima dell'attacco in cui sono rimasti uccisi tre soldati americani, dichiarando ai giornalisti a bordo dell'Air Force One: \"Sapete, quando la gente dice che la Cina ci spia, io dico 'avete ragione', e anche noi spiamo loro.",
-      "incident_fingerprint": "s lo facciamo anche noi il presidente degli stati uniti donald trump"
-    },
-    {
-      "id": 1039,
-      "url": "https://www.freemalaysiatoday.com/category/highlight/2026/09/14/indonesia-extends-search-for-missing-journalists-on-volcano-mission",
-      "title": "Indonesia extends search for missing journalists on volcano mission",
-      "published_date": "Mon, 14 Sep 2026 13:11:33 GMT",
-      "domain": "freemalaysiatoday.com",
-      "country": "MY",
-      "severity": "CRITICAL",
-      "incident_type": "DISAPPEARANCE",
-      "description": "Indonesia extends search for missing journalists on volcano mission The Indonesian journalists were on a trip to take photos and videos of the eruption of Mount Anak Krakatau, which blanketed cities in volcanic ash and prompted multiple airports to close.",
-      "language": "en",
-      "source_country": "MY",
-      "collected_at": "2026-09-14 14:35:45",
-      "matched_query": "rss:freemalaysiatoday.com",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "Indonesia extends search for missing journalists on volcano mission The Indonesian journalists were on a trip to take photos and videos of the eruption of Mount Anak Krakatau, which blanketed cities in volcanic ash and prompted multiple airports to close.",
-      "incident_fingerprint": "indonesia extends search for missing journalists volcano mission indonesian journalists trip take"
     }
   ]
 }

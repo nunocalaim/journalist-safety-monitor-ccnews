@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-20T13:05:31.537515",
+  "timestamp": "2026-09-20T17:39:48.866035",
   "alert_count": 20,
   "incidents": [
     {
@@ -58,6 +58,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Susy Aponte: quem era a jornalista e candidata a governadora assassinada a tiros durante ato de campanha no Peru Susy Aponte: quem era a jornalista e candidata a governadora assassinada a tiros durante ato de campanha no Peru Mulher de 44 anos foi atacada enquanto percorria um mercado com apoiadores; cinco pessoas ficaram feridas e um homem foi detido Por O Globo e AFP \u2014 Lima Atualizado A jornalista e candidata ao governo do departamento de \u00c1ncash, no Peru, Susy Aponte, de 44 anos, foi assassinada a tiros neste s\u00e1bado enquanto participava de um ato de campanha em um mercado no distrito de Caraz.",
       "incident_fingerprint": "susy aponte quem era jornalista e candidata governadora assassinada tiros durante ato"
+    },
+    {
+      "id": 1150,
+      "url": "https://www.dailymaverick.co.za/article/2026-09-20-top-sa-investigative-journalist-goes-missing-in-djibouti/",
+      "title": "INQUIRIES LAUNCHED: Top SA investigative journalist goes missing in Djibouti",
+      "published_date": "Sun, 20 Sep 2026 14:51:17 GMT",
+      "domain": "dailymaverick.co.za",
+      "country": "ZA",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "INQUIRIES LAUNCHED: Top SA investigative journalist goes missing in Djibouti South African investigative journalist Micah Reddy has not been heard from since midday on Saturday.",
+      "language": "en",
+      "source_country": "ZA",
+      "collected_at": "2026-09-20 17:39:44",
+      "matched_query": "rss:dailymaverick.co.za",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "INQUIRIES LAUNCHED: Top SA investigative journalist goes missing in Djibouti South African investigative journalist Micah Reddy has not been heard from since midday on Saturday.",
+      "incident_fingerprint": "inquiries launched top sa investigative journalist goes missing djibouti south african investigative"
     },
     {
       "id": 1102,
@@ -362,25 +381,6 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "\"Despite the alarming nature of these current threats, it is important to emphasise that Israel has killed over 200 Palestinian journalists in Gaza and has normalised the murder of journalists.\" Meanwhile Nan Goldin, the US photographer and activist who worked with Poitras on the 2022 Oscar-nominated documentary All the Beauty and Bloodshed, said she applauded NAZA's directors \"for their enormous courage in presenting a film that shows irrefutable proof of Israel's war crimes at their own great risk.\" British film industry veterans offering their support include director Richard Eyre, who said he was \"beyond shocked by anything that the Israeli government does\", and the novelist and screenwriter Hanif Kureishi, who called the pair \"both brave and admirable, standing up to state oppression, steadfast in their pursuit of the truth\".",
       "incident_fingerprint": "despite alarming nature these current threats it is important emphasise that israel"
-    },
-    {
-      "id": 1061,
-      "url": "https://www.ansa.it/toscana/notizie/2026/09/15/firenze-omaggia-oriana-fallaci-nei-20-anni-dalla-morte_0d32b0b3-da20-4e0f-bd93-d541130a47db.html",
-      "title": "Firenze omaggia Oriana Fallaci nei 20 anni dalla morte",
-      "published_date": "Tue, 15 Sep 2026 17:15:49 +0200",
-      "domain": "www.ansa.it",
-      "country": "IT",
-      "severity": "CRITICAL",
-      "incident_type": "DISAPPEARANCE",
-      "description": "Firenze omaggia Oriana Fallaci nei 20 anni dalla morte Una cerimonia con la deposizione di una corona alla memoria di Oriana Fallaci questa mattina a Firenze, al cimitero degli Allori, dove \u00e8 sepolta, ha aperto le celebrazioni per i 20 anni dalla scomparsa della scrittrice e giornalista.",
-      "language": "it",
-      "source_country": "IT",
-      "collected_at": "2026-09-15 18:24:48",
-      "matched_query": "rss:www.ansa.it",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text",
-      "evidence_text": "Firenze omaggia Oriana Fallaci nei 20 anni dalla morte Una cerimonia con la deposizione di una corona alla memoria di Oriana Fallaci questa mattina a Firenze, al cimitero degli Allori, dove \u00e8 sepolta, ha aperto le celebrazioni per i 20 anni dalla scomparsa della scrittrice e giornalista.",
-      "incident_fingerprint": "firenze omaggia oriana fallaci nei 20 anni dalla morte una cerimonia con"
     }
   ]
 }

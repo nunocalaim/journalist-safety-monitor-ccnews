@@ -1,0 +1,44 @@
+{
+  "timestamp": "2026-10-01T15:06:19.264278",
+  "alert_count": 2,
+  "incidents": [
+    {
+      "id": 1164,
+      "url": "https://www.mirror.co.uk/news/world-news/crete-weather-warning-greece-holidays-37723672",
+      "title": "Crete red weather alert as heavy rain and storms shut schools and man found dead",
+      "published_date": "Thu, 1 Oct 2026 14:16:28 +0000",
+      "domain": "mirror.co.uk",
+      "country": "UK",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "An 80-year-old shepherd from the Rethymno village of Karines was found dead after going missing on Wednesday evening, according to Greek public broadcaster ERT.",
+      "language": "en",
+      "source_country": "UK",
+      "collected_at": "2026-10-01 15:06:13",
+      "matched_query": "rss:mirror.co.uk",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "An 80-year-old shepherd from the Rethymno village of Karines was found dead after going missing on Wednesday evening, according to Greek public broadcaster ERT.",
+      "incident_fingerprint": "80 year old shepherd from rethymno village karines found dead after going"
+    },
+    {
+      "id": 1165,
+      "url": "https://www.lavanguardia.com/local/20261001/11648377/bandas-marihuana-intentan-infiltrarse-policia-alerta-comisario-chacon.html",
+      "title": "El comisario Chac\u00f3n alerta de que las bandas de la marihuana intentan infiltrarse en la polic\u00eda",
+      "published_date": "01 Oct 2026 11:24:48 +0200",
+      "domain": "www.lavanguardia.com",
+      "country": "ES",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "La jornada de la OAC quer\u00eda establecer una reflexi\u00f3n entre fiscales, polic\u00edas, analistas de la criminalidad y periodistas sobre los riesgos de que los sistemas mafiosos infecten la administraci\u00f3n p\u00fablica; en la jornada intervino Matthew Caruana, hijo de Daphne Caruana, periodista de investigaci\u00f3n maltesa, asesinada por la mafia local por sus investigaciones, que desvelaron la corrupci\u00f3n que carcom\u00eda al gobierno de la isla.",
+      "language": "es",
+      "source_country": "ES",
+      "collected_at": "2026-10-01 15:06:13",
+      "matched_query": "rss:www.lavanguardia.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "La jornada de la OAC quer\u00eda establecer una reflexi\u00f3n entre fiscales, polic\u00edas, analistas de la criminalidad y periodistas sobre los riesgos de que los sistemas mafiosos infecten la administraci\u00f3n p\u00fablica; en la jornada intervino Matthew Caruana, hijo de Daphne Caruana, periodista de investigaci\u00f3n maltesa, asesinada por la mafia local por sus investigaciones, que desvelaron la corrupci\u00f3n que carcom\u00eda al gobierno de la isla.",
+      "incident_fingerprint": "la jornada de la oac quer establecer una reflexi n entre fiscales"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-10-03T07:05:48.956757",
-  "alert_count": 4,
+  "timestamp": "2026-10-03T13:00:08.263873",
+  "alert_count": 5,
   "incidents": [
     {
       "id": 1198,
@@ -20,6 +20,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Morto Angelo Capulli, fratello della giornalista Maria Grazia scomparsa nel 2015: aveva 62 anni MACERATA Per undici anni ha tenuto viva la memoria della sorella Maria Grazia Capulli, la giornalista del Tg2 scomparsa nel 2015, trasformando il dolore in iniziative, premi e occasioni dedicate soprattutto ai giovani.",
       "incident_fingerprint": "morto angelo capulli fratello della giornalista maria grazia scomparsa nel 2015 aveva"
+    },
+    {
+      "id": 1201,
+      "url": "https://www.independent.co.uk/arts-entertainment/tv/news/celebrity-traitors-amol-rajan-b3060732.html",
+      "title": "Amol Rajan admits playing the \u2018wrong game\u2019 after early Celebrity Traitors exit",
+      "published_date": "Sat, 03 Oct 2026 12:31:04 GMT",
+      "domain": "www.independent.co.uk",
+      "country": "UK",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Amol Rajan admits playing the 'wrong game' after early Celebrity Traitors exit Broadcaster was first contestant eliminated on new series after being 'murdered' by the Traitors",
+      "language": "en",
+      "source_country": "UK",
+      "collected_at": "2026-10-03 13:00:02",
+      "matched_query": "rss:www.independent.co.uk",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Amol Rajan admits playing the 'wrong game' after early Celebrity Traitors exit Broadcaster was first contestant eliminated on new series after being 'murdered' by the Traitors",
+      "incident_fingerprint": "amol rajan admits playing wrong game after early celebrity traitors exit broadcaster"
     },
     {
       "id": 1180,

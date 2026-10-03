@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-10-03T18:00:40.467040",
-  "alert_count": 6,
+  "timestamp": "2026-10-03T22:42:07.327782",
+  "alert_count": 7,
   "incidents": [
     {
       "id": 1198,
@@ -115,6 +115,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "La jornada de la OAC quer\u00eda establecer una reflexi\u00f3n entre fiscales, polic\u00edas, analistas de la criminalidad y periodistas sobre los riesgos de que los sistemas mafiosos infecten la administraci\u00f3n p\u00fablica; en la jornada intervino Matthew Caruana, hijo de Daphne Caruana, periodista de investigaci\u00f3n maltesa, asesinada por la mafia local por sus investigaciones, que desvelaron la corrupci\u00f3n que carcom\u00eda al gobierno de la isla.",
       "incident_fingerprint": "la jornada de la oac quer establecer una reflexi n entre fiscales"
+    },
+    {
+      "id": 1205,
+      "url": "https://www.perthnow.com.au/entertainment/movies/obsession-submitted-as-musicalcomedy-for-golden-globes-c-22954802",
+      "title": "Obsession 'submitted as musical/comedy' for Golden Globes",
+      "published_date": "2026-10-01",
+      "domain": "www.perthnow.com.au",
+      "country": "AU",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "She told The Hollywood Reporter: \"I'm sitting here like, 'Aw, poor Sarah gets brutally killed.' The whole theatre at TIFF erupted into cheering at that moment.",
+      "language": "en",
+      "source_country": "AU",
+      "collected_at": "2026-10-03 22:41:56",
+      "matched_query": "ccnews:www.perthnow.com.au",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "She told The Hollywood Reporter: \"I'm sitting here like, 'Aw, poor Sarah gets brutally killed.' The whole theatre at TIFF erupted into cheering at that moment.",
+      "incident_fingerprint": "told hollywood reporter i m sitting here like aw poor sarah gets"
     }
   ]
 }

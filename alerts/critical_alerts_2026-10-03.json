@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-10-03T13:00:08.263873",
-  "alert_count": 5,
+  "timestamp": "2026-10-03T18:00:40.467040",
+  "alert_count": 6,
   "incidents": [
     {
       "id": 1198,
@@ -39,6 +39,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Amol Rajan admits playing the 'wrong game' after early Celebrity Traitors exit Broadcaster was first contestant eliminated on new series after being 'murdered' by the Traitors",
       "incident_fingerprint": "amol rajan admits playing wrong game after early celebrity traitors exit broadcaster"
+    },
+    {
+      "id": 1203,
+      "url": "https://oglobo.globo.com/mundo/epoca/noticia/2026/10/03/jornalista-e-assassinado-a-tiros-em-municipio-no-oeste-da-guatemala-e-delegacia-local-e-incendiada.ghtml",
+      "title": "Jornalista \u00e9 assassinado a tiros em munic\u00edpio no oeste da Guatemala, e delegacia local \u00e9 incendiada",
+      "published_date": "Sat, 03 Oct 2026 16:21:26 -0000",
+      "domain": "oglobo.globo.com",
+      "country": "BR",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Jornalista \u00e9 assassinado a tiros em munic\u00edpio no oeste da Guatemala, e delegacia local \u00e9 incendiada Jornalista \u00e9 assassinado a tiros em munic\u00edpio no oeste da Guatemala, e delegacia local \u00e9 incendiada Segundo a pol\u00edcia, multid\u00e3o ateou fogo \u00e0 sede e a uma resid\u00eancia por suspeita de abrir um envolvido no homic\u00eddio Por O Globo com AFP \u2014 Cidade da Guatemala Atualizado Um jornalista foi assassinado em uma comunidade ind\u00edgena no oeste da Guatemala, perto da fronteira com o M\u00e9xico, o que desencadeou dist\u00farbios nos quais uma delegacia de pol\u00edcia foi incendiada, informaram neste s\u00e1bado (3) uma associa\u00e7\u00e3o de imprensa e a pol\u00edcia.",
+      "language": "pt",
+      "source_country": "BR",
+      "collected_at": "2026-10-03 18:00:35",
+      "matched_query": "rss:oglobo.globo.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Jornalista \u00e9 assassinado a tiros em munic\u00edpio no oeste da Guatemala, e delegacia local \u00e9 incendiada Jornalista \u00e9 assassinado a tiros em munic\u00edpio no oeste da Guatemala, e delegacia local \u00e9 incendiada Segundo a pol\u00edcia, multid\u00e3o ateou fogo \u00e0 sede e a uma resid\u00eancia por suspeita de abrir um envolvido no homic\u00eddio Por O Globo com AFP \u2014 Cidade da Guatemala Atualizado Um jornalista foi assassinado em uma comunidade ind\u00edgena no oeste da Guatemala, perto da fronteira com o M\u00e9xico, o que desencadeou dist\u00farbios nos quais uma delegacia de pol\u00edcia foi incendiada, informaram neste s\u00e1bado (3) uma associa\u00e7\u00e3o de imprensa e a pol\u00edcia.",
+      "incident_fingerprint": "jornalista assassinado tiros em munic pio no oeste da guatemala e delegacia"
     },
     {
       "id": 1180,

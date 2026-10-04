@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-10-04T18:16:49.035611",
-  "alert_count": 11,
+  "timestamp": "2026-10-04T23:10:45.539361",
+  "alert_count": 12,
   "incidents": [
     {
       "id": 1217,
@@ -210,6 +210,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Adem\u00e1s, consideran que \"el homicidio reproduce ciertos patrones de los casos de los cuatro periodistas asesinados el a\u00f1o pasado\".",
       "incident_fingerprint": "adem s consideran que el homicidio reproduce ciertos patrones de los casos"
+    },
+    {
+      "id": 1224,
+      "url": "https://www.elespectador.com/judicial/tumban-fallo-que-no-reconocia-como-victimas-a-familiares-del-periodista-jorge-enrique-pulido/",
+      "title": "Tumban fall\u00f3 que no reconoc\u00eda como v\u00edctimas a familiares del periodista Jorge Enrique Pulido",
+      "published_date": "2026-10-01",
+      "domain": "www.elespectador.com",
+      "country": "CO",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Fue uno de los periodistas, pol\u00edticos y l\u00edderes del pa\u00eds asesinados por orden del cartel de Medell\u00edn en los a\u00f1os m\u00e1s crudos del narcotr\u00e1fico y la guerra contra las drogas.",
+      "language": "es",
+      "source_country": "CO",
+      "collected_at": "2026-10-04 23:10:40",
+      "matched_query": "ccnews:www.elespectador.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Fue uno de los periodistas, pol\u00edticos y l\u00edderes del pa\u00eds asesinados por orden del cartel de Medell\u00edn en los a\u00f1os m\u00e1s crudos del narcotr\u00e1fico y la guerra contra las drogas.",
+      "incident_fingerprint": "fue uno de los periodistas pol ticos y l deres del pa"
     }
   ]
 }

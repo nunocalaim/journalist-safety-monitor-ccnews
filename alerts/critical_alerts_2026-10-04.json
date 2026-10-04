@@ -1,7 +1,26 @@
 {
-  "timestamp": "2026-10-04T07:41:15.058302",
-  "alert_count": 7,
+  "timestamp": "2026-10-04T13:47:01.554706",
+  "alert_count": 10,
   "incidents": [
+    {
+      "id": 1217,
+      "url": "https://www.seneweb.com/fr/news/Video/affaire-moussa-kaka-alioune-tine-cible-de-la-television-nationale-nigerienne_n_506031.html",
+      "title": "Affaire Moussa Kaka : Alioune Tine, cible de la t\u00e9l\u00e9vision nationale nig\u00e9rienne",
+      "published_date": "Sun, 04 Oct 2026 10:43:02 +0000",
+      "domain": "seneweb.com",
+      "country": "SN",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "Ce vendredi durant le journal, la t\u00e9l\u00e9vision nig\u00e9riane est revenue sur cette affaire en taclant le S\u00e9n\u00e9galais puis rappeler \"la vraie\" histoire de la lib\u00e9ration du journaliste nig\u00e9rian, de nouveau port\u00e9 disparu depuis le 31 ao\u00fbt 2026.",
+      "language": "fr",
+      "source_country": "SN",
+      "collected_at": "2026-10-04 13:46:56",
+      "matched_query": "rss:seneweb.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Ce vendredi durant le journal, la t\u00e9l\u00e9vision nig\u00e9riane est revenue sur cette affaire en taclant le S\u00e9n\u00e9galais puis rappeler \"la vraie\" histoire de la lib\u00e9ration du journaliste nig\u00e9rian, de nouveau port\u00e9 disparu depuis le 31 ao\u00fbt 2026.",
+      "incident_fingerprint": "ce vendredi durant le journal la t l vision nig riane est"
+    },
     {
       "id": 1198,
       "url": "https://www.ilmessaggero.it/marche/angelo_capulli_morto_fratello_maria_grazia_cosa_aveva-9801408.html",
@@ -134,6 +153,44 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "She told The Hollywood Reporter: \"I'm sitting here like, 'Aw, poor Sarah gets brutally killed.' The whole theatre at TIFF erupted into cheering at that moment.",
       "incident_fingerprint": "told hollywood reporter i m sitting here like aw poor sarah gets"
+    },
+    {
+      "id": 1214,
+      "url": "https://www.infobae.com/colombia/2026/10/01/familiares-del-periodista-jorge-enrique-pulido-asesinado-por-el-cartel-de-medellin-podran-declararse-como-victimas-esto-fue-lo-que-decidio-el-consejo-de-estado/",
+      "title": "Familiares del periodista Jorge Enrique Pulido, asesinado por el Cartel de Medell\u00edn, podr\u00e1n declararse como v\u00edctimas: esto fue lo que decidi\u00f3 el Consejo de Estado",
+      "published_date": "2026-10-01",
+      "domain": "www.infobae.com",
+      "country": "AR",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Familiares del periodista Jorge Enrique Pulido, asesinado por el Cartel de Medell\u00edn, podr\u00e1n declararse como v\u00edctimas: esto fue lo que decidi\u00f3 el Consejo de Estado El Consejo de Estado orden\u00f3 revisar la negativa a reconocer como v\u00edctimas del conflicto armado interno a la esposa y al hijo del periodista Jorge Enrique Pulido Sierra, asesinado por orden del cartel de Medell\u00edn en 1989.",
+      "language": "es",
+      "source_country": "AR",
+      "collected_at": "2026-10-04 13:46:56",
+      "matched_query": "ccnews:www.infobae.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Familiares del periodista Jorge Enrique Pulido, asesinado por el Cartel de Medell\u00edn, podr\u00e1n declararse como v\u00edctimas: esto fue lo que decidi\u00f3 el Consejo de Estado El Consejo de Estado orden\u00f3 revisar la negativa a reconocer como v\u00edctimas del conflicto armado interno a la esposa y al hijo del periodista Jorge Enrique Pulido Sierra, asesinado por orden del cartel de Medell\u00edn en 1989.",
+      "incident_fingerprint": "familiares del periodista jorge enrique pulido asesinado por el cartel de medell"
+    },
+    {
+      "id": 1215,
+      "url": "https://larepublica.pe/politica/2026/10/01/consejo-de-prensa-peruana-alerta-sobre-instrumentalizacion-de-la-justicia-para-perseguir-periodistas-hnews-87175",
+      "title": "Consejo de Prensa Peruana alerta sobre instrumentalizaci\u00f3n de la justicia para perseguir periodistas",
+      "published_date": "2026-10-01",
+      "domain": "larepublica.pe",
+      "country": "PE",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Adem\u00e1s, consideran que \"el homicidio reproduce ciertos patrones de los casos de los cuatro periodistas asesinados el a\u00f1o pasado\".",
+      "language": "es",
+      "source_country": "PE",
+      "collected_at": "2026-10-04 13:46:56",
+      "matched_query": "ccnews:larepublica.pe",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Adem\u00e1s, consideran que \"el homicidio reproduce ciertos patrones de los casos de los cuatro periodistas asesinados el a\u00f1o pasado\".",
+      "incident_fingerprint": "adem s consideran que el homicidio reproduce ciertos patrones de los casos"
     }
   ]
 }

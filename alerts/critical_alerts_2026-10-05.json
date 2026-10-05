@@ -1,7 +1,26 @@
 {
-  "timestamp": "2026-10-05T07:33:24.074283",
-  "alert_count": 14,
+  "timestamp": "2026-10-05T16:43:22.285469",
+  "alert_count": 15,
   "incidents": [
+    {
+      "id": 1233,
+      "url": "https://oglobo.globo.com/blogs/ancelmo-gois/post/2026/10/apesar-da-forca-do-bolsonarismo-nomes-do-campo-de-lula-surpreendem-nas-urnas-do-rio.ghtml",
+      "title": "Apesar da for\u00e7a do bolsonarismo, nomes do campo de Lula surpreendem nas urnas do Rio",
+      "published_date": "Mon, 05 Oct 2026 15:40:21 -0000",
+      "domain": "oglobo.globo.com",
+      "country": "BR",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Criada na Mar\u00e9, ela \u00e9 irm\u00e3 da vereadora Marielle Franco, assassinada em 2018, e \u00e9 professora, jornalista e mestre em Rela\u00e7\u00f5es \u00c9tnico-Raciais.",
+      "language": "pt",
+      "source_country": "BR",
+      "collected_at": "2026-10-05 16:43:16",
+      "matched_query": "rss:oglobo.globo.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Criada na Mar\u00e9, ela \u00e9 irm\u00e3 da vereadora Marielle Franco, assassinada em 2018, e \u00e9 professora, jornalista e mestre em Rela\u00e7\u00f5es \u00c9tnico-Raciais.",
+      "incident_fingerprint": "criada na mar ela irm da vereadora marielle franco assassinada em 2018"
+    },
     {
       "id": 1217,
       "url": "https://www.seneweb.com/fr/news/Video/affaire-moussa-kaka-alioune-tine-cible-de-la-television-nationale-nigerienne_n_506031.html",

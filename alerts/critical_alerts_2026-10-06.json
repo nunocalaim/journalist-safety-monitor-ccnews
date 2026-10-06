@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-10-06T08:19:42.865946",
-  "alert_count": 17,
+  "timestamp": "2026-10-06T19:24:07.320003",
+  "alert_count": 18,
   "incidents": [
     {
       "id": 1243,
@@ -39,6 +39,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Hab\u00eda decapitado a periodistas, quemado vivo a un piloto jordano y asesinado a 21 cristianos coptos en Libia.",
       "incident_fingerprint": "hab decapitado periodistas quemado vivo un piloto jordano y asesinado 21 cristianos"
+    },
+    {
+      "id": 1254,
+      "url": "https://www.theguardian.com/global-development/video/2026/oct/06/ngos-say-israel-bombed-a-journalist-and-appeared-to-attack-ambulances-trying-to-aid-her-explainer",
+      "title": "NGOs say Israel bombed a journalist and appeared to attack ambulances trying to aid her \u2013 explainer",
+      "published_date": "Tue, 06 Oct 2026 14:13:55 GMT",
+      "domain": "theguardian.com",
+      "country": "UK",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "NGOs say Israel bombed a journalist and appeared to attack ambulances trying to aid her \u2013 explainer NGOs say Israel bombed a journalist and appeared to attack ambulances trying to aid her \u2013 explainer Journalist Amal Khalil was killed in April in what colleagues described as a sustained attack by Israeli forces.",
+      "language": "en",
+      "source_country": "UK",
+      "collected_at": "2026-10-06 19:24:01",
+      "matched_query": "rss:theguardian.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "NGOs say Israel bombed a journalist and appeared to attack ambulances trying to aid her \u2013 explainer NGOs say Israel bombed a journalist and appeared to attack ambulances trying to aid her \u2013 explainer Journalist Amal Khalil was killed in April in what colleagues described as a sustained attack by Israeli forces.",
+      "incident_fingerprint": "ngos say israel bombed journalist appeared attack ambulances trying aid explainer ngos"
     },
     {
       "id": 1233,

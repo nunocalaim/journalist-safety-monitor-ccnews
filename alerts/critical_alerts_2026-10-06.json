@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-10-06T01:40:01.267562",
-  "alert_count": 16,
+  "timestamp": "2026-10-06T08:19:42.865946",
+  "alert_count": 17,
   "incidents": [
     {
       "id": 1243,
@@ -20,6 +20,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Il cordoglio del ministro Lollobrigida e delle associazioni \"\u00c8 con profondo dolore che apprendo della scomparsa di Alessandra Moneti, giornalista dell'ANSA che ho avuto modo di incontrare e conoscere in tante occasioni istituzionali.",
       "incident_fingerprint": "il cordoglio del ministro lollobrigida e delle associazioni con profondo dolore che"
+    },
+    {
+      "id": 1248,
+      "url": "https://www.lavanguardia.com/internacional/20261006/11651800/nina-perdida-estado-islamico-isis.html",
+      "title": "La ni\u00f1a perdida del Estado Isl\u00e1mico",
+      "published_date": "06 Oct 2026 06:00:00 +0200",
+      "domain": "www.lavanguardia.com",
+      "country": "ES",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Hab\u00eda decapitado a periodistas, quemado vivo a un piloto jordano y asesinado a 21 cristianos coptos en Libia.",
+      "language": "es",
+      "source_country": "ES",
+      "collected_at": "2026-10-06 08:19:37",
+      "matched_query": "rss:www.lavanguardia.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Hab\u00eda decapitado a periodistas, quemado vivo a un piloto jordano y asesinado a 21 cristianos coptos en Libia.",
+      "incident_fingerprint": "hab decapitado periodistas quemado vivo un piloto jordano y asesinado 21 cristianos"
     },
     {
       "id": 1233,

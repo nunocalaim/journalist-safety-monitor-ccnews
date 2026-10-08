@@ -1,23 +1,21 @@
 name: Journalist Safety Monitoring (CC-NEWS)
 on:
-  # Schedule paused 2026-10-08: account hit 90% of its Git LFS storage quota
-  # (9.02/10GB, resets 2026-11-01) just 8 days after the September quota
-  # exhaustion reset. Root cause is still live on this branch -- every push
-  # re-uploads the full data/incidents.db (~600MB+) because article_candidates
-  # is still fused into it; the fix (splitting candidates into per-month
-  # files, already written and tested locally) hasn't been merged to this
-  # branch yet. Pausing the schedule stops new pushes from consuming more
-  # of the remaining ~1GB while that fix gets reconciled with the incidents
-  # collected since. Re-enable (uncomment the schedule: block below) once
-  # the split is merged and pushed -- see PLAN.md's Git LFS entries for the
-  # full story.
-  #
-  # schedule:
-  #   # Offset from the GDELT repo's 0,6,12,18 cron so the two don't collide.
-  #   # 4 runs/day x shard_count=4 x max_warc_files_per_run=1 processes ~4
-  #   # CC-NEWS WARC files/day, matching CC-NEWS's own ~16 files/day / 4
-  #   # shards publication rate -- see config.yaml's ccnews_collection.
-  #   - cron: '15 1,7,13,19 * * *'
+  # Paused 2026-10-08 through 2026-10-08 after the account hit 90% of its
+  # Git LFS storage quota 8 days into the cycle (see PLAN.md's 2026-10-08
+  # (17) entry) -- root cause was data/incidents.db still fusing
+  # article_candidates into one ~600MB+ file, fully re-uploaded on every
+  # push. Re-enabled now that the per-month candidates split (entry 16,
+  # finally pushed in entry 17) is live: going forward, incidents.db stays
+  # small and only the current month's candidates file changes, so a push
+  # costs single-digit MB, not ~600MB. Worth checking the LFS usage page
+  # again after a few days to confirm the growth rate is actually bounded
+  # before trusting this fully.
+  schedule:
+    # Offset from the GDELT repo's 0,6,12,18 cron so the two don't collide.
+    # 4 runs/day x shard_count=4 x max_warc_files_per_run=1 processes ~4
+    # CC-NEWS WARC files/day, matching CC-NEWS's own ~16 files/day / 4
+    # shards publication rate -- see config.yaml's ccnews_collection.
+    - cron: '15 1,7,13,19 * * *'
   workflow_dispatch:
     inputs:
       shard_index:

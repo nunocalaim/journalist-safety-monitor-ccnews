@@ -1,5 +1,258 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-10-08 (17): LFS quota hit 90% again on day 8 of a fresh cycle -- the Sep 22 fix finally pushed
+
+Entries 14-16 below (the validator fixes, the LFS outage discovery, and the
+candidates-per-month split) were all written and tested locally on
+2026-09-22, but every push attempt failed with "exceeded its LFS budget"
+that whole day, so none of it ever reached origin. The September cycle
+reset on its own by 2026-10-01 (not something we triggered), the scheduled
+workflow resumed pushing successfully -- and by 2026-10-08, GitHub's own
+usage alert showed **9.02 of 10GB used, 90%, 8 days into a cycle that
+doesn't reset until 2026-11-01**. Confirms the entry 16 prediction exactly:
+with the fix unpushed, origin was still fusing article_candidates into one
+~600MB+ file and re-uploading it in full on every push, so the baseline
+re-exhausted a fresh allowance in little over a week, not the ~3 weeks
+estimated (growth accelerated, or the baseline carried over was larger
+than assumed -- not verified further, not the priority today).
+
+**Immediate action**: paused the workflow's `schedule:` trigger (a
+few-line, non-LFS commit, safe to push even at 90%) to stop further
+automatic pushes while reconciling -- `workflow_dispatch` still available
+for manual runs. Confirmed the user has a $0 Git LFS budget set (overage
+blocks rather than bills), so pushing the actual fix was safe to attempt
+regardless of hitting the cap mid-push.
+
+**Reconciling 2+ weeks of divergence**: origin had kept collecting via the
+*unfixed* pipeline the whole time (Sep 21 -> Oct 8), growing to 1,182
+validated incidents (294 CRITICAL) and 679,229 article_candidates rows,
+619MB total -- bigger than the Sep 22 snapshot the original fix commits
+were built against. Rather than force-merge the stale local commits over
+newer data, re-did the same two steps fresh against origin's current
+database: migrated article_candidates into data/candidates/candidates_
+2026-{08,09,10}.db (row-count-verified: 679,229 in, 679,229 out across the
+three files; incidents.db 649MB -> 1.6MB), then re-ran the validator
+sweep -- **12 of 1,182 (1.0%) no longer validated**, all consistent with
+already-known bug classes (the Guwahati "STAFF REPORTER" byline cluster
+recurring on 3 more sentinelassam.com stories; one new Spanish "según
+Bild" source-attribution case). Reclassified the same way as every prior
+round: delete from `incidents`, insert into the current month's candidates
+file with the actual recomputed status/reason. **1,182 -> 1,170 validated,
+293 CRITICAL.** Full test suite green throughout (93/93).
+
+Known gap, not addressed by this entry: the storage already consumed by
+months of full-db pushes (including everything pushed between Sep 21 and
+Oct 8 under the unfixed workflow) is still sunk cost sitting in git
+history -- same as entry 16 already noted, only a destructive history
+rewrite reclaims it, and that's still a separate, explicitly-opt-in
+decision, not attempted here.
+
+## Update 2026-09-22 (16): split article_candidates into per-month files -- 554MB db -> 1.4MB + monthly files
+
+Follow-up to entry 15's Git LFS budget outage. The user's account-level
+billing page confirmed which quota was actually exceeded: bandwidth was
+trivial (0.37 GB used all month, nowhere near the 10GB allowance), but Git
+LFS **storage** was at ~7,440 GB-hr for the month so far -- averaging
+~14.5GB already, above the 10GB free allowance, entirely from
+`data/incidents.db` being fully re-uploaded (LFS can't diff a SQLite file)
+on every push, up to 4x/day. Storage billing doesn't reset the underlying
+bytes at the next cycle, only the counter -- so "wait for next month" was
+only ever going to buy a few weeks before the same ~14.5GB baseline (still
+sitting in git history) re-exhausted the fresh allowance again partway
+through, not a real fix.
+
+**Where the size actually was**: checked with SQLite's `dbstat` --
+`article_candidates` (+ its indexes) was 447 of 528MB (99.7%), `incidents`
+itself under 1.3MB. `article_candidates` is a pure audit trail (every
+article the validator looked at, kept only so false-negative rate can be
+reviewed against real data) growing ~265,000 rows / ~200MB a month; the
+actual valuable data (1,069 incidents) is negligible.
+
+**Fix (user's own suggestion, refined)**: rather than quarterly (still
+lets a single file reach 600MB+ before rotating, given current growth),
+split `article_candidates` into its own file **per calendar month**
+(`data/candidates/candidates_YYYY-MM.db`), leaving `incidents.db` holding
+just `incidents` + the small metadata tables. Once a month closes, its
+file never changes again -- git sees it as unmodified and never re-pushes
+it, so it never creates a new billable storage version again. Only the
+*current* month's file costs anything going forward, bounded by that
+month's growth rather than all of history.
+
+- `database.py`: `bulk_insert_candidates()` now writes to the current
+  month's file (opened/created lazily, cached, reopened on month
+  rollover). `export_candidates_to_csv()` queries every monthly file with
+  a plain per-file loop merged in Python -- deliberately NOT a single
+  ATTACHed UNION ALL query, since SQLite caps attached databases at 10 by
+  default and this project is meant to run for years. `purge_old_data()`
+  now deletes whole expired month files instead of row-level DELETE +
+  VACUUM (cheaper, and the natural retention unit now) -- trade-off:
+  whole-month granularity means a file can linger up to ~30 days past the
+  configured retention window versus the old exact-day cutoff, accepted
+  as fine for an audit-trail table.
+- One inherent trade-off from physical partitioning: the unique-URL
+  constraint on `article_candidates` only dedupes within a single month's
+  file now, not across months (SQLite can't enforce a constraint across
+  separate files) -- a URL re-examined in a later month gets a second
+  audit-trail row rather than being updated in place. Acceptable: this
+  table is a review aid, not the source of truth (`incidents`, still one
+  file, untouched by any of this).
+- **Checkout side fixed too, not just push**: `actions/checkout@v3`'s
+  blanket `lfs: true` would download *every* month's file on *every* run
+  forever, which would have made checkout bandwidth balloon exactly the
+  way push/storage used to -- switched to `lfs: false` plus a scoped
+  `git lfs pull --include=...` for just `incidents.db` and the
+  current + previous month's candidates file (the widest span any
+  rolling export needs). The day's first run (hour 1, matching this
+  workflow's own cron) additionally pulls every month so
+  `candidates_full.csv` can be regenerated with genuinely full history at
+  least once a day; the other 3 runs pass the new
+  `--skip-full-candidates-export` flag so a partial (current+previous-
+  month-only) result never gets committed mislabeled as "full".
+- One-time migration run locally against the real db (backed up first):
+  594,423 existing `article_candidates` rows split into
+  `candidates_2026-08.db` (255,897 rows, 191MB) and `candidates_2026-09.db`
+  (338,526 rows, 374MB, still growing), verified row-count-exact against
+  the source before dropping the table; `incidents.db` **554MB -> 1.4MB**
+  after `DROP TABLE` + `VACUUM`. Re-ran `export_data()` against the
+  migrated db and confirmed byte-identical row counts to before the
+  migration (67,923 candidate-status rows, 3,929 in the 10-day window).
+- 4 new tests added covering cross-month behavior specifically (nothing
+  in the existing suite exercised more than one month's file): writes
+  isolated to the current month, exports merging across months, the
+  empty-window-still-writes-a-header-only-file case, and expired-vs-
+  current-vs-not-yet-expired file purging. Full suite green (93/93).
+
+Still can't push (same LFS storage quota) -- this migration, plus entry
+15's fixes, sit as local commits ready to go once access returns. **Not
+fixed by this change**: the ~14.5GB already sitting in git history from
+months of full-db pushes is sunk cost; reducing it would mean rewriting
+git history (destructive, force-push, breaks any existing clones/forks) --
+a separate, explicitly-opt-in decision if the user ever wants it, not
+attempted here.
+
+## Update 2026-09-22 (15): Git LFS budget exceeded -- pipeline silently losing data since ~2026-09-21 07:00 UTC
+
+Found while trying to push the validator-fix commits below: `git push`
+failed with "This repository exceeded its LFS budget." `data/incidents.db`
+is a single opaque LFS blob, fully re-uploaded on every push (LFS can't
+diff a SQLite file) *and* fully re-downloaded on every run's checkout
+(`lfs: true`) -- and the db only ever grows, so monthly LFS bandwidth
+consumption (`current_db_size x runs_per_day x 30`) increases every day
+regardless of whether push frequency changes. This was always going to hit
+a wall eventually; 2026-09-21 is just when it did.
+
+**The bigger problem: this had been failing silently.**
+`.github/workflows/monitor.yml`'s last step was `git push || echo
+"Nothing to push"` -- but `git push` already exits 0 when there's genuinely
+nothing new to commit (the `git diff --staged --quiet || git commit`
+line above it is the no-op case); a non-zero exit there is always a REAL
+failure. Checked Actions' run history: origin's last actual commit is
+2026-09-21 07:03 UTC, but 3 scheduled runs after that (14:03, 22:34 on the
+21st, 06:10 on the 22nd) all show green "success" in Actions with no
+corresponding commit -- each one collected data, hit the LFS quota on
+push, and the `|| echo` fallback swallowed the failure and let the job
+report success anyway. Estimated ~24h of collected data lost (ephemeral
+runner, never persisted; some may get re-collected next time RSS/GDELT/
+CC-NEWS revisit the same URLs, but nothing guarantees that).
+
+**Fixed the silent-failure part**: removed the `|| echo` fallback so a
+real push failure now fails the job loudly (red X, not a swallowed
+success) -- pure observability, doesn't touch data or the validator.
+
+**The quota itself, by user decision, is not being fixed with money**:
+declined to purchase additional Git LFS data packs. Will accept no new
+committed data until the monthly quota resets, and hold any local commits
+(including the validator-fix round above) until then rather than push
+into a guaranteed-fail state. Every scheduled run between now and the
+reset will now show as a loud, visible failure in Actions (up to ~4x/day)
+until the quota resets -- expected and accepted, not a new problem.
+Structural fix for next time this comes up (not done now, no immediate
+need): stop committing the full db blob on every run, e.g. by writing
+new incidents to a smaller per-run file and only periodically
+consolidating into the main db, so LFS bandwidth cost per push stops
+scaling with the db's total size.
+
+## Update 2026-09-22 (14): 6 more validator bug classes, one deliberately left alone -- 8 of 1077 demoted
+
+Two weeks away, routine check ("pull remote, check it's working"). Actions
+had run cleanly the whole time (101/101 runs succeeded, ~4x/day), 877 ->
+1,077 validated incidents. Same audit discipline as the last two rounds:
+sampled the 38 current GDELT-live incidents plus a handful of recent CC-
+NEWS/RSS ones by hand rather than trusting the clean CI history alone.
+Found 7 more distinct false-positive shapes (all with real evidence), this
+time spread across GDELT, CC-NEWS, *and* RSS, not just GDELT:
+
+1. **Bare dateline byline noise.** "Guwahati: Man Seriously Injured in
+   Alleged Machete Attack ... STAFF REPORTER GUWAHATI: A man sustained
+   serious injuries..." -- an aggregator glued its own wire-style byline
+   ("<ROLE> <CITY>:") directly onto an unrelated story, no "is a ... at"
+   framing like the 2026-09-08 byline fix caught. New
+   `ENGLISH_EXCLUSION_PATTERNS` entry, with a negative lookahead excluding
+   common reporting verbs so a genuine quote lead-in ("the reporter said:
+   'I was attacked'") isn't swept up too.
+2. **Spanish reporting verbs not covered.** "El periodista señaló que la
+   actriz... había agredido..." (journalist as source describing someone
+   ELSE's alleged assault) -- "señaló" wasn't in the source-attribution
+   verb list. Also found the same bug in reversed order: '"..." afirmó la
+   periodista, quien añadió que...'. The reversed-order fix needed two
+   attempts: a first, plain "verb + role" version wrongly rejected two
+   *real* attacks (a reporter hit by what sounds like a tear-gas canister,
+   quoted describing it: '"Me cayó uno en el brazo," dijo la reportera')
+   because a bare quote tag is the standard Spanish attribution shape for
+   a victim narrating her own experience too -- verb-then-role alone can't
+   tell the two apart. Fixed by requiring the "quien <verb> que"
+   continuation clause that only appears when the journalist is narrating
+   someone *else's* situation, not just being quoted. Caught by testing
+   the fix against nearby real incidents before applying it db-wide, not
+   just the case that motivated it -- same discipline as the comma-
+   boundary near-miss from the 2026-08-26 round.
+3. **Generic/historical reference to journalists as a class.** A lawyer's
+   death story mentioned she'd supported "periodistas agredidos y ... las
+   familias de los periodistas asesinados" (attacked journalists and the
+   families of murdered journalists) -- plural, definite-article,
+   unconnected to the actual subject -- matched as a fresh KILLING. New
+   Spanish exclusion pattern.
+4. **Idiomatic harm-action verbs.** Spanish "sentirse atacado" (feel
+   rhetorically attacked in conversation, not physical violence) and
+   Italian "col fiato sospeso" ("with bated breath" -- "sospeso" is a real
+   CENSORSHIP term, but not in this fixed idiom). New exclusion patterns
+   for both languages.
+5. **Portuguese "redação" word-sense ambiguity.** Means both "newsroom" (a
+   real, kept media_subject_terms sense) and "essay/writing style" -- a
+   grammar op-ed about banned punctuation matched "manuais de redação"
+   (style guides) as CENSORSHIP. Scoped the exclusion to that specific
+   idiom rather than removing "redação" from media_subject_terms, since
+   the newsroom sense is real.
+6. **Release not recognized as ending a detention.** "Sophia Huang Xueqin
+   the imprisoned journalist ... was released from prison, five years
+   after her arrest" validated as a fresh CRITICAL detention. New
+   `RETROSPECTIVE_PATTERNS` entry -- doesn't require the "years after"
+   qualifier, since any release framing means the acute harm is already
+   over.
+
+**Deliberately left unfixed, by explicit user decision:** a journalist as
+the *perpetrator* of harm against someone else (e.g. "fue agredida
+físicamente por el periodista" -- she was assaulted *by* the journalist),
+rather than the victim. The validator doesn't distinguish agent from
+patient; asked, the user chose to keep counting these rather than build
+that distinction. **Also flagged but not treated as a bug:** several GDELT
+hits were monthly/aggregate press-freedom-org statistics or generic trend
+statements ("year after year a journalist still gets killed") rather than
+one specific fresh incident -- a definitional question about what counts
+as "an incident," not a validator correctness bug. User agreed to leave
+this alone rather than build detection for it.
+
+Widened the same way as before: swept all 1,077 validated incidents
+through the fixed validator -- **8 (0.7%) no longer validate** (4 gdelt, 3
+rss, 1 ccnews), reclassified (delete from `incidents`, insert into
+`article_candidates` with the actual recomputed status/reason). **1,077 ->
+1,069 validated incidents, CRITICAL 273 -> 272.** 8 new regression tests
+added from the real cases, including the tear-gas-reporter near-miss that
+caught the over-broad first version of fix #2. Full suite green throughout
+(89/89 after additions). Reports/exports regenerated from the cleaned
+database (collection-stat fields read 0, same convention as both prior
+reclassification rounds).
+
 ## Update 2026-09-08 (13): 4 more validator bug classes, mostly GDELT -- 35 of 907 (3.9%) demoted
 
 A status check after 6 days away ("pull remote, tell me if this is

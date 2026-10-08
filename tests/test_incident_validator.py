@@ -281,18 +281,41 @@ def test_validate_incident_types(article, expected_status, expected_type):
         # years-old killing (Daphne Caruana Galizia, killed 2017) picked up
         # as a fresh CRITICAL killing.
         ("es", "Un jurado absolvió al empresario acusado de ordenar el asesinato de la periodista en 2017.", "candidate", None),
+        # Real false positives (2026-09-22, GDELT): reversed-order reporting-
+        # verb attribution ("afirmó la periodista", verb before the role
+        # noun) -- the forward-order pattern above only covered "periodista
+        # afirmó", not this shape.
+        ("es", "\"Yo tiendo a creer a la mujer\", afirmó la periodista, quien añadió que conoció a personas que negaron haber agredido a sus parejas.", "rejected", None),
+        ("es", "El periodista señaló que la actriz presuntamente había agredido físicamente a la hija de un actor.", "rejected", None),
+        # Real false positive (2026-09-22, GDELT): a generic/historical
+        # reference to journalists as a class ("the families of murdered
+        # journalists"), not the actual subject of the story (a lawyer's
+        # death).
+        ("es", "La abogada dio apoyo a periodistas agredidos y a las familias de los periodistas asesinados.", "candidate", None),
+        # Real false positive (2026-09-22, GDELT): idiomatic "sentirse
+        # atacado" (feel rhetorically attacked), not physical violence.
+        ("es", "El periodista sabe contestar cuando se siente atacado en una entrevista.", "candidate", None),
 
         ("pt", "Jornalista foi assassinado a tiros na capital.", "validated", "KILLING"),
         ("pt", "Um repórter foi detido pela polícia durante o protesto.", "validated", "DETENTION"),
         ("pt", "Uma testemunha disse aos jornalistas que seu filho foi assassinado no ataque.", "rejected", None),
         ("pt", "Um ano depois do assassinato da jornalista, a justiça segue ausente.", "candidate", None),
         ("pt", "O jornalista não foi assassinado durante a operação, segundo a polícia.", "candidate", None),
+        # Real false positive (2026-09-22, GDELT): "redação" is ambiguous
+        # between "newsroom" (a real media_subject_terms sense) and "essay/
+        # writing style" -- a grammar op-ed about banned punctuation matched
+        # "manuais de redação" (style guides) as a fresh CENSORSHIP incident.
+        ("pt", "Aquela pontuação é proibida pelos manuais de redação, mas indispensável neste caso.", "candidate", None),
 
         ("it", "Il giornalista è stato ucciso a colpi di arma da fuoco nella capitale.", "validated", "KILLING"),
         ("it", "Un cronista è stato arrestato dalla polizia durante la protesta.", "validated", "DETENTION"),
         ("it", "Un testimone ha detto ai giornalisti che suo figlio è stato ucciso nell'attacco.", "rejected", None),
         ("it", "Ad un anno dall'omicidio della giornalista, la giustizia resta assente.", "candidate", None),
         ("it", "Il giornalista non è stato ucciso durante l'operazione, secondo la polizia.", "candidate", None),
+        # Real false positive (2026-09-22, GDELT): idiomatic "col fiato
+        # sospeso" ("with bated breath") uses "sospeso" ("suspended") as a
+        # fixed anticipation idiom, nothing to do with a suspended license.
+        ("it", "Tutti i giornalisti stavano ascoltando col fiato sospeso la promessa del governo.", "candidate", None),
         # Real false positive (2026-09-07, GDELT): a jury acquittal over a
         # years-old killing (Daphne Caruana Galizia, killed 2017), matched
         # as same-sentence co-occurrence since real GDELT text for this

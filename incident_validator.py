@@ -225,6 +225,14 @@ RETROSPECTIVE_PATTERNS = [
     # as a fresh CRITICAL killing.
     r"\b(?:jury|court|trial|acquit(?:s|ted|tal)?|convict(?:s|ed|ion)?|found (?:not )?guilty|verdict)\b(?:\s+\S+){0,10}\s+(?:murder(?:ed|er)?|killing|killed|assassinat(?:ion|ed))\b",
     r"\b(?:murder(?:ed|er)?|killing|killed|assassinat(?:ion|ed))\b(?:\s+\S+){0,10}\s+(?:trial|verdict|acquit(?:s|ted|tal)?|convict(?:s|ed|ion)?|jury)\b",
+    # A journalist being RELEASED from detention means the detention has
+    # already ended -- not a fresh incident, even when the release itself is
+    # today's news. Found 2026-09-22: "Sophia Huang Xueqin the imprisoned
+    # journalist ... was released from prison, five years after her arrest"
+    # validated as a fresh CRITICAL/HIGH detention. Deliberately doesn't
+    # require the "years after" qualifier -- any release framing means the
+    # acute harm is over, so downgrading to candidate is safe here too.
+    r"\breleased? from (?:prison|jail|custody|detention)\b",
 ]
 
 # Sentence-level exclusions: the sentence contains a media-subject term and
@@ -258,6 +266,16 @@ ENGLISH_EXCLUSION_PATTERNS = [
     # character window can.
     r"\bis\s+an?\b.{0,30}?\b(?:editor|correspondent|reporter|journalist)s?\b.{0,30}?\b(?:at|for|with)\b",
     r"\beditor'?s note\b",
+    # Bare dateline byline, no "is a ... at" framing -- found 2026-09-22:
+    # "Guwahati: Man Seriously Injured in Alleged Machete Attack ... STAFF
+    # REPORTER GUWAHATI: A man sustained serious injuries..." is an
+    # aggregator gluing the same headline to its own wire-style byline
+    # ("<ROLE> <CITY>:") with no sentence boundary -- "reporter" reads as
+    # sitting right next to "injured"/"attacked", but it's the byline of the
+    # piece, not the victim. The negative lookahead excludes common
+    # reporting verbs so a genuine quote lead-in ("the reporter said:
+    # 'I was attacked'") doesn't get swept up by the same pattern.
+    r"\b(?:staff\s+)?(?:reporter|correspondent)\b\s+(?!said\b|says\b|stated\b|told\b|added\b|explained\b|noted\b|wrote\b)[a-z]+\s*:",
 ]
 
 # Negation attached directly to a harm-action term flips its meaning (e.g.

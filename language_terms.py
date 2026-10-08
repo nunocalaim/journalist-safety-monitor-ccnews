@@ -135,7 +135,20 @@ SPANISH = LanguageTerms(
         ],
     },
     source_attribution_patterns=[
-        r"\b(?:periodista|reportero|reportera|corresponsal|editor|editora)\s+(?:informa|inform[oó]|dice|dijo|escribe|escribi[oó]|afirma|afirm[oó])\b",
+        r"\b(?:periodista|reportero|reportera|corresponsal|editor|editora)\s+(?:informa|inform[oó]|dice|dijo|escribe|escribi[oó]|afirma|afirm[oó]|se[nñ]ala|se[nñ]al[oó])\b",
+        # Reversed order, narrowly scoped -- "afirmó la periodista, quien
+        # añadió que conoció a personas que negaron haber agredido a sus
+        # parejas..." is a journalist quoted commenting on OTHER people's
+        # situation, not her own. But a bare verb-then-role quote tag
+        # ('"Me cayó uno en el brazo," dijo la reportera') is the standard
+        # Spanish attribution for a VICTIM narrating her own experience --
+        # tried a plain "(dijo|afirmó|...) (el|la) periodista" reversed
+        # pattern first and it wrongly rejected two real attacks (a reporter
+        # hit by a tear-gas canister) where that's exactly the shape. Scoped
+        # down to require the "quien <verb> que" continuation clause that
+        # signals the journalist is narrating someone ELSE's situation, not
+        # just being quoted.
+        r"\b(?:dice|dijo|afirma|afirm[oó]|se[nñ]ala|se[nñ]al[oó])\s+(?:el|la|los|las)?\s*(?:periodista|reportero|reportera|corresponsal|editor|editora)\b,?\s+quien\s+(?:a[nñ]adi[oó]|coment[oó]|explic[oó]|dijo|afirm[oó])\s+que\b",
         # "periódico" included alongside the person roles below: found
         # 2026-08-26 that "según el periódico Kathmandu Post" (a Nepal
         # floods story citing a newspaper as its source) was validating as
@@ -174,6 +187,23 @@ SPANISH = LanguageTerms(
     ],
     negation_prefixes=[r"\bno", r"\bnunca", r"\bjam[aá]s"],
     extra_negatable_actions=["da[nñ]ado", "da[nñ]ada", "lastimado", "lastimada"],
+    exclusion_patterns=[
+        # Generic/historical reference to journalists as a class ("the
+        # families of murdered journalists"), not the actual subject of the
+        # story. Found 2026-09-22: a lawyer's death story mentioned she had
+        # supported "periodistas agredidos y ... las familias de los
+        # periodistas asesinados" (attacked journalists and the families of
+        # murdered journalists) -- a plural, definite-article reference to
+        # journalists broadly, not a specific fresh victim -- but matched as
+        # a fresh KILLING on "periodista"+"asesinado".
+        r"\bfamilias? de (?:los |las )?periodistas\b",
+        # Idiomatic/figurative use of a harm-action term: "sentirse atacado"
+        # (to feel [rhetorically] attacked in conversation/debate) is not
+        # physical violence. Found 2026-09-22: a football-coach profile used
+        # "periodista ... contestar cuando se siente atacado" as a
+        # hypothetical example of temperament, misclassified as an ATTACK.
+        r"\bsentirse atacad[oa]\b|\bse siente atacad[oa]\b",
+    ],
 )
 
 
@@ -259,6 +289,19 @@ PORTUGUESE = LanguageTerms(
     ],
     negation_prefixes=[r"\bn[ãa]o", r"\bnunca", r"\bjamais"],
     extra_negatable_actions=["prejudicado", "prejudicada", "machucado", "machucada"],
+    exclusion_patterns=[
+        # Word-sense ambiguity: "redação" means both "newsroom" (a
+        # legitimate media_subject_terms entry -- "a redação foi atacada",
+        # the newsroom was attacked, is real) and "essay/wording/writing
+        # style". Found 2026-09-22: a grammar/style op-ed about banned
+        # punctuation ("pontuação proibida pelos manuais de redação" --
+        # punctuation banned by style-writing manuals) matched "redação" +
+        # "proibida" as a fresh CENSORSHIP incident. Scoped narrowly to the
+        # "manual(is) de redação" (style guide) idiom rather than removing
+        # "redação" from media_subject_terms entirely, since the newsroom
+        # sense is real and worth keeping.
+        r"\bmanuais? de reda[çc][aã]o\b",
+    ],
 )
 
 
@@ -363,6 +406,15 @@ ITALIAN = LanguageTerms(
     ],
     negation_prefixes=[r"\bnon", r"\bmai"],
     extra_negatable_actions=["danneggiato", "danneggiata", "leso", "lesa"],
+    exclusion_patterns=[
+        # Idiomatic use of a CENSORSHIP action term: "col fiato sospeso"
+        # ("with bated/held breath") uses "sospeso" ("suspended") as a fixed
+        # idiom about anticipation, nothing to do with a suspended license
+        # or broadcast. Found 2026-09-22: a German-election piece describing
+        # journalists listening "col fiato sospeso" (breathlessly) matched
+        # "giornalisti" + "sospeso" as a fresh CENSORSHIP incident.
+        r"\bfiato sospeso\b",
+    ],
 )
 
 

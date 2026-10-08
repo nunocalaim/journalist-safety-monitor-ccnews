@@ -34,7 +34,36 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          lfs: true
+          lfs: false
+
+      - name: Fetch only the Git LFS files this run needs
+        run: |
+          # data/candidates/candidates_YYYY-MM.db is one file per month
+          # (see PLAN.md's 2026-09-22 entry / database.py) -- `checkout`'s
+          # own `lfs: true` would pull EVERY month's file on every run,
+          # which would make checkout bandwidth grow without bound as
+          # months accumulate, defeating the point of splitting them out.
+          # Pull just incidents.db plus the current + previous month's
+          # candidates file (the widest window any rolling export needs)
+          # on most runs; the day's first run (hour 1, matching this
+          # workflow's own cron) additionally pulls every month so
+          # candidates_full.csv can be regenerated with true full history
+          # at least once a day, not committed stale forever.
+          # checkout's own lfs:true would also register the LFS git
+          # filters -- since that's skipped here (lfs: false above), do it
+          # explicitly so `git lfs pull` below has something to smudge with.
+          git lfs install --local
+          HOUR=$(date -u +%H)
+          CURRENT_MONTH=$(date -u +%Y-%m)
+          PREVIOUS_MONTH=$(date -u -d "$(date -u +%Y-%m-01) -1 day" +%Y-%m)
+          if [ "$((10#$HOUR))" -eq 1 ]; then
+            echo "First run of the day -- pulling all candidates months"
+            echo "FULL_CANDIDATES_PULL=1" >> "$GITHUB_ENV"
+            git lfs pull --include="data/incidents.db,data/candidates/*.db"
+          else
+            echo "FULL_CANDIDATES_PULL=0" >> "$GITHUB_ENV"
+            git lfs pull --include="data/incidents.db,data/candidates/candidates_${CURRENT_MONTH}.db,data/candidates/candidates_${PREVIOUS_MONTH}.db"
+          fi
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -54,13 +83,24 @@ jobs:
             SHARD_INDEX=$((10#$(date -u +%H) / 6))
           fi
           echo "Running CC-NEWS shard ${SHARD_INDEX}/4"
-          python journalist_safety_monitor.py --shard-count 4 --shard-index "${SHARD_INDEX}"
+          SKIP_FULL_FLAG=""
+          if [ "$FULL_CANDIDATES_PULL" != "1" ]; then
+            SKIP_FULL_FLAG="--skip-full-candidates-export"
+          fi
+          python journalist_safety_monitor.py --shard-count 4 --shard-index "${SHARD_INDEX}" ${SKIP_FULL_FLAG}
 
       - name: Commit and push results
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
-          mkdir -p reports alerts data/exports
-          git add reports alerts data/incidents.db data/exports data/ccnews_state.json
+          mkdir -p reports alerts data/exports data/candidates
+          git add reports alerts data/incidents.db data/candidates data/exports data/ccnews_state.json
           git diff --staged --quiet || git commit -m "Update monitoring data"
-          git push || echo "Nothing to push"
+          # No "|| echo" fallback here on purpose (found 2026-09-22): git
+          # push already exits 0 when there's simply nothing new to push
+          # (the commit above is a no-op), so a non-zero exit here is a
+          # REAL failure -- and swallowing it silently is exactly how a
+          # Git LFS quota outage went unnoticed for ~24h of scheduled runs,
+          # each showing green in Actions while quietly discarding that
+          # run's collected data. Let it fail the job loudly instead.
+          git push

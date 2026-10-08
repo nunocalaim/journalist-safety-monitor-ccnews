@@ -39,15 +39,29 @@ plus whatever GDELT's live search independently turns up.
 
 ## Where the results are
 
-- **`data/incidents.db`** — the source of truth. SQLite database with two
-  tables: `incidents` (validated incidents) and `article_candidates`
-  (everything the validator examined but didn't confirm — kept so
-  false-negative rate can be reviewed).
+- **`data/incidents.db`** — the source of truth: just the `incidents` table
+  (validated incidents) plus small metadata tables. Stays small (~1MB).
+- **`data/candidates/candidates_YYYY-MM.db`** — one file per month, holding
+  `article_candidates` (everything the validator examined but didn't
+  confirm — kept so false-negative rate can be reviewed). Split out from
+  `incidents.db` 2026-09-22: this table is the actual size driver (99%+ of
+  the old single file) and grows every run, while Git LFS re-uploads a
+  changed file in full on every push — fusing it to the small, rarely-
+  resized `incidents` table meant every push re-uploaded the entire,
+  ever-growing history. A closed month's file never changes again, so it's
+  never re-uploaded again either; only the current month costs anything
+  going forward. See PLAN.md's 2026-09-22 entry for the full story.
+  `IncidentDatabase` queries across every month's file transparently for
+  candidate exports/lookups — nothing else needs to know about the split.
 - **`data/exports/incidents_full.csv`** and `incidents_{10d,30d,180d}.csv` —
   validated incidents as flat CSV, full history plus rolling windows. Only
   written once there's at least one validated incident to export.
 - **`data/exports/candidates_full.csv`** / `candidates_10d.csv` — borderline
   articles for reviewing validator recall, not the headline results.
+  `candidates_full.csv` needs every month's file pulled locally to actually
+  be complete — the scheduled workflow only does that on the day's first
+  run (see `monitor.yml`), passing `--skip-full-candidates-export` on the
+  others so a partial export never gets committed mislabeled as "full".
 - **`reports/report_YYYY-MM-DD.md`** — one human-readable summary per day the
   pipeline ran.
 

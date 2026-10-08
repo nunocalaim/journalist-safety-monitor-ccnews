@@ -41,5 +41,17 @@
     "title": "Jury acquits businessman in journalist murder trial",
     "description": "A jury on Wednesday acquitted the businessman accused of ordering the 2017 car bomb killing that murdered investigative journalist Daphne Caruana Galizia.",
     "expected": "candidate"
+  },
+  {
+    "_comment": "Real false positive (2026-09-22, GDELT): an aggregator glued the same headline to its own wire-style byline with no sentence boundary -- 'STAFF REPORTER GUWAHATI:' reads as a media subject next to an unrelated machete-attack story.",
+    "title": "Guwahati: Man Seriously Injured in Alleged Machete Attack in Noonmati",
+    "description": "Guwahati: Man Seriously Injured in Alleged Machete Attack in Noonmati STAFF REPORTER GUWAHATI: A man sustained serious injuries after he was allegedly attacked with a machete in broad daylight.",
+    "expected": "candidate"
+  },
+  {
+    "_comment": "Real false positive (2026-09-22, GDELT): a journalist's release from prison -- the detention has already ended -- validated as a fresh CRITICAL detention.",
+    "title": "Imprisoned journalist freed after years behind bars",
+    "description": "Sophia Huang Xueqin the imprisoned journalist who helped ignite China's MeToo movement, was released from prison, five years after her arrest.",
+    "expected": "candidate"
   }
 ]

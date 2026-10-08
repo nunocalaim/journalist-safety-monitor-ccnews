@@ -17,20 +17,135 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# article_candidates lives in its own file PER MONTH (data/candidates/
+# candidates_YYYY-MM.db), not in incidents.db -- found 2026-09-22: it's a
+# pure audit trail (every article the validator looked at, kept so
+# false-negative rate can be reviewed) that dwarfs the actual incidents
+# data (447 of 528 MB, 594k of 595k rows) and grows ~200MB/month forever.
+# Git LFS can't diff a SQLite file -- any change re-uploads the WHOLE file
+# as a new billable object -- so keeping it fused to incidents.db meant
+# every push re-uploaded the entire, ever-growing history, which is what
+# ran the repo's Git LFS storage quota over budget. Once a month's file
+# stops changing, git stops re-uploading it: only the current month's file
+# costs anything going forward, bounded by that month's growth rather than
+# all of history. incidents.db itself (~1MB) is untouched by this --
+# see PLAN.md's 2026-09-22 entry for the full story.
+CANDIDATES_TABLE_SQL = '''
+    CREATE TABLE IF NOT EXISTS article_candidates (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        url TEXT UNIQUE NOT NULL,
+        title TEXT,
+        published_date TEXT,
+        domain TEXT,
+        source_country TEXT,
+        language TEXT,
+        matched_query TEXT,
+        validation_status TEXT,
+        validation_reason TEXT,
+        evidence_text TEXT,
+        collected_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        CONSTRAINT unique_candidate_url UNIQUE(url)
+    )
+'''
+CANDIDATES_INDEX_SQL = [
+    'CREATE INDEX IF NOT EXISTS idx_candidate_status ON article_candidates(validation_status)',
+    'CREATE INDEX IF NOT EXISTS idx_candidate_date ON article_candidates(published_date)',
+]
+# Matches CANDIDATES_TABLE_SQL's columns -- used as the CSV header when a
+# window has zero matching rows across every monthly file, so a quiet
+# day/window still produces a fresh (header-only) export rather than
+# silently leaving a stale file with an earlier day's data sitting there.
+CANDIDATES_COLUMNS = [
+    'id', 'url', 'title', 'published_date', 'domain', 'source_country',
+    'language', 'matched_query', 'validation_status', 'validation_reason',
+    'evidence_text', 'collected_at',
+]
+
 
 class IncidentDatabase:
     """SQLite database for storing and querying journalist safety incidents"""
-    
+
     def __init__(self, db_path: str = 'data/incidents.db'):
         """Initialize database connection and create tables if needed"""
         self.db_path = Path(db_path)
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
-        
+
         self.conn = sqlite3.connect(str(self.db_path))
         self.conn.row_factory = sqlite3.Row
-        
+
+        # candidates_dir sits next to incidents.db (not a hardcoded
+        # "data/candidates") so a differently-located db -- e.g. a test's
+        # tmp_path -- gets its own isolated candidates directory too.
+        self.candidates_dir = self.db_path.parent / 'candidates'
+        self._candidates_conn: Optional[sqlite3.Connection] = None
+        self._candidates_month: Optional[str] = None
+
         self.create_tables()
         logger.info(f"Database initialized: {self.db_path}")
+
+    def _candidates_db_path(self, when: Optional[datetime] = None) -> Path:
+        when = when or datetime.now()
+        return self.candidates_dir / f"candidates_{when.strftime('%Y-%m')}.db"
+
+    def _get_candidates_conn(self) -> sqlite3.Connection:
+        """Open (or create) the CURRENT month's candidates db, reopening if
+        the month has rolled over since the last call."""
+        current_month = datetime.now().strftime('%Y-%m')
+        if self._candidates_conn is not None and self._candidates_month == current_month:
+            return self._candidates_conn
+
+        if self._candidates_conn is not None:
+            self._candidates_conn.close()
+
+        self.candidates_dir.mkdir(parents=True, exist_ok=True)
+        path = self._candidates_db_path()
+        conn = sqlite3.connect(str(path))
+        conn.row_factory = sqlite3.Row
+        conn.execute(CANDIDATES_TABLE_SQL)
+        for index_sql in CANDIDATES_INDEX_SQL:
+            conn.execute(index_sql)
+        conn.commit()
+
+        self._candidates_conn = conn
+        self._candidates_month = current_month
+        return conn
+
+    def _all_candidates_db_paths(self) -> List[Path]:
+        if not self.candidates_dir.exists():
+            return []
+        return sorted(self.candidates_dir.glob('candidates_*.db'))
+
+    def _query_all_candidates(self, where_sql: str, params: tuple) -> List[sqlite3.Row]:
+        """Run the same SELECT against every month's candidates file and
+        merge the results in Python. Deliberately not a single ATTACHed
+        UNION ALL query -- SQLite caps the number of attached databases
+        (10 by default), which this project's own month-per-file design
+        will eventually exceed given enough years of operation; a plain
+        per-file loop has no such ceiling.
+
+        Adds a synthetic __sort_date column (same COALESCE(date(...), ...)
+        normalization the old single-table query sorted by) so callers can
+        sort merged rows consistently despite published_date's wildly
+        inconsistent formats across sources (RSS's RFC-822 dates, GDELT's
+        "20260920T143000Z", CC-NEWS's plain "2026-09-04", etc.) -- a raw
+        Python string sort across those would not come out chronological.
+        """
+        rows: List[sqlite3.Row] = []
+        for path in self._all_candidates_db_paths():
+            conn = sqlite3.connect(str(path))
+            conn.row_factory = sqlite3.Row
+            try:
+                cursor = conn.execute(
+                    f'''
+                    SELECT *, COALESCE(date(published_date), date(collected_at)) AS __sort_date
+                    FROM article_candidates {where_sql}
+                    ''',
+                    params,
+                )
+                rows.extend(cursor.fetchall())
+            finally:
+                conn.close()
+        return rows
     
     def create_tables(self):
         """Create all necessary tables and indexes"""
@@ -90,24 +205,6 @@ class IncidentDatabase:
             )
         ''')
 
-        self.conn.execute('''
-            CREATE TABLE IF NOT EXISTS article_candidates (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                url TEXT UNIQUE NOT NULL,
-                title TEXT,
-                published_date TEXT,
-                domain TEXT,
-                source_country TEXT,
-                language TEXT,
-                matched_query TEXT,
-                validation_status TEXT,
-                validation_reason TEXT,
-                evidence_text TEXT,
-                collected_at TEXT DEFAULT CURRENT_TIMESTAMP,
-                CONSTRAINT unique_candidate_url UNIQUE(url)
-            )
-        ''')
-        
         self.conn.execute('CREATE INDEX IF NOT EXISTS idx_country ON incidents(country)')
         self.conn.execute('CREATE INDEX IF NOT EXISTS idx_date ON incidents(published_date)')
         self.conn.execute('CREATE INDEX IF NOT EXISTS idx_severity ON incidents(severity)')
@@ -116,9 +213,10 @@ class IncidentDatabase:
         self._ensure_incidents_columns()
         self.conn.execute('CREATE INDEX IF NOT EXISTS idx_validation_status ON incidents(validation_status)')
         self.conn.execute('CREATE INDEX IF NOT EXISTS idx_incident_fingerprint ON incidents(incident_fingerprint)')
-        self.conn.execute('CREATE INDEX IF NOT EXISTS idx_candidate_status ON article_candidates(validation_status)')
-        self.conn.execute('CREATE INDEX IF NOT EXISTS idx_candidate_date ON article_candidates(published_date)')
-        
+        # article_candidates is NOT created here -- see the module-level
+        # comment above CANDIDATES_TABLE_SQL for why it lives in its own
+        # per-month file instead.
+
         self.conn.commit()
         logger.info("Database tables created/verified")
 
@@ -183,7 +281,18 @@ class IncidentDatabase:
         return new_count, duplicate_count
 
     def bulk_insert_candidates(self, candidates: List[Dict]) -> Tuple[int, int]:
-        """Insert candidate/rejected article decisions for review exports."""
+        """Insert candidate/rejected article decisions for review exports.
+
+        Writes to the CURRENT month's candidates file -- note this means
+        the unique-URL constraint only dedupes within that month, not
+        against earlier months' files (SQLite can't enforce a constraint
+        across separate database files). A URL re-examined in a later
+        month gets a second audit-trail row rather than being deduped or
+        updated in place. Acceptable here: this table is a review aid, not
+        the source of truth (that's `incidents`, still a single file with
+        its dedup untouched).
+        """
+        conn = self._get_candidates_conn()
         new_count = 0
         duplicate_count = 0
 
@@ -191,7 +300,7 @@ class IncidentDatabase:
             if not candidate.get('url'):
                 continue
             try:
-                self.conn.execute('''
+                conn.execute('''
                     INSERT OR REPLACE INTO article_candidates
                     (url, title, published_date, domain, source_country, language,
                      matched_query, validation_status, validation_reason, evidence_text)
@@ -212,7 +321,7 @@ class IncidentDatabase:
             except sqlite3.IntegrityError:
                 duplicate_count += 1
 
-        self.conn.commit()
+        conn.commit()
         return new_count, duplicate_count
 
     def _incident_fingerprint(self, incident: Dict) -> str:
@@ -421,31 +530,26 @@ class IncidentDatabase:
         logger.info(f"Exported {len(rows)} incidents to {filepath}")
 
     def export_candidates_to_csv(self, filepath: str, days: Optional[int] = None):
-        """Export review candidates to CSV."""
+        """Export review candidates to CSV, across every month's file."""
+        where_sql = "WHERE validation_status = 'candidate'"
+        params: tuple = ()
         if days:
-            cursor = self.conn.execute('''
-                SELECT *
-                FROM article_candidates
-                WHERE validation_status = 'candidate'
-                AND COALESCE(date(published_date), date(collected_at)) > date('now', '-' || ? || ' days')
-                ORDER BY COALESCE(date(published_date), date(collected_at)) DESC
-            ''', (days,))
-        else:
-            cursor = self.conn.execute('''
-                SELECT *
-                FROM article_candidates
-                WHERE validation_status = 'candidate'
-                ORDER BY COALESCE(date(published_date), date(collected_at)) DESC
-            ''')
+            where_sql += (
+                " AND COALESCE(date(published_date), date(collected_at))"
+                " > date('now', '-' || ? || ' days')"
+            )
+            params = (days,)
 
-        rows = cursor.fetchall()
+        rows = self._query_all_candidates(where_sql, params)
+        rows.sort(key=lambda r: r['__sort_date'] or '', reverse=True)
+        fieldnames = [k for k in rows[0].keys() if k != '__sort_date'] if rows else CANDIDATES_COLUMNS
+
         Path(filepath).parent.mkdir(parents=True, exist_ok=True)
-
         with open(filepath, 'w', newline='', encoding='utf-8') as f:
-            writer = csv.DictWriter(f, fieldnames=[description[0] for description in cursor.description])
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             for row in rows:
-                writer.writerow(dict(row))
+                writer.writerow({k: row[k] for k in fieldnames})
 
         logger.info(f"Exported {len(rows)} candidates to {filepath}")
 
@@ -465,15 +569,42 @@ class IncidentDatabase:
             DELETE FROM country_scores
             WHERE date(date) <= date('now', '-' || ? || ' days')
         ''', (days,))
-        self.conn.execute('''
-            DELETE FROM article_candidates
-            WHERE COALESCE(date(published_date), date(collected_at)) <= date('now', '-' || ? || ' days')
-        ''', (days,))
 
         self.conn.commit()
         self.conn.execute('VACUUM')
+
+        self._purge_old_candidates_files(days)
+
         logger.info(f"Purged {deleted_count} incidents older than {days} days")
         return deleted_count
+
+    def _purge_old_candidates_files(self, days: int) -> None:
+        """Delete whole monthly candidates files once every row they could
+        possibly contain (the entire calendar month) is past the retention
+        window -- much cheaper than the old row-level DELETE + VACUUM, and
+        the natural way to apply retention now that candidates are
+        partitioned by month rather than one ever-growing table. Trade-off:
+        this is whole-month granularity, not exact-day -- a month whose
+        last day hasn't yet crossed the cutoff is kept in full even if most
+        of it has, so a file can now linger up to ~30 days past the
+        configured retention window before it's actually deleted."""
+        cutoff = datetime.now() - timedelta(days=days)
+        current_month = datetime.now().strftime('%Y-%m')
+
+        for path in self._all_candidates_db_paths():
+            month_str = path.stem.removeprefix('candidates_')
+            if month_str == current_month:
+                continue  # never delete the file still being written to
+            try:
+                file_month = datetime.strptime(month_str, '%Y-%m')
+            except ValueError:
+                continue
+            year = file_month.year + (1 if file_month.month == 12 else 0)
+            month = 1 if file_month.month == 12 else file_month.month + 1
+            first_day_of_next_month = datetime(year, month, 1)
+            if cutoff >= first_day_of_next_month:
+                path.unlink()
+                logger.info(f"Purged expired candidates file: {path}")
 
     def get_last_successful_run_date(self) -> Optional[datetime]:
         cursor = self.conn.execute('''
@@ -551,4 +682,6 @@ class IncidentDatabase:
     def close(self):
         """Close database connection"""
         self.conn.close()
+        if self._candidates_conn is not None:
+            self._candidates_conn.close()
         logger.info("Database connection closed")

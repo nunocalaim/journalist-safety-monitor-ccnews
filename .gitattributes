@@ -1,1 +1,2 @@
 data/incidents.db filter=lfs diff=lfs merge=lfs -text
+data/candidates/*.db filter=lfs diff=lfs merge=lfs -text

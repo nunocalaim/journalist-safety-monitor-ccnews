@@ -327,7 +327,7 @@ class JournalistSafetyMonitor:
         logger.info(f"Applying database retention: {retention_days} days")
         self.db.purge_old_data(retention_days)
 
-    def export_data(self):
+    def export_data(self, skip_full_candidates_export: bool = False):
         logger.info("Exporting data...")
         self.db.export_to_csv('data/exports/incidents_full.csv', validation_status='validated')
 
@@ -342,7 +342,17 @@ class JournalistSafetyMonitor:
             self.db.export_to_csv(f'data/exports/incidents_{label}.csv', days=days, validation_status='validated')
 
         candidate_window_days = CONFIG.get('validation', {}).get('candidate_export_days', 10)
-        self.db.export_candidates_to_csv('data/exports/candidates_full.csv')
+        # candidates_full.csv needs EVERY month's candidates file present
+        # locally to actually be "full" -- the scheduled workflow only
+        # pulls the current + previous month's Git LFS files on most runs
+        # (see monitor.yml) to keep checkout bandwidth bounded, so
+        # regenerating this on every run would silently commit a
+        # mislabeled "full" export missing older months. skip_full_
+        # candidates_export lets the caller opt out on those runs; a run
+        # that HAS pulled full history (a local run, or the workflow's one
+        # designated full-pull run) should still regenerate it.
+        if not skip_full_candidates_export:
+            self.db.export_candidates_to_csv('data/exports/candidates_full.csv')
         self.db.export_candidates_to_csv('data/exports/candidates_10d.csv', days=candidate_window_days)
 
         logger.info("Rolling data exports saved")
@@ -358,7 +368,7 @@ class JournalistSafetyMonitor:
         self.db.save_daily_stats(today, stats)
         logger.info("Statistics saved")
 
-    def run(self):
+    def run(self, skip_full_candidates_export: bool = False):
         status = 'ERROR'
         try:
             logger.info("=" * 80)
@@ -370,7 +380,7 @@ class JournalistSafetyMonitor:
             analysis = self.analyze_data()
             self.generate_report(analysis)
             self.generate_alerts(analysis)
-            self.export_data()
+            self.export_data(skip_full_candidates_export=skip_full_candidates_export)
             self.save_statistics(analysis)
             status = 'SUCCESS'
 
@@ -409,6 +419,16 @@ if __name__ == '__main__':
     parser.add_argument('--max-articles', type=int, default=None, help='Limit the number of collected articles, useful with --dry-run')
     parser.add_argument('--shard-count', type=int, default=1, help='Split CC-NEWS WARC files into this many shards')
     parser.add_argument('--shard-index', type=int, default=0, help='Run only this zero-based shard index')
+    parser.add_argument(
+        '--skip-full-candidates-export', action='store_true',
+        help=(
+            "Don't regenerate data/exports/candidates_full.csv this run -- "
+            "use when only a subset of data/candidates/*.db's monthly "
+            "files is available locally (e.g. the CI workflow's scoped "
+            "Git LFS pull), so a partial export doesn't get committed "
+            "mislabeled as 'full'."
+        ),
+    )
     args = parser.parse_args()
 
     monitor = JournalistSafetyMonitor(
@@ -421,7 +441,7 @@ if __name__ == '__main__':
         monitor.rss.close()
         monitor.gdelt.close()
     else:
-        results = monitor.run()
+        results = monitor.run(skip_full_candidates_export=args.skip_full_candidates_export)
 
     print("\n" + "=" * 80)
     print("FINAL SUMMARY")

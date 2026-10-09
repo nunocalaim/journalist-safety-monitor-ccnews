@@ -230,6 +230,47 @@ def test_export_candidates_merges_across_months(tmp_path):
         db.close()
 
 
+def test_export_candidates_skips_unpulled_lfs_pointer_file(tmp_path):
+    """Real failure, 2026-10-09: the scheduled workflow's scoped `git lfs
+    pull` only fetches the current + previous month's candidates file;
+    actions/checkout still writes every OTHER month's path too, left as a
+    small LFS pointer stub (not real SQLite content). Querying it crashed
+    the whole export with sqlite3.DatabaseError: file is not a database.
+    """
+    db = IncidentDatabase(db_path=str(tmp_path / "incidents.db"))
+    try:
+        candidates_dir = tmp_path / "candidates"
+        candidates_dir.mkdir(parents=True, exist_ok=True)
+        stub_month = (datetime.now() - timedelta(days=90)).strftime("%Y-%m")
+        stub_path = candidates_dir / f"candidates_{stub_month}.db"
+        stub_path.write_text(
+            "version https://git-lfs.github.com/spec/v1\n"
+            "oid sha256:0000000000000000000000000000000000000000000000000000000000000000\n"
+            "size 123456\n"
+        )
+
+        db.bulk_insert_candidates([{
+            "url": "https://example.com/current-month-candidate",
+            "title": "Reporter detained",
+            "published_date": datetime.now().strftime("%Y-%m-%d"),
+            "domain": "example.com",
+            "source_country": "US",
+            "language": "English",
+            "matched_query": "live",
+            "validation_status": "candidate",
+            "validation_reason": "media subject found but no clear harm action",
+            "evidence_text": "Reporter detained",
+        }])
+
+        export_path = tmp_path / "candidates_full.csv"
+        db.export_candidates_to_csv(str(export_path))  # must not raise
+
+        exported = export_path.read_text()
+        assert "https://example.com/current-month-candidate" in exported
+    finally:
+        db.close()
+
+
 def test_export_candidates_writes_header_only_csv_when_nothing_matches(tmp_path):
     db = IncidentDatabase(db_path=str(tmp_path / "incidents.db"))
     try:

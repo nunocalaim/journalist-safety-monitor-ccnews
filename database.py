@@ -111,9 +111,38 @@ class IncidentDatabase:
         return conn
 
     def _all_candidates_db_paths(self) -> List[Path]:
+        """Every candidates_*.db file actually present as a real SQLite
+        file -- not just present as a path. The scheduled workflow does a
+        SCOPED `git lfs pull` (current + previous month only, full history
+        once a day -- see monitor.yml), but `actions/checkout` still writes
+        every tracked path in the tree regardless, including months that
+        weren't pulled: those sit on disk as small LFS *pointer* text
+        files ("version https://git-lfs.github.com/..."), not the actual
+        database. Found 2026-10-09: querying one of those raised
+        `sqlite3.DatabaseError: file is not a database` and crashed the
+        whole export. Checking the SQLite magic header before trusting a
+        path is cheap and also protects against any other way a file could
+        end up present-but-not-materialized (shallow clone, interrupted
+        pull, etc.) -- a missing/unpulled month just silently contributes
+        no rows instead of crashing the run.
+        """
         if not self.candidates_dir.exists():
             return []
-        return sorted(self.candidates_dir.glob('candidates_*.db'))
+        paths = []
+        for path in sorted(self.candidates_dir.glob('candidates_*.db')):
+            try:
+                with open(path, 'rb') as f:
+                    header = f.read(16)
+            except OSError:
+                continue
+            if header != b'SQLite format 3\x00':
+                logger.warning(
+                    f"Skipping {path} -- not a real SQLite file (likely an "
+                    f"un-pulled Git LFS pointer stub)"
+                )
+                continue
+            paths.append(path)
+        return paths
 
     def _query_all_candidates(self, where_sql: str, params: tuple) -> List[sqlite3.Row]:
         """Run the same SELECT against every month's candidates file and

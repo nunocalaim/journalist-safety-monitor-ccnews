@@ -1,7 +1,26 @@
 {
-  "timestamp": "2026-10-09T14:29:42.751820",
-  "alert_count": 8,
+  "timestamp": "2026-10-09T23:48:46.619697",
+  "alert_count": 9,
   "incidents": [
+    {
+      "id": 1275,
+      "url": "https://www.france24.com/en/tv-shows/scoop/20261009-lawsuits-blame-fox-news-for-deaths-of-journalists-in-ukraine",
+      "title": "Lawsuits blame Fox News for deaths of journalists in Ukraine",
+      "published_date": "Fri, 09 Oct 2026 14:23:35 GMT",
+      "domain": "www.france24.com",
+      "country": "FR",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Reporter Benjamin Hall was seriously injured and two other journalists were killed.",
+      "language": "en",
+      "source_country": "FR",
+      "collected_at": "2026-10-09 23:48:46",
+      "matched_query": "rss:www.france24.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Reporter Benjamin Hall was seriously injured and two other journalists were killed.",
+      "incident_fingerprint": "reporter benjamin hall seriously injured two other journalists killed"
+    },
     {
       "id": 1243,
       "url": "https://www.ansa.it/sito/notizie/economia/2026/10/05/e-morta-la-giornalista-dellansa-alessandra-moneti_6c075924-092b-467f-b77a-4ad797b4e2b0.html",

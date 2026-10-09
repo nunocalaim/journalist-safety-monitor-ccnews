@@ -13,3 +13,6 @@ data/debug/
 
 # Local run logs (e.g. nohup output from scripts/backfill_ccnews.py)
 *.log
+
+# Presentation materials -- not part of the project, never committed
+presentation/

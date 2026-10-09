@@ -1,21 +1,26 @@
 name: Journalist Safety Monitoring (CC-NEWS)
 on:
-  # Paused 2026-10-08 through 2026-10-08 after the account hit 90% of its
-  # Git LFS storage quota 8 days into the cycle (see PLAN.md's 2026-10-08
-  # (17) entry) -- root cause was data/incidents.db still fusing
-  # article_candidates into one ~600MB+ file, fully re-uploaded on every
-  # push. Re-enabled now that the per-month candidates split (entry 16,
-  # finally pushed in entry 17) is live: going forward, incidents.db stays
-  # small and only the current month's candidates file changes, so a push
-  # costs single-digit MB, not ~600MB. Worth checking the LFS usage page
-  # again after a few days to confirm the growth rate is actually bounded
-  # before trusting this fully.
-  schedule:
-    # Offset from the GDELT repo's 0,6,12,18 cron so the two don't collide.
-    # 4 runs/day x shard_count=4 x max_warc_files_per_run=1 processes ~4
-    # CC-NEWS WARC files/day, matching CC-NEWS's own ~16 files/day / 4
-    # shards publication rate -- see config.yaml's ccnews_collection.
-    - cron: '15 1,7,13,19 * * *'
+  # Paused again 2026-10-09 (see PLAN.md's (18) entry): the account hit
+  # 100% of its Git LFS storage quota, one day after the 2026-10-08 (17)
+  # reconciliation push uploaded ~665MB of brand-new per-month candidates
+  # files onto an account that was already at 90%. That push was a one-time
+  # migration cost, not an ongoing leak -- but this quota's usage meter
+  # keeps accumulating for the rest of the billing cycle once data is
+  # stored, so it kept climbing afterward and crossed 100% with no further
+  # pushes involved. With a $0 LFS budget set, further LFS uploads are
+  # expected to be rejected until the cycle resets 2026-11-01 (this metric
+  # does not shrink mid-cycle). Pausing so scheduled runs stop failing at
+  # the push step for the rest of this cycle; workflow_dispatch still works
+  # for manual runs if needed. Re-enable after 2026-11-01, once the
+  # per-month split's bounded per-push growth (single-digit MB, not
+  # ~600MB+) can actually be observed against a fresh quota.
+  #
+  # schedule:
+  #   # Offset from the GDELT repo's 0,6,12,18 cron so the two don't collide.
+  #   # 4 runs/day x shard_count=4 x max_warc_files_per_run=1 processes ~4
+  #   # CC-NEWS WARC files/day, matching CC-NEWS's own ~16 files/day / 4
+  #   # shards publication rate -- see config.yaml's ccnews_collection.
+  #   - cron: '15 1,7,13,19 * * *'
   workflow_dispatch:
     inputs:
       shard_index:

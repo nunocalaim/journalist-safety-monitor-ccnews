@@ -1,5 +1,66 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-10-09 (18): pointer-stub crash fixed, then 100% LFS quota hit the day after entry 17's push
+
+**Pointer-stub crash**: both scheduled runs right after entry 17's re-enable
+(2026-10-08 19:15 and 2026-10-09 07:21 UTC) failed inside the Python
+process itself, not at checkout or push. Root cause: `monitor.yml`'s scoped
+`git lfs pull` only fetches the current + previous month's candidates file
+(by design, to keep checkout bandwidth bounded -- see entry 16), but
+`actions/checkout` still writes every OTHER tracked month's path into the
+tree regardless, as a small LFS *pointer* text file
+(`version https://git-lfs.github.com/...`), not real SQLite content.
+`_all_candidates_db_paths()` globbed and queried those blindly, and hit
+`sqlite3.DatabaseError: file is not a database`. Fixed by checking the
+SQLite magic header (`b'SQLite format 3\x00'`) before trusting a path --
+an un-pulled month now just silently contributes no rows instead of
+crashing the run. Added a regression test
+(`test_export_candidates_skips_unpulled_lfs_pointer_file`). Full suite
+green (94/94). Pushed as `da4340a` at 2026-10-09 09:07 UTC -- a code-only
+commit, no LFS content involved, confirmed to push cleanly on its own.
+
+**100% LFS quota, the next day**: before that run could even be verified,
+the user received a GitHub alert that the account had reached 100% of its
+Git LFS storage quota -- up from the 90% seen in entry 17, just one day
+after entry 17's reconciliation push went out. Checked GitHub Actions run
+history to rule out a *new* bug: both failed runs above happened at 19:15
+(Oct 8) and 07:21 (Oct 9), both strictly before `da4340a` was pushed at
+09:07 Oct 9 -- so neither is a new failure mode, both are the
+already-diagnosed pointer-stub crash occurring before its own fix landed.
+Nothing new broke; nothing was silently lost (the loud-failure design from
+entry 15 is exactly why these showed as visible red Xs instead of hidden
+passes).
+
+The 100% figure itself can't be independently verified -- GitHub's LFS
+billing/quota numbers aren't exposed through the REST API, only the
+billing UI that emails the user directly. But the timing makes the cause
+clear without needing that confirmation: entry 17's reconciliation push
+uploaded ~665MB of brand-new per-month candidates files (necessary to
+actually deploy the split) onto an account GitHub had already flagged at
+90%. That push was a one-time migration cost, not a new ongoing leak --
+but per entry 16's own research, this quota's usage meter accumulates for
+the *rest of the billing cycle* once data is stored; it doesn't shrink
+mid-cycle, only resets at the next cycle boundary (2026-11-01). So that
+665MB continued inflating the meter hour over hour after the push, and
+tipped it from 90% to 100% within about a day, with no further pushes
+required. This was a foreseeable consequence of migrating while already
+near the cap, and should have been flagged explicitly as a likely
+near-term outcome in entry 17, rather than left implicit.
+
+**Action taken**: paused the workflow's `schedule:` trigger again (see
+`monitor.yml`) -- with a $0 LFS budget, any further LFS upload is expected
+to be rejected until the 2026-11-01 reset regardless of size, so letting
+scheduled runs continue would just produce a predictable string of
+failures at the push step for the next three weeks. `workflow_dispatch`
+still works for manual runs. Re-enable after 2026-11-01.
+
+**Still unaddressed** (same gap entry 17 already flagged): the storage
+already sunk into git history from months of full-db pushes, including
+everything pushed before this entry's split took effect, doesn't go away
+on its own -- only a destructive history rewrite (rewriting commits +
+force-push) would reclaim it, and that's a separate, explicitly-opt-in
+decision, not taken here.
+
 ## Update 2026-10-08 (17): LFS quota hit 90% again on day 8 of a fresh cycle -- the Sep 22 fix finally pushed
 
 Entries 14-16 below (the validator fixes, the LFS outage discovery, and the

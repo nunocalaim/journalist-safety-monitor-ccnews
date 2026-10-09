@@ -1,26 +1,25 @@
 name: Journalist Safety Monitoring (CC-NEWS)
 on:
-  # Paused again 2026-10-09 (see PLAN.md's (18) entry): the account hit
-  # 100% of its Git LFS storage quota, one day after the 2026-10-08 (17)
-  # reconciliation push uploaded ~665MB of brand-new per-month candidates
-  # files onto an account that was already at 90%. That push was a one-time
-  # migration cost, not an ongoing leak -- but this quota's usage meter
-  # keeps accumulating for the rest of the billing cycle once data is
-  # stored, so it kept climbing afterward and crossed 100% with no further
-  # pushes involved. With a $0 LFS budget set, further LFS uploads are
-  # expected to be rejected until the cycle resets 2026-11-01 (this metric
-  # does not shrink mid-cycle). Pausing so scheduled runs stop failing at
-  # the push step for the rest of this cycle; workflow_dispatch still works
-  # for manual runs if needed. Re-enable after 2026-11-01, once the
-  # per-month split's bounded per-push growth (single-digit MB, not
-  # ~600MB+) can actually be observed against a fresh quota.
-  #
-  # schedule:
-  #   # Offset from the GDELT repo's 0,6,12,18 cron so the two don't collide.
-  #   # 4 runs/day x shard_count=4 x max_warc_files_per_run=1 processes ~4
-  #   # CC-NEWS WARC files/day, matching CC-NEWS's own ~16 files/day / 4
-  #   # shards publication rate -- see config.yaml's ccnews_collection.
-  #   - cron: '15 1,7,13,19 * * *'
+  # Re-enabled 2026-10-09 (see PLAN.md's (19) entry): the account's 100%
+  # Git LFS block (entry 18) turned out to persist for the rest of the
+  # billing cycle regardless of usage reduction -- deleting the old repo
+  # didn't lift it. Fixed properly instead: rewrote this repo's history
+  # (git filter-repo) to drop 122 superseded data/incidents.db versions
+  # (48.8GB of dead weight from every pre-split push re-uploading the whole
+  # file), deleted and recreated the GitHub repo to actually reclaim that
+  # storage, and raised the Git LFS budget to a small capped amount ($5)
+  # so pushes aren't blocked for the rest of this cycle. Current account
+  # usage is back down to just the ~665MB actually needed. Re-check the
+  # budget around 2026-11-01 -- lower it back to $0 if the per-month
+  # split's bounded growth (a few MB/push) makes the ongoing cost
+  # negligible enough not to need headroom, or leave it if small bounded
+  # spend is fine going forward.
+  schedule:
+    # Offset from the GDELT repo's 0,6,12,18 cron so the two don't collide.
+    # 4 runs/day x shard_count=4 x max_warc_files_per_run=1 processes ~4
+    # CC-NEWS WARC files/day, matching CC-NEWS's own ~16 files/day / 4
+    # shards publication rate -- see config.yaml's ccnews_collection.
+    - cron: '15 1,7,13,19 * * *'
   workflow_dispatch:
     inputs:
       shard_index:

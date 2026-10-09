@@ -1,5 +1,62 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-10-09 (19): rewrote history to actually reclaim the 48.8GB of dead LFS weight, recreated the repo, raised the budget
+
+Entry 18's pause assumed the account would just sit blocked until the
+2026-11-01 reset. Decided to fix the underlying debt instead rather than
+wait it out a second time.
+
+**Measured the actual waste first**: `data/incidents.db` had 123 distinct
+historical LFS object versions across its commit history (every pre-split
+push re-uploaded the whole file), totaling **48.8GB** -- of which only the
+latest (1.6MB) is ever needed. The 3 per-month candidates files had just
+one version each (~665MB total, all current, nothing wasted there).
+
+**Rewrote history**: confirmed first (via GitHub's own docs) that
+rewriting history and force-pushing does **not** reclaim billed LFS
+storage on its own -- GitHub states the orphaned objects stay counted
+until the repository itself is deleted and recreated (or GitHub Support
+purges them). So: cloned fresh into a scratch directory, ran
+`git filter-repo --path data/incidents.db --path data/candidates
+--invert-paths` (156 commits preserved, all code/PLAN.md history intact,
+both LFS paths removed from every commit), then added one final commit
+restoring just the current real content of all 4 files on top. Verified
+with `git rev-list --objects --all -- data/incidents.db data/candidates`
+that only the single current version of each file is reachable anywhere
+in the rewritten history.
+
+**Deleted and recreated the GitHub repo** (same name, same URL, so nothing
+that links to it breaks -- checked first: 0 stars/forks/issues/watchers,
+single branch, no tags, no releases, no secrets referenced by the
+workflow, so nothing of value was at risk). Confirmed this is an
+account-wide quota (not per-repo), and this repo is the only one on the
+account using Git LFS at all (checked every other repo's
+`.gitattributes`; the rest are either unrelated or forks, and forks bill
+against the upstream root, not the forker).
+
+**The 100% block didn't lift on its own.** Pushed the cleaned history
+(code-only, in two steps -- first everything except the final data-restore
+commit, confirming a push with zero LFS content anywhere in it goes
+through with no budget check at all) but the final commit's real ~665MB
+upload still got rejected with the same "exceeded its LFS budget" error,
+even after the old repo (and its 48.8GB) was already deleted. Per GitHub's
+own documented behavior: a `$0` budget block, once triggered, holds for
+the **rest of the calendar month regardless of later usage reduction** --
+it only lifts at the next reset or if the budget itself is raised above
+`$0`. Deleting the repo fixes the account's go-forward baseline; it does
+not undo an active block mid-cycle.
+
+**Raised the Git LFS budget from $0 to $5** (also needed a payment method
+on file -- a $0 budget with no card attached blocks overage regardless of
+the number). That unblocked the final push immediately. Current account
+LFS usage is now just the ~665MB actually live, versus the ~49GB+ that was
+there before this entry.
+
+**Still needs attention around 2026-11-01**: decide whether to lower the
+budget back to $0 at the reset, or leave the small cap in place --
+negligible either way now that the per-split growth is a few MB per push,
+not ~600MB+.
+
 ## Update 2026-10-09 (18): pointer-stub crash fixed, then 100% LFS quota hit the day after entry 17's push
 
 **Pointer-stub crash**: both scheduled runs right after entry 17's re-enable

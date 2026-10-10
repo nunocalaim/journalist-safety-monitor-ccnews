@@ -1,7 +1,26 @@
 {
-  "timestamp": "2026-10-10T07:54:01.241064",
-  "alert_count": 6,
+  "timestamp": "2026-10-10T14:08:48.801759",
+  "alert_count": 7,
   "incidents": [
+    {
+      "id": 1287,
+      "url": "https://www.abc.es/gente/maria-patino-vuelve-television-tras-ano-apartada-20261010120859-nt.html",
+      "title": "Mar\u00eda Pati\u00f1o vuelve a la televisi\u00f3n tras un a\u00f1o apartada: \u00abPed\u00ed ayuda psicol\u00f3gica\u00bb",
+      "published_date": "Sat, 10 Oct 2026 13:40:03 +0200",
+      "domain": "www.abc.es",
+      "country": "ES",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "Mar\u00eda Pati\u00f1o vuelve a la televisi\u00f3n tras un a\u00f1o apartada: \u00abPed\u00ed ayuda psicol\u00f3gica\u00bb Mar\u00eda Pati\u00f1o vuelve a la televisi\u00f3n tras un a\u00f1o apartada: \u00abTuve que pedir ayuda psicol\u00f3gica\u00bb La periodista llevaba desaparecida de la peque\u00f1a pantalla desde la cancelaci\u00f3n de 'La familia de la tele' en RTVE Mar\u00eda Pati\u00f1o ya tiene fecha para volver a ponerse delante de una c\u00e1mara.",
+      "language": "es",
+      "source_country": "ES",
+      "collected_at": "2026-10-10 14:08:48",
+      "matched_query": "rss:www.abc.es",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Mar\u00eda Pati\u00f1o vuelve a la televisi\u00f3n tras un a\u00f1o apartada: \u00abPed\u00ed ayuda psicol\u00f3gica\u00bb Mar\u00eda Pati\u00f1o vuelve a la televisi\u00f3n tras un a\u00f1o apartada: \u00abTuve que pedir ayuda psicol\u00f3gica\u00bb La periodista llevaba desaparecida de la peque\u00f1a pantalla desde la cancelaci\u00f3n de 'La familia de la tele' en RTVE Mar\u00eda Pati\u00f1o ya tiene fecha para volver a ponerse delante de una c\u00e1mara.",
+      "incident_fingerprint": "mar pati o vuelve la televisi n tras un o apartada ped"
+    },
     {
       "id": 1275,
       "url": "https://www.france24.com/en/tv-shows/scoop/20261009-lawsuits-blame-fox-news-for-deaths-of-journalists-in-ukraine",

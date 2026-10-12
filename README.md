@@ -41,18 +41,22 @@ plus whatever GDELT's live search independently turns up.
 
 - **`data/incidents.db`** — the source of truth: just the `incidents` table
   (validated incidents) plus small metadata tables. Stays small (~1MB).
-- **`data/candidates/candidates_YYYY-MM.db`** — one file per month, holding
-  `article_candidates` (everything the validator examined but didn't
-  confirm — kept so false-negative rate can be reviewed). Split out from
-  `incidents.db` 2026-09-22: this table is the actual size driver (99%+ of
-  the old single file) and grows every run, while Git LFS re-uploads a
-  changed file in full on every push — fusing it to the small, rarely-
-  resized `incidents` table meant every push re-uploaded the entire,
-  ever-growing history. A closed month's file never changes again, so it's
-  never re-uploaded again either; only the current month costs anything
-  going forward. See PLAN.md's 2026-09-22 entry for the full story.
-  `IncidentDatabase` queries across every month's file transparently for
-  candidate exports/lookups — nothing else needs to know about the split.
+- **`data/candidates/candidates_YYYY-MM/`** — one directory per month, each
+  holding many small JSONL fragments (one per pipeline run) that together
+  make up `article_candidates` (everything the validator examined but
+  didn't confirm — kept so false-negative rate can be reviewed). Replaced
+  the original single-file-per-month SQLite design on 2026-10-12: Git LFS
+  can't diff a binary file, so every insert into that growing file
+  re-uploaded (and the next run re-downloaded) the WHOLE file as a new
+  object, all month long — the dominant driver behind repeated Git LFS
+  storage *and* bandwidth quota exhaustion. A fragment is written once and
+  never touched again, so there's nothing to re-upload, and it's small
+  enough to stay out of Git LFS entirely. Months from before 2026-10-12
+  are still single `candidates_YYYY-MM.db` files, left in place as closed,
+  read-only history rather than migrated. See PLAN.md's 2026-10-12 (21)
+  entry for the full story. `IncidentDatabase` merges both formats
+  transparently for candidate exports/lookups — nothing else needs to know
+  about the split.
 - **`data/exports/incidents_full.csv`** and `incidents_{10d,30d,180d}.csv` —
   validated incidents as flat CSV, full history plus rolling windows. Only
   written once there's at least one validated incident to export.
@@ -79,6 +83,22 @@ python3 journalist_safety_monitor.py
 # Preview without writing anything:
 python3 journalist_safety_monitor.py --dry-run --max-articles 200
 ```
+
+### Recompiling exports on demand
+
+`scripts/export_reports.py` regenerates every file in `data/exports/`
+(validated incidents and candidates, every rolling window) from whatever's
+already in `data/incidents.db` and `data/candidates/`, without running a
+collection cycle. For a quick, fully up-to-date compile — checking the
+current numbers, pulling a figure for a presentation — between scheduled
+runs:
+
+```bash
+python3 scripts/export_reports.py
+```
+
+Needs the real data materialized locally first, not Git LFS pointer stubs
+— run `git lfs pull` first if you've just cloned or pulled without it.
 
 ### Historical backfill
 

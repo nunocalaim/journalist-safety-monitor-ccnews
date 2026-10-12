@@ -38,6 +38,23 @@ jobs:
         with:
           lfs: false
 
+      - name: Cache the Git LFS object store
+        # Found 2026-10-12: the scoped `git lfs pull` below was designed to
+        # bound STORAGE growth (not re-uploading old months), but every run
+        # gets a cold, cache-less checkout -- so it was re-DOWNLOADING the
+        # same unchanged previous-month file (hundreds of MB) from scratch
+        # on every single run, 4x/day. That's a separate quota (bandwidth,
+        # not storage) and burned through it in days. Caching the LFS
+        # object store keyed by date means objects already fetched earlier
+        # the same day (or a prior day, via restore-keys) don't need
+        # re-fetching -- git lfs pull skips any object already present.
+        uses: actions/cache@v4
+        with:
+          path: .git/lfs
+          key: lfs-objects-${{ github.run_id }}
+          restore-keys: |
+            lfs-objects-
+
       - name: Fetch only the Git LFS files this run needs
         run: |
           # data/candidates/candidates_YYYY-MM.db is one file per month
@@ -45,10 +62,14 @@ jobs:
           # own `lfs: true` would pull EVERY month's file on every run,
           # which would make checkout bandwidth grow without bound as
           # months accumulate, defeating the point of splitting them out.
-          # Pull just incidents.db plus the current + previous month's
-          # candidates file (the widest window any rolling export needs)
-          # on most runs; the day's first run (hour 1, matching this
-          # workflow's own cron) additionally pulls every month so
+          # Pull incidents.db plus the current month's candidates file on
+          # most runs. The previous month is ONLY pulled during the first
+          # 10 days of a new month (found 2026-10-12: a 10-day rolling
+          # export is the only thing that ever needs it, and a 10-day
+          # lookback from day 11+ never reaches back across a month
+          # boundary -- pulling it unconditionally every run, every day of
+          # the month, was pure bandwidth waste the other ~20 days). The
+          # day's first run (hour 1) additionally pulls every month so
           # candidates_full.csv can be regenerated with true full history
           # at least once a day, not committed stale forever.
           # checkout's own lfs:true would also register the LFS git
@@ -56,15 +77,19 @@ jobs:
           # explicitly so `git lfs pull` below has something to smudge with.
           git lfs install --local
           HOUR=$(date -u +%H)
+          DAY=$(date -u +%d)
           CURRENT_MONTH=$(date -u +%Y-%m)
           PREVIOUS_MONTH=$(date -u -d "$(date -u +%Y-%m-01) -1 day" +%Y-%m)
           if [ "$((10#$HOUR))" -eq 1 ]; then
             echo "First run of the day -- pulling all candidates months"
             echo "FULL_CANDIDATES_PULL=1" >> "$GITHUB_ENV"
             git lfs pull --include="data/incidents.db,data/candidates/*.db"
-          else
+          elif [ "$((10#$DAY))" -le 10 ]; then
             echo "FULL_CANDIDATES_PULL=0" >> "$GITHUB_ENV"
             git lfs pull --include="data/incidents.db,data/candidates/candidates_${CURRENT_MONTH}.db,data/candidates/candidates_${PREVIOUS_MONTH}.db"
+          else
+            echo "FULL_CANDIDATES_PULL=0" >> "$GITHUB_ENV"
+            git lfs pull --include="data/incidents.db,data/candidates/candidates_${CURRENT_MONTH}.db"
           fi
 
       - name: Set up Python

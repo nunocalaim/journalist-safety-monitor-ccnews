@@ -1,5 +1,47 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-10-12 (20): separate Git LFS *bandwidth* quota hit 100% -- the scoped pull from entry 16 was re-downloading the same file every run
+
+Three days after entry 19's budget raise, got a new alert: 100% of Git LFS
+*bandwidth* used. Different quota from entries 17-19 (storage) -- bandwidth
+is charged per download, resets monthly, same account-wide pool.
+
+**Root cause**: entry 16's scoped `git lfs pull` (current + previous
+month's candidates file) was designed to bound *storage* growth, not
+bandwidth. Every GitHub Actions run gets a cold, cache-less checkout, so
+it re-downloaded the entire previous month's file from scratch every
+single run regardless of whether it changed -- and `candidates_2026-09.db`
+is 374MB, static since October started. At ~500MB/run (incidents.db +
+current month + previous month) x 4 runs/day, roughly 2GB/day just from
+this workflow since the 2026-10-09 (19) re-enable, on top of whatever the
+*pre-split* workflow already burned 2026-10-01 through 10-08 via
+`actions/checkout`'s blanket `lfs: true` (full ~600MB fused incidents.db,
+every run). Combined, exceeding a 10GB/month bandwidth allowance this
+cycle was close to inevitable. Confirmed real current sizes before fixing:
+incidents.db 1.6MB, candidates_2026-08.db 191MB, candidates_2026-09.db
+374MB, candidates_2026-10.db 128MB and growing ~8MB/day.
+
+Because the LFS budget is $5 now (not $0, per entry 19), this wasn't a
+hard block -- bandwidth overage was being billed against that same shared
+$5 cap instead. Left unfixed, that cap could have exhausted within days
+and triggered a full block (storage AND bandwidth) again.
+
+**Fix, two parts**:
+1. Previous-month pull is now gated on day-of-month <= 10 -- it's only
+   ever needed by the rolling 10-day export during the first ~10 days of
+   a new month (a 10-day lookback from day 11+ never crosses a month
+   boundary). Pulling it unconditionally every run, every day, was pure
+   waste the other ~20 days.
+2. Added `actions/cache@v4` on `.git/lfs` (key includes `github.run_id` so
+   it always misses on content identity but restore-keys fall back to the
+   most recent cache; git lfs pull skips any object already present), so
+   objects fetched earlier the same day don't need re-fetching.
+
+Not yet independently verified post-fix (would need a few days of actual
+usage data to confirm bandwidth growth is actually bounded now) -- worth
+checking the usage page again in a few days, same caveat as entry 17 left
+for storage.
+
 ## Update 2026-10-09 (19): rewrote history to actually reclaim the 48.8GB of dead LFS weight, recreated the repo, raised the budget
 
 Entry 18's pause assumed the account would just sit blocked until the

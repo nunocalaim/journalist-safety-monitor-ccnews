@@ -8,28 +8,39 @@ import sqlite3
 import csv
 import json
 import re
+import secrets
+import shutil
 from difflib import SequenceMatcher
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import List, Dict, Optional, Tuple
+from typing import Dict, Iterator, List, Optional, Tuple
 import logging
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# article_candidates lives in its own file PER MONTH (data/candidates/
-# candidates_YYYY-MM.db), not in incidents.db -- found 2026-09-22: it's a
-# pure audit trail (every article the validator looked at, kept so
-# false-negative rate can be reviewed) that dwarfs the actual incidents
-# data (447 of 528 MB, 594k of 595k rows) and grows ~200MB/month forever.
-# Git LFS can't diff a SQLite file -- any change re-uploads the WHOLE file
-# as a new billable object -- so keeping it fused to incidents.db meant
-# every push re-uploaded the entire, ever-growing history, which is what
-# ran the repo's Git LFS storage quota over budget. Once a month's file
-# stops changing, git stops re-uploading it: only the current month's file
-# costs anything going forward, bounded by that month's growth rather than
-# all of history. incidents.db itself (~1MB) is untouched by this --
-# see PLAN.md's 2026-09-22 entry for the full story.
+# article_candidates's storage format, 2026-09-22 through 2026-10-12: one
+# SQLite file PER MONTH (data/candidates/candidates_YYYY-MM.db), not fused
+# into incidents.db -- it's a pure audit trail (every article the
+# validator looked at, kept so false-negative rate can be reviewed) that
+# dwarfs the actual incidents data. That per-month split bounded the
+# LIFETIME of the problem (a closed month's file is never touched again),
+# but not the cost WITHIN a month: Git LFS can't diff a SQLite file, so
+# every single insert into the still-growing current month's file
+# re-uploaded (and, on the next run, re-downloaded) the WHOLE file as a
+# new billable object -- September's file alone grew to 374MB that way.
+# Found 2026-10-12: this was the dominant driver of both the storage *and*
+# bandwidth quota crises, not a residual one. See PLAN.md's 2026-10-12
+# entry.
+#
+# Replaced with per-run JSONL fragments (data/candidates/candidates_YYYY-MM/
+# <timestamp>_<random>.jsonl, see bulk_insert_candidates): each run writes
+# only its OWN new rows as a small, immutable, plain-text file -- nothing
+# to read first, nothing that ever gets re-uploaded, and small enough to
+# stay out of Git LFS entirely (plain git handles many small text files
+# fine). Existing pre-2026-10-12 month .db files are left as closed,
+# read-only history rather than migrated -- _iter_old_month_db_rows below
+# still merges their rows into every query/export, same as before.
 CANDIDATES_TABLE_SQL = '''
     CREATE TABLE IF NOT EXISTS article_candidates (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -60,6 +71,30 @@ CANDIDATES_COLUMNS = [
     'language', 'matched_query', 'validation_status', 'validation_reason',
     'evidence_text', 'collected_at',
 ]
+# Fields actually written to a fragment row (no autoincrement 'id' --
+# that was only ever an old per-month-file SQLite rowid).
+_FRAGMENT_FIELDS = [c for c in CANDIDATES_COLUMNS if c != 'id']
+# Query-time-only merge table: deliberately has NO unique constraint on
+# url, unlike CANDIDATES_TABLE_SQL -- it's a throwaway in-memory table
+# built fresh from every old month file plus every fragment on each call,
+# and the old per-file design already tolerated (and relied on returning)
+# duplicate URLs across different sources rather than deduping them away;
+# this preserves that.
+_CANDIDATES_MERGE_TABLE_SQL = '''
+    CREATE TABLE article_candidates (
+        url TEXT,
+        title TEXT,
+        published_date TEXT,
+        domain TEXT,
+        source_country TEXT,
+        language TEXT,
+        matched_query TEXT,
+        validation_status TEXT,
+        validation_reason TEXT,
+        evidence_text TEXT,
+        collected_at TEXT
+    )
+'''
 
 
 class IncidentDatabase:
@@ -77,47 +112,23 @@ class IncidentDatabase:
         # "data/candidates") so a differently-located db -- e.g. a test's
         # tmp_path -- gets its own isolated candidates directory too.
         self.candidates_dir = self.db_path.parent / 'candidates'
-        self._candidates_conn: Optional[sqlite3.Connection] = None
-        self._candidates_month: Optional[str] = None
 
         self.create_tables()
         logger.info(f"Database initialized: {self.db_path}")
 
-    def _candidates_db_path(self, when: Optional[datetime] = None) -> Path:
+    def _candidates_fragment_dir(self, when: Optional[datetime] = None) -> Path:
         when = when or datetime.now()
-        return self.candidates_dir / f"candidates_{when.strftime('%Y-%m')}.db"
+        return self.candidates_dir / f"candidates_{when.strftime('%Y-%m')}"
 
-    def _get_candidates_conn(self) -> sqlite3.Connection:
-        """Open (or create) the CURRENT month's candidates db, reopening if
-        the month has rolled over since the last call."""
-        current_month = datetime.now().strftime('%Y-%m')
-        if self._candidates_conn is not None and self._candidates_month == current_month:
-            return self._candidates_conn
-
-        if self._candidates_conn is not None:
-            self._candidates_conn.close()
-
-        self.candidates_dir.mkdir(parents=True, exist_ok=True)
-        path = self._candidates_db_path()
-        conn = sqlite3.connect(str(path))
-        conn.row_factory = sqlite3.Row
-        conn.execute(CANDIDATES_TABLE_SQL)
-        for index_sql in CANDIDATES_INDEX_SQL:
-            conn.execute(index_sql)
-        conn.commit()
-
-        self._candidates_conn = conn
-        self._candidates_month = current_month
-        return conn
-
-    def _all_candidates_db_paths(self) -> List[Path]:
-        """Every candidates_*.db file actually present as a real SQLite
-        file -- not just present as a path. The scheduled workflow does a
-        SCOPED `git lfs pull` (current + previous month only, full history
-        once a day -- see monitor.yml), but `actions/checkout` still writes
-        every tracked path in the tree regardless, including months that
-        weren't pulled: those sit on disk as small LFS *pointer* text
-        files ("version https://git-lfs.github.com/..."), not the actual
+    def _old_month_db_paths(self) -> List[Path]:
+        """Every pre-2026-10-12 candidates_YYYY-MM.db file actually present
+        as a real SQLite file -- not just present as a path. The scheduled
+        workflow does a SCOPED `git lfs pull` (current + previous month
+        only, full history once a day -- see monitor.yml), but
+        `actions/checkout` still writes every tracked path in the tree
+        regardless, including months that weren't pulled: those sit on
+        disk as small LFS *pointer* text files
+        ("version https://git-lfs.github.com/..."), not the actual
         database. Found 2026-10-09: querying one of those raised
         `sqlite3.DatabaseError: file is not a database` and crashed the
         whole export. Checking the SQLite magic header before trusting a
@@ -144,37 +155,91 @@ class IncidentDatabase:
             paths.append(path)
         return paths
 
-    def _query_all_candidates(self, where_sql: str, params: tuple) -> List[sqlite3.Row]:
-        """Run the same SELECT against every month's candidates file and
-        merge the results in Python. Deliberately not a single ATTACHed
-        UNION ALL query -- SQLite caps the number of attached databases
-        (10 by default), which this project's own month-per-file design
-        will eventually exceed given enough years of operation; a plain
-        per-file loop has no such ceiling.
+    def _fragment_month_dirs(self) -> List[Path]:
+        """Every candidates_YYYY-MM/ fragment directory (2026-10-12+
+        format)."""
+        if not self.candidates_dir.exists():
+            return []
+        return sorted(
+            p for p in self.candidates_dir.glob('candidates_????-??') if p.is_dir()
+        )
 
-        Adds a synthetic __sort_date column (same COALESCE(date(...), ...)
-        normalization the old single-table query sorted by) so callers can
-        sort merged rows consistently despite published_date's wildly
-        inconsistent formats across sources (RSS's RFC-822 dates, GDELT's
-        "20260920T143000Z", CC-NEWS's plain "2026-09-04", etc.) -- a raw
-        Python string sort across those would not come out chronological.
-        """
-        rows: List[sqlite3.Row] = []
-        for path in self._all_candidates_db_paths():
+    def _iter_old_month_db_rows(self) -> Iterator[Dict]:
+        """Rows from every closed, read-only pre-2026-10-12 month file."""
+        for path in self._old_month_db_paths():
             conn = sqlite3.connect(str(path))
             conn.row_factory = sqlite3.Row
             try:
-                cursor = conn.execute(
-                    f'''
-                    SELECT *, COALESCE(date(published_date), date(collected_at)) AS __sort_date
-                    FROM article_candidates {where_sql}
-                    ''',
-                    params,
-                )
-                rows.extend(cursor.fetchall())
+                for row in conn.execute('SELECT * FROM article_candidates'):
+                    yield dict(row)
             finally:
                 conn.close()
-        return rows
+
+    def _iter_fragment_rows(self) -> Iterator[Dict]:
+        """Rows from every per-run JSONL fragment, across every month."""
+        for month_dir in self._fragment_month_dirs():
+            for fragment_path in sorted(month_dir.glob('*.jsonl')):
+                try:
+                    with open(fragment_path, 'r', encoding='utf-8') as f:
+                        for line in f:
+                            line = line.strip()
+                            if not line:
+                                continue
+                            yield json.loads(line)
+                except (OSError, json.JSONDecodeError) as exc:
+                    logger.warning(f"Skipping unreadable fragment {fragment_path}: {exc}")
+
+    def _iter_all_candidates(self) -> Iterator[Dict]:
+        yield from self._iter_old_month_db_rows()
+        yield from self._iter_fragment_rows()
+
+    def _query_all_candidates(self, where_sql: str, params: tuple) -> List[sqlite3.Row]:
+        """Merge every old month file's rows with every fragment's rows
+        into a throwaway in-memory table, then run the same SELECT against
+        it. Reusing SQL (rather than hand-rolling the filter in Python) is
+        deliberate: published_date's format is wildly inconsistent across
+        sources (RSS's RFC-822 dates, GDELT's "20260920T143000Z", CC-NEWS's
+        plain "2026-09-04", etc.) and SQLite's date() function already
+        tolerates that -- re-deriving its parsing behavior in Python would
+        risk silently diverging from it.
+
+        Adds a synthetic __sort_date column (same COALESCE(date(...), ...)
+        normalization the old query sorted by) so callers can sort merged
+        rows consistently.
+        """
+        conn = sqlite3.connect(':memory:')
+        conn.row_factory = sqlite3.Row
+        conn.execute(_CANDIDATES_MERGE_TABLE_SQL)
+        try:
+            conn.executemany(
+                '''
+                INSERT INTO article_candidates
+                (url, title, published_date, domain, source_country, language,
+                 matched_query, validation_status, validation_reason,
+                 evidence_text, collected_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ''',
+                (
+                    (
+                        row.get('url', ''), row.get('title', ''), row.get('published_date', ''),
+                        row.get('domain', ''), row.get('source_country', ''), row.get('language', ''),
+                        row.get('matched_query', ''), row.get('validation_status', ''),
+                        row.get('validation_reason', ''), row.get('evidence_text', ''),
+                        row.get('collected_at', ''),
+                    )
+                    for row in self._iter_all_candidates()
+                ),
+            )
+            cursor = conn.execute(
+                f'''
+                SELECT *, COALESCE(date(published_date), date(collected_at)) AS __sort_date
+                FROM article_candidates {where_sql}
+                ''',
+                params,
+            )
+            return cursor.fetchall()
+        finally:
+            conn.close()
     
     def create_tables(self):
         """Create all necessary tables and indexes"""
@@ -310,48 +375,48 @@ class IncidentDatabase:
         return new_count, duplicate_count
 
     def bulk_insert_candidates(self, candidates: List[Dict]) -> Tuple[int, int]:
-        """Insert candidate/rejected article decisions for review exports.
+        """Write this run's new review candidates as one small, immutable
+        JSONL fragment (data/candidates/candidates_YYYY-MM/<ts>_<rand>.jsonl)
+        -- never into a shared, growing file. See the module-level comment
+        above CANDIDATES_TABLE_SQL for why: a file that's never modified
+        again after being written has nothing to re-upload or re-download,
+        unlike the old per-month SQLite file this replaced.
 
-        Writes to the CURRENT month's candidates file -- note this means
-        the unique-URL constraint only dedupes within that month, not
-        against earlier months' files (SQLite can't enforce a constraint
-        across separate database files). A URL re-examined in a later
-        month gets a second audit-trail row rather than being deduped or
-        updated in place. Acceptable here: this table is a review aid, not
-        the source of truth (that's `incidents`, still a single file with
-        its dedup untouched).
+        Deduplicates by URL only within this one call's batch (there's no
+        shared index across fragments to enforce it otherwise) -- same
+        trade-off the old per-month file already accepted ("a review aid,
+        not the source of truth"), just scoped to a batch instead of a
+        month.
         """
-        conn = self._get_candidates_conn()
-        new_count = 0
+        seen_urls = set()
+        deduped = []
         duplicate_count = 0
-
         for candidate in candidates:
-            if not candidate.get('url'):
+            url = candidate.get('url')
+            if not url:
                 continue
-            try:
-                conn.execute('''
-                    INSERT OR REPLACE INTO article_candidates
-                    (url, title, published_date, domain, source_country, language,
-                     matched_query, validation_status, validation_reason, evidence_text)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ''', (
-                    candidate.get('url', ''),
-                    candidate.get('title', ''),
-                    candidate.get('published_date', ''),
-                    candidate.get('domain', ''),
-                    candidate.get('source_country', ''),
-                    candidate.get('language', ''),
-                    candidate.get('matched_query', ''),
-                    candidate.get('validation_status', ''),
-                    candidate.get('validation_reason', ''),
-                    candidate.get('evidence_text', ''),
-                ))
-                new_count += 1
-            except sqlite3.IntegrityError:
+            if url in seen_urls:
                 duplicate_count += 1
+                continue
+            seen_urls.add(url)
+            deduped.append(candidate)
 
-        conn.commit()
-        return new_count, duplicate_count
+        if not deduped:
+            return 0, duplicate_count
+
+        fragment_dir = self._candidates_fragment_dir()
+        fragment_dir.mkdir(parents=True, exist_ok=True)
+        fragment_path = fragment_dir / (
+            f"{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')}_{secrets.token_hex(4)}.jsonl"
+        )
+        now = datetime.now().isoformat(timespec='seconds')
+        with open(fragment_path, 'w', encoding='utf-8') as f:
+            for candidate in deduped:
+                row = {field: candidate.get(field, '') for field in _FRAGMENT_FIELDS}
+                row['collected_at'] = candidate.get('collected_at') or now
+                f.write(json.dumps(row, ensure_ascii=False) + '\n')
+
+        return len(deduped), duplicate_count
 
     def _incident_fingerprint(self, incident: Dict) -> str:
         title = incident.get('description') or incident.get('title') or ''
@@ -608,22 +673,24 @@ class IncidentDatabase:
         return deleted_count
 
     def _purge_old_candidates_files(self, days: int) -> None:
-        """Delete whole monthly candidates files once every row they could
-        possibly contain (the entire calendar month) is past the retention
-        window -- much cheaper than the old row-level DELETE + VACUUM, and
-        the natural way to apply retention now that candidates are
-        partitioned by month rather than one ever-growing table. Trade-off:
-        this is whole-month granularity, not exact-day -- a month whose
-        last day hasn't yet crossed the cutoff is kept in full even if most
-        of it has, so a file can now linger up to ~30 days past the
-        configured retention window before it's actually deleted."""
+        """Delete whole months of candidates data -- both the old
+        single-file format and the current per-run-fragment-directory
+        format -- once every row a month could possibly contain is past
+        the retention window. Much cheaper than a row-level DELETE, and
+        the natural way to apply retention given candidates are
+        partitioned by month. Trade-off: this is whole-month granularity,
+        not exact-day -- a month whose last day hasn't yet crossed the
+        cutoff is kept in full even if most of it has, so data can now
+        linger up to ~30 days past the configured retention window before
+        it's actually deleted."""
         cutoff = datetime.now() - timedelta(days=days)
         current_month = datetime.now().strftime('%Y-%m')
 
-        for path in self._all_candidates_db_paths():
+        paths: List[Path] = [*self._old_month_db_paths(), *self._fragment_month_dirs()]
+        for path in paths:
             month_str = path.stem.removeprefix('candidates_')
             if month_str == current_month:
-                continue  # never delete the file still being written to
+                continue  # never delete the month still being written to
             try:
                 file_month = datetime.strptime(month_str, '%Y-%m')
             except ValueError:
@@ -632,8 +699,11 @@ class IncidentDatabase:
             month = 1 if file_month.month == 12 else file_month.month + 1
             first_day_of_next_month = datetime(year, month, 1)
             if cutoff >= first_day_of_next_month:
-                path.unlink()
-                logger.info(f"Purged expired candidates file: {path}")
+                if path.is_dir():
+                    shutil.rmtree(path)
+                else:
+                    path.unlink()
+                logger.info(f"Purged expired candidates data: {path}")
 
     def get_last_successful_run_date(self) -> Optional[datetime]:
         cursor = self.conn.execute('''
@@ -711,6 +781,4 @@ class IncidentDatabase:
     def close(self):
         """Close database connection"""
         self.conn.close()
-        if self._candidates_conn is not None:
-            self._candidates_conn.close()
         logger.info("Database connection closed")

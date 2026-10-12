@@ -1,3 +1,4 @@
+import json
 import sqlite3
 from datetime import datetime, timedelta
 
@@ -163,7 +164,7 @@ def _write_candidate_to_month_file(candidates_dir, month, url, published_days_ag
     return path
 
 
-def test_bulk_insert_candidates_only_writes_current_month(tmp_path):
+def test_bulk_insert_candidates_writes_a_fragment_under_the_current_month(tmp_path):
     db = IncidentDatabase(db_path=str(tmp_path / "incidents.db"))
     try:
         old_month = (datetime.now() - timedelta(days=90)).strftime("%Y-%m")
@@ -185,17 +186,22 @@ def test_bulk_insert_candidates_only_writes_current_month(tmp_path):
         }])
 
         current_month = datetime.now().strftime("%Y-%m")
-        current_path = tmp_path / "candidates" / f"candidates_{current_month}.db"
-        assert current_path.exists()
+        fragment_dir = tmp_path / "candidates" / f"candidates_{current_month}"
+        fragments = list(fragment_dir.glob("*.jsonl"))
+        assert len(fragments) == 1
+        fragment_rows = [json.loads(line) for line in fragments[0].read_text().splitlines()]
+        assert [r["url"] for r in fragment_rows] == ["https://example.com/this-month"]
 
-        # The old month's file is untouched -- still exactly the one row
-        # written directly into it, nothing from this run leaked in.
+        # The old month's (pre-fragment-format) file is untouched -- still
+        # exactly the one row written directly into it, nothing from this
+        # run leaked in, and no fragment directory was created for it.
         conn = sqlite3.connect(str(old_path))
         try:
             rows = conn.execute("SELECT url FROM article_candidates").fetchall()
         finally:
             conn.close()
         assert rows == [("https://example.com/old-month",)]
+        assert not (tmp_path / "candidates" / f"candidates_{old_month}").exists()
     finally:
         db.close()
 
@@ -283,27 +289,45 @@ def test_export_candidates_writes_header_only_csv_when_nothing_matches(tmp_path)
         db.close()
 
 
-def test_purge_old_data_deletes_expired_month_files_but_not_current(tmp_path):
+def _write_expired_fragment_dir(candidates_dir, month):
+    """A fragment-format (2026-10-12+) month directory, as if this code
+    had already been running for a few months."""
+    month_dir = candidates_dir / f"candidates_{month}"
+    month_dir.mkdir(parents=True, exist_ok=True)
+    (month_dir / "20260101T000000Z_aaaaaaaa.jsonl").write_text(
+        json.dumps({"url": "https://example.com/expired-fragment", "validation_status": "candidate"}) + "\n"
+    )
+    return month_dir
+
+
+def test_purge_old_data_deletes_expired_month_data_but_not_current(tmp_path):
     db = IncidentDatabase(db_path=str(tmp_path / "incidents.db"))
     try:
         candidates_dir = tmp_path / "candidates"
-        # 250 days, not just past the 180-day cutoff -- purge is whole-file
-        # (whole-month) granularity, so a month only qualifies once its
-        # LAST day is past the cutoff too; a date only ~20 days past the
-        # cutoff can still share a month with dates still inside the
-        # window. 250 days leaves enough margin that the entire month is
-        # unambiguously expired.
+        # 250 days, not just past the 180-day cutoff -- purge is
+        # whole-month granularity, so a month only qualifies once its LAST
+        # day is past the cutoff too; a date only ~20 days past the cutoff
+        # can still share a month with dates still inside the window. 250
+        # days leaves enough margin that the entire month is unambiguously
+        # expired.
         expired_month = (datetime.now() - timedelta(days=250)).strftime("%Y-%m")
         # 40 days ago rather than 10 -- needs to land in a calendar month
-        # distinct from both "now" (the active file) and the expired month,
-        # so this test actually exercises three separate files.
+        # distinct from both "now" (the active data) and the expired
+        # month, so this test actually exercises separate months.
         recent_month = (datetime.now() - timedelta(days=40)).strftime("%Y-%m")
+        # A third, distinct expired month for the fragment-directory case
+        # below (310 days keeps it in a different calendar month from
+        # both expired_month and recent_month).
+        expired_fragment_month = (datetime.now() - timedelta(days=310)).strftime("%Y-%m")
         expired_path = _write_candidate_to_month_file(
             candidates_dir, expired_month, "https://example.com/expired", 250
         )
         recent_path = _write_candidate_to_month_file(
             candidates_dir, recent_month, "https://example.com/recent", 40
         )
+        # Old-format expired month file above; also cover an expired month
+        # that's already in the newer fragment-directory format.
+        expired_fragment_dir = _write_expired_fragment_dir(candidates_dir, expired_fragment_month)
         # Touch the current month so it exists on disk too.
         db.bulk_insert_candidates([{
             "url": "https://example.com/today",
@@ -314,12 +338,14 @@ def test_purge_old_data_deletes_expired_month_files_but_not_current(tmp_path):
             "validation_reason": "x", "evidence_text": "x",
         }])
         current_month = datetime.now().strftime("%Y-%m")
-        current_path = candidates_dir / f"candidates_{current_month}.db"
+        current_fragment_dir = candidates_dir / f"candidates_{current_month}"
 
         db.purge_old_data(days=180)
 
         assert not expired_path.exists()
+        assert not expired_fragment_dir.exists()
         assert recent_path.exists()
-        assert current_path.exists()
+        assert current_fragment_dir.exists()
+        assert any(current_fragment_dir.glob("*.jsonl"))
     finally:
         db.close()

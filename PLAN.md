@@ -1,5 +1,58 @@
 # New repo: journalist-safety-monitor-ccnews (Common Crawl News source)
 
+## Update 2026-10-12 (21): candidates storage replaced with per-run JSONL fragments -- entry 20's fix was a mitigation, not the cause
+
+Entry 20's day-of-month gate and cache only address *re-downloading an
+unchanged previous month's file*. They do nothing for the *current*
+month's file, which is the one actually driving the cost: Git LFS can't
+diff a binary file, so every insert into the growing per-month SQLite
+file re-uploaded (and the next run re-downloaded) the WHOLE file as a new
+object -- September's file grew to 374MB that way, with every
+intermediate version along the way also staying in history for the rest
+of that month. This is plausibly the dominant cost behind *both* the
+storage crisis (entries 17-19) and the bandwidth crisis (entry 20), not a
+residual one entry 20 already handled.
+
+**Real fix**: stopped writing new candidates into a shared, growing
+per-month SQLite file at all. `bulk_insert_candidates` now writes each
+run's new rows as one small, immutable JSONL fragment --
+`data/candidates/candidates_YYYY-MM/<utc-timestamp>_<random>.jsonl` --
+written once and never modified again, so there's nothing to re-upload or
+re-download on a later run. Fragments are small enough to stay out of
+Git LFS entirely (`.gitattributes` only matches `data/candidates/*.db`
+directly inside the folder, not nested `.jsonl` files) -- ongoing
+candidate collection no longer touches the Git LFS system at all.
+
+Pre-2026-10-12 month `.db` files (August, September, October-so-far) are
+left as closed, read-only history rather than migrated -- no data
+movement, no new history-rewrite risk right after entry 19's. Every
+query/export now merges rows from both formats: old `.db` files via
+`_iter_old_month_db_rows` (keeps the existing pointer-stub-skip safety
+check from entry 18) and fragments via `_iter_fragment_rows`, combined in
+`_iter_all_candidates`. `_query_all_candidates` builds a throwaway
+in-memory SQLite table from that merged stream and runs the *same* SELECT
+the old code did, rather than re-implementing its date-parsing tolerance
+(published_date's format varies wildly: RSS RFC-822, GDELT
+"20260920T143000Z", CC-NEWS plain "2026-09-04") in Python by hand.
+Deliberately no UNIQUE constraint on that merge table -- the old
+per-file-loop design already tolerated and returned duplicate URLs across
+sources rather than deduping them, and this preserves that.
+`_purge_old_candidates_files` now deletes whole expired months in either
+format (an old `.db` file via `unlink`, a fragment directory via
+`shutil.rmtree`).
+
+Verified against a copy of the real production data (679k+ existing
+candidate rows, August/September/October's real files): full export
+(81,756 matching rows) in 4.7s, 10-day export in 3.2s, a new fragment
+correctly created and merged into both, old files provably untouched.
+Full test suite green (94/94, two tests rewritten for the new format,
+plus a new case covering purge of an expired fragment directory).
+
+Not yet observed under real multi-day scheduled-run conditions -- worth
+checking back in a few days, same caveat as entries 17 and 20 before it,
+to confirm storage/bandwidth growth is actually bounded now rather than
+just reasoned through.
+
 ## Update 2026-10-12 (20): separate Git LFS *bandwidth* quota hit 100% -- the scoped pull from entry 16 was re-downloading the same file every run
 
 Three days after entry 19's budget raise, got a new alert: 100% of Git LFS

@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-10-16T06:25:22.685784",
-  "alert_count": 4,
+  "timestamp": "2026-10-16T12:56:42.109720",
+  "alert_count": 5,
   "incidents": [
     {
       "id": 1375,
@@ -20,6 +20,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Le sue parole arrivano dopo le polemiche sul giornalista ucciso dalla camorra.",
       "incident_fingerprint": "le sue parole arrivano dopo le polemiche sul giornalista ucciso dalla camorra"
+    },
+    {
+      "id": 1378,
+      "url": "https://lespresso.it/c/mondo/2026/10/16/memoria-gaza-reportage-chris-hedges-joe-sacco/65302",
+      "title": "La memoria estirpata dei gazawi",
+      "published_date": "Fri, 16 Oct 2026 09:38:29 GMT",
+      "domain": "lespresso.it",
+      "country": "IT",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Il libro \u00e8 dedicato ai giornalisti uccisi a Gaza.",
+      "language": "it",
+      "source_country": "IT",
+      "collected_at": "2026-10-16 12:56:42",
+      "matched_query": "rss:lespresso.it",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Il libro \u00e8 dedicato ai giornalisti uccisi a Gaza.",
+      "incident_fingerprint": "il libro dedicato ai giornalisti uccisi gaza"
     },
     {
       "id": 1294,

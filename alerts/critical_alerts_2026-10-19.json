@@ -1,7 +1,26 @@
 {
-  "timestamp": "2026-10-19T06:53:37.403215",
-  "alert_count": 4,
+  "timestamp": "2026-10-19T15:21:16.846112",
+  "alert_count": 5,
   "incidents": [
+    {
+      "id": 1522,
+      "url": "https://www.theguardian.com/commentisfree/2026/oct/19/saudi-arabia-trump-relationship",
+      "title": "Saudi Arabia is learning the hard way: they can\u2019t count on Trump for protection | Mohamad Bazzi",
+      "published_date": "Mon, 19 Oct 2026 11:00:55 GMT",
+      "domain": "theguardian.com",
+      "country": "UK",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "In October 2018, Jamal Khashoggi, a dissident Saudi journalist, was assassinated inside the Saudi consulate in Istanbul by a 15-member hit team, who dismembered his body with a bone saw.",
+      "language": "en",
+      "source_country": "UK",
+      "collected_at": "2026-10-19 15:21:16",
+      "matched_query": "rss:theguardian.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "In October 2018, Jamal Khashoggi, a dissident Saudi journalist, was assassinated inside the Saudi consulate in Istanbul by a 15-member hit team, who dismembered his body with a bone saw.",
+      "incident_fingerprint": "october 2018 jamal khashoggi dissident saudi journalist assassinated inside saudi consulate istanbul"
+    },
     {
       "id": 1430,
       "url": "https://www.elheraldo.co/colombia/2026/10/17/villavicencio-homenajea-al-periodista-julio-chaparro-asesinado-en-1991-mientras-investigaba-una-masacre/",

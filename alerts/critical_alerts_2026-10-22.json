@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-10-22T18:37:50.902144",
-  "alert_count": 7,
+  "timestamp": "2026-10-22T22:44:38.786212",
+  "alert_count": 8,
   "incidents": [
     {
       "id": 1617,
@@ -20,6 +20,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "\"We looked dangerous, we got the goal and we had a moment there where we could have killed off the game,\" Kane told broadcaster DAZN.",
       "incident_fingerprint": "we looked dangerous we got goal we had moment there where we"
+    },
+    {
+      "id": 1633,
+      "url": "https://www.mirror.co.uk/tv/tv-news/celebrity-traitors-2026-live-updates-37799757",
+      "title": "Celebrity Traitors LIVE: Fans devastated as 'icon of the series' leaves in double elimination",
+      "published_date": "Thu, 22 Oct 2026 21:57:54 +0000",
+      "domain": "mirror.co.uk",
+      "country": "UK",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Just now Daniel Bird Assistant Showbiz Editor Who could be murdered next?",
+      "language": "en",
+      "source_country": "UK",
+      "collected_at": "2026-10-22 22:44:38",
+      "matched_query": "rss:mirror.co.uk",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Just now Daniel Bird Assistant Showbiz Editor Who could be murdered next?",
+      "incident_fingerprint": "just now daniel bird assistant showbiz editor who could be murdered next"
     },
     {
       "id": 1549,

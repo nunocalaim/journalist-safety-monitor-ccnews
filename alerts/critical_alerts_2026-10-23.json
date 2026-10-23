@@ -1,7 +1,26 @@
 {
-  "timestamp": "2026-10-23T06:45:54.000022",
-  "alert_count": 6,
+  "timestamp": "2026-10-23T13:12:31.718324",
+  "alert_count": 7,
   "incidents": [
+    {
+      "id": 1655,
+      "url": "https://www.greenme.it/lifestyle/costume-e-societa/fine-vita-lumbria-approva-la-legge-sul-suicidio-medicalmente-assistito-e-la-quinta-regione-italiana/",
+      "title": "Fine vita, l\u2019Umbria approva la legge sul suicidio medicalmente assistito: \u00e8 la quinta Regione italiana",
+      "published_date": "Fri, 23 Oct 2026 09:30:24 +0000",
+      "domain": "greenme.it",
+      "country": "IT",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "Fine vita, l'Umbria approva la legge sul suicidio medicalmente assistito: \u00e8 la quinta Regione italiana Fine vita, l'Umbria approva la legge sul suicidio medicalmente assistito: \u00e8 la quinta Regione italiana Indice A poco pi\u00f9 di un anno dalla scomparsa di Laura Santi, giornalista perugina affetta da sclerosi multipla, l'Umbria ha approvato una legge sul suicidio medicalmente assistito.",
+      "language": "it",
+      "source_country": "IT",
+      "collected_at": "2026-10-23 13:12:31",
+      "matched_query": "rss:greenme.it",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Fine vita, l'Umbria approva la legge sul suicidio medicalmente assistito: \u00e8 la quinta Regione italiana Fine vita, l'Umbria approva la legge sul suicidio medicalmente assistito: \u00e8 la quinta Regione italiana Indice A poco pi\u00f9 di un anno dalla scomparsa di Laura Santi, giornalista perugina affetta da sclerosi multipla, l'Umbria ha approvato una legge sul suicidio medicalmente assistito.",
+      "incident_fingerprint": "fine vita l umbria approva la legge sul suicidio medicalmente assistito la"
+    },
     {
       "id": 1617,
       "url": "https://www.thehindu.com/sport/football/champions-league-man-utd-humiliated-by-como-arsenal-denies-bayern/article71610181.ece",

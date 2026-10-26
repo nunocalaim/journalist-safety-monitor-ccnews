@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-10-26T14:47:45.845726",
-  "alert_count": 8,
+  "timestamp": "2026-10-26T23:41:55.670407",
+  "alert_count": 10,
   "incidents": [
     {
       "id": 1718,
@@ -39,6 +39,44 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "TV sports reporter found dead alongside husband in murder suicide, police say Former WBRC sports reporter Christina Chambers and her husband were found dead in their home in Hoover, with a family member raising the alarm around 9am on Tuesday",
       "incident_fingerprint": "tv sports reporter found dead alongside husband murder suicide police say former"
+    },
+    {
+      "id": 1728,
+      "url": "https://www.newsday.com/news/nation/australia-lawmaker-helen-haines-injured-e76055",
+      "title": "Australian Parliament pays tribute to injured lawmaker as it resumes work under increased security",
+      "published_date": "2026-10-25T23:49:49.799-04:00",
+      "domain": "newsday.com",
+      "country": "US",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Opening arguments for crash that killed former News 12 reporter ...",
+      "language": "en",
+      "source_country": "US",
+      "collected_at": "2026-10-26 23:41:55",
+      "matched_query": "rss:newsday.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Opening arguments for crash that killed former News 12 reporter ...",
+      "incident_fingerprint": "opening arguments for crash that killed former news 12 reporter"
+    },
+    {
+      "id": 1729,
+      "url": "https://lespresso.it/c/mondo/2026/10/26/report-onu-cisgiordania-violenze-genocidio/65516",
+      "title": "\"Israele ha commesso sterminio, torture e stupri\", la denuncia della Commissione d'inchiesta Onu sull'azione dell'Idf in Cisgiordania",
+      "published_date": "Mon, 26 Oct 2026 18:06:15 GMT",
+      "domain": "lespresso.it",
+      "country": "IT",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Il rapporto, poi, critica anche l'Autorit\u00e0 palestinese, accusata di aver preso di mira chi esprime opinioni dissenzienti: giornalisti e difensori dei diritti umani sono stati uccisi e feriti, con un progressivo restringimento dello spazio civico.",
+      "language": "it",
+      "source_country": "IT",
+      "collected_at": "2026-10-26 23:41:55",
+      "matched_query": "rss:lespresso.it",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Il rapporto, poi, critica anche l'Autorit\u00e0 palestinese, accusata di aver preso di mira chi esprime opinioni dissenzienti: giornalisti e difensori dei diritti umani sono stati uccisi e feriti, con un progressivo restringimento dello spazio civico.",
+      "incident_fingerprint": "il rapporto poi critica anche l autorit palestinese accusata di aver preso"
     },
     {
       "id": 1704,

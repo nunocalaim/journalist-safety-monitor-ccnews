@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-10-26T06:43:29.416152",
-  "alert_count": 7,
+  "timestamp": "2026-10-26T14:47:45.845726",
+  "alert_count": 8,
   "incidents": [
     {
       "id": 1718,
@@ -20,6 +20,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Em cartaz: 'Confiss\u00f5es de adolescente', 'A gaivota', de Tchekhov, e mais pe\u00e7as no Rio de Janeiro Na trama, ap\u00f3s o assassinato de Boca de Ouro, encontrado morto numa sarjeta, o jornalista Caveirinha procura Dona Guigui, ex-amante do contraventor, em busca de um furo de reportagem.",
       "incident_fingerprint": "em cartaz confiss es de adolescente gaivota de tchekhov e mais pe"
+    },
+    {
+      "id": 1725,
+      "url": "https://www.independent.co.uk/news/world/americas/crime/sports-reporter-christina-chambers-murder-suicide-b2886273.html",
+      "title": "TV sports reporter found dead alongside husband in murder suicide, police say",
+      "published_date": "Wed, 17 Dec 2025 14:39:52 GMT",
+      "domain": "www.independent.co.uk",
+      "country": "UK",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "TV sports reporter found dead alongside husband in murder suicide, police say Former WBRC sports reporter Christina Chambers and her husband were found dead in their home in Hoover, with a family member raising the alarm around 9am on Tuesday",
+      "language": "en",
+      "source_country": "UK",
+      "collected_at": "2026-10-26 14:47:45",
+      "matched_query": "rss:www.independent.co.uk",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "TV sports reporter found dead alongside husband in murder suicide, police say Former WBRC sports reporter Christina Chambers and her husband were found dead in their home in Hoover, with a family member raising the alarm around 9am on Tuesday",
+      "incident_fingerprint": "tv sports reporter found dead alongside husband murder suicide police say former"
     },
     {
       "id": 1704,

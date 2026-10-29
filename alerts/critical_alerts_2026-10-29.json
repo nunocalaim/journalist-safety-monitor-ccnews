@@ -1,7 +1,26 @@
 {
-  "timestamp": "2026-10-29T07:47:55.834311",
-  "alert_count": 7,
+  "timestamp": "2026-10-29T15:05:07.472296",
+  "alert_count": 8,
   "incidents": [
+    {
+      "id": 1775,
+      "url": "https://www.abc.es/gente/raul-triguero-reportero-viernes-desaparecidos-accidente-tren-20261029135453-nt.html",
+      "title": "Ra\u00fal Triguero, reportero de '\u00a1De Viernes!', entre los desaparecidos en el accidente de tren de Toledo: su familia sigue busc\u00e1ndolo",
+      "published_date": "Thu, 29 Oct 2026 13:54:54 +0100",
+      "domain": "www.abc.es",
+      "country": "ES",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "Ra\u00fal Triguero, reportero de '\u00a1De Viernes!', entre los desaparecidos en el accidente de tren de Toledo: su familia sigue busc\u00e1ndolo Ra\u00fal Triguero, reportero de '\u00a1De Viernes!', entre los desaparecidos en el accidente de tren de Toledo: su familia sigue busc\u00e1ndolo El periodista de Telecinco viajaba a Sevilla para entrevistar a Amador Mohedano por encargo del programa cuando se produjo el fatal choque entre de trenes en Urda Contin\u00faa la b\u00fasqueda de los muchos desaparecidos en el terrible accidente de trenes de Toledo.",
+      "language": "es",
+      "source_country": "ES",
+      "collected_at": "2026-10-29 15:05:07",
+      "matched_query": "rss:www.abc.es",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Ra\u00fal Triguero, reportero de '\u00a1De Viernes!', entre los desaparecidos en el accidente de tren de Toledo: su familia sigue busc\u00e1ndolo Ra\u00fal Triguero, reportero de '\u00a1De Viernes!', entre los desaparecidos en el accidente de tren de Toledo: su familia sigue busc\u00e1ndolo El periodista de Telecinco viajaba a Sevilla para entrevistar a Amador Mohedano por encargo del programa cuando se produjo el fatal choque entre de trenes en Urda Contin\u00faa la b\u00fasqueda de los muchos desaparecidos en el terrible accidente de trenes de Toledo.",
+      "incident_fingerprint": "ra l triguero reportero de de viernes entre los desaparecidos en el"
+    },
     {
       "id": 1718,
       "url": "https://oglobo.globo.com/rioshow/teatro-e-danca/noticia/2026/10/26/com-tuca-andrada-nova-montagem-de-boca-de-ouro-de-nelson-rodrigues-estreia-no-rio.ghtml",

@@ -1,7 +1,26 @@
 {
-  "timestamp": "2026-11-02T08:24:41.175024",
-  "alert_count": 5,
+  "timestamp": "2026-11-02T22:55:35.841755",
+  "alert_count": 6,
   "incidents": [
+    {
+      "id": 1858,
+      "url": "https://www.jornada.com.mx/2026/11/02/politica/012n1pol?partner=rss",
+      "title": "Unesco: en M\u00e9xico asesinaron a 17 informadores en 2024 y 2025",
+      "published_date": "Mon, 02 Nov 2026 09:07:28 GMT",
+      "domain": "www.jornada.com.mx",
+      "country": "MX",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Unesco: en M\u00e9xico asesinaron a 17 informadores en 2024 y 2025 En 2024 y 2025, en el mundo fueron asesinados 189 periodistas, trabajadores de medios de comunicaci\u00f3n y creadores de contenido que realizaban actividades period\u00edsticas, lo que representa un aumento de 20 por ciento respecto al periodo 2022-2023, cuando se registraron 158 asesinatos, de acuerdo con la Organizaci\u00f3n de Naciones Unidas para la Educaci\u00f3n, la Ciencia y la Cultura (Unesco).",
+      "language": "es",
+      "source_country": "MX",
+      "collected_at": "2026-11-02 22:55:35",
+      "matched_query": "rss:www.jornada.com.mx",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Unesco: en M\u00e9xico asesinaron a 17 informadores en 2024 y 2025 En 2024 y 2025, en el mundo fueron asesinados 189 periodistas, trabajadores de medios de comunicaci\u00f3n y creadores de contenido que realizaban actividades period\u00edsticas, lo que representa un aumento de 20 por ciento respecto al periodo 2022-2023, cuando se registraron 158 asesinatos, de acuerdo con la Organizaci\u00f3n de Naciones Unidas para la Educaci\u00f3n, la Ciencia y la Cultura (Unesco).",
+      "incident_fingerprint": "unesco en m xico asesinaron 17 informadores en 2024 y 2025 en"
+    },
     {
       "id": 1815,
       "url": "https://www.lavanguardia.com/opinion/20261031/11672696/sobre-odio-prensa.html",

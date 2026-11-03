@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-11-03T08:35:26.582737",
-  "alert_count": 7,
+  "timestamp": "2026-11-03T20:36:42.801075",
+  "alert_count": 8,
   "incidents": [
     {
       "id": 1864,
@@ -20,6 +20,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "++ Ventunenne uccide la madre a coltellate e si consegna ai carabinieri ++ Il delitto nella notte nell'abitazione di famiglia in provincia di Brescia BRESCIA, 03 novembre 2026, 08:47 Redazione ANSA Condividi Link copiato Un 21enne ha ucciso la madre a coltellate nell'abitazione di famiglia in via Tagliata a Chiari, in provincia di Brescia.",
       "incident_fingerprint": "ventunenne uccide la madre coltellate e si consegna ai carabinieri il delitto"
+    },
+    {
+      "id": 1871,
+      "url": "https://www.ilmessaggero.it/italia/master_messaggero_borse_studio_candidature-9864486.html",
+      "title": "Master del Messaggero, arrivano due nuove borse di studio dedicate agli under 30: aperte le candidature",
+      "published_date": "lun, 02 nov 2026 17:50:41 +0100",
+      "domain": "ilmessaggero.it",
+      "country": "IT",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "E ha scelto di intitolare queste borse di studio a un giornalista che ha fatto del rigore e della precisione la sua misura professionale: Luca Cifoni, scomparso nel 2024, che \u00e8 stato in forza alla redazione economica del quotidiano di via del Tritone.",
+      "language": "it",
+      "source_country": "IT",
+      "collected_at": "2026-11-03 20:36:42",
+      "matched_query": "rss:ilmessaggero.it",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "E ha scelto di intitolare queste borse di studio a un giornalista che ha fatto del rigore e della precisione la sua misura professionale: Luca Cifoni, scomparso nel 2024, che \u00e8 stato in forza alla redazione economica del quotidiano di via del Tritone.",
+      "incident_fingerprint": "e ha scelto di intitolare queste borse di studio un giornalista che"
     },
     {
       "id": 1858,

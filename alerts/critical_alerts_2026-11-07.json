@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-11-07T14:40:45.276814",
-  "alert_count": 11,
+  "timestamp": "2026-11-07T23:32:02.455037",
+  "alert_count": 13,
   "incidents": [
     {
       "id": 1898,
@@ -210,6 +210,44 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Quinn was asked whether there was a reason for the penalties that fans and reporters were missing.",
       "incident_fingerprint": "quinn asked whether there reason for penalties that fans reporters missing"
+    },
+    {
+      "id": 1902,
+      "url": "https://www.unotv.com/nacional/mexico-segundo-pais-con-mas-periodistas-asesinados-en-2025-solo-palestina-lo-supera-advierte-unicef/",
+      "title": "M\u00e9xico, segundo pa\u00eds con m\u00e1s periodistas asesinados en 2025; s\u00f3lo Palestina lo supera, advierte Unesco",
+      "published_date": "2026-11-02",
+      "domain": "www.unotv.com",
+      "country": "MX",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "M\u00e9xico, segundo pa\u00eds con m\u00e1s periodistas asesinados en 2025; s\u00f3lo Palestina lo supera, advierte Unesco M\u00e9xico, segundo pa\u00eds con m\u00e1s periodistas asesinados en 2025; s\u00f3lo Palestina lo supera, advierte Unesco La Unesco registr\u00f3 un total de 189 asesinatos de periodistas y trabajadores de medios durante 2024 y 2025.",
+      "language": "es",
+      "source_country": "MX",
+      "collected_at": "2026-11-07 23:32:02",
+      "matched_query": "ccnews:www.unotv.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "M\u00e9xico, segundo pa\u00eds con m\u00e1s periodistas asesinados en 2025; s\u00f3lo Palestina lo supera, advierte Unesco M\u00e9xico, segundo pa\u00eds con m\u00e1s periodistas asesinados en 2025; s\u00f3lo Palestina lo supera, advierte Unesco La Unesco registr\u00f3 un total de 189 asesinatos de periodistas y trabajadores de medios durante 2024 y 2025.",
+      "incident_fingerprint": "m xico segundo pa s con m s periodistas asesinados en 2025"
+    },
+    {
+      "id": 1905,
+      "url": "https://www.unotv.com/internacional/unesco-periodistas-asesinados-2024-2025-impunidad-86/",
+      "title": "Asesinan a 189 periodistas en dos a\u00f1os y 86% de los cr\u00edmenes sigue impune, alerta Unesco",
+      "published_date": "2026-11-02",
+      "domain": "www.unotv.com",
+      "country": "MX",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "El informe Aspectos destacados del Informe de la Directora General de la Unesco sobre la seguridad de los periodistas y el peligro de la impunidad, publicado con motivo del D\u00eda Internacional para Poner Fin a la Impunidad de los Cr\u00edmenes contra Periodistas de 2026, revela que, en promedio, un periodista fue asesinado cada cuatro d\u00edas.",
+      "language": "es",
+      "source_country": "MX",
+      "collected_at": "2026-11-07 23:32:02",
+      "matched_query": "ccnews:www.unotv.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "El informe Aspectos destacados del Informe de la Directora General de la Unesco sobre la seguridad de los periodistas y el peligro de la impunidad, publicado con motivo del D\u00eda Internacional para Poner Fin a la Impunidad de los Cr\u00edmenes contra Periodistas de 2026, revela que, en promedio, un periodista fue asesinado cada cuatro d\u00edas.",
+      "incident_fingerprint": "el informe aspectos destacados del informe de la directora general de la"
     }
   ]
 }

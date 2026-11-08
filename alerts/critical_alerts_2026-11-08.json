@@ -1,7 +1,26 @@
 {
-  "timestamp": "2026-11-08T07:57:28.234652",
-  "alert_count": 15,
+  "timestamp": "2026-11-08T19:03:37.731967",
+  "alert_count": 16,
   "incidents": [
+    {
+      "id": 1912,
+      "url": "https://www.theguardian.com/books/2026/nov/08/louise-cansot-paris-model-prix-goncourt-phillipe-jaenada-luc-corlouer",
+      "title": "How the story of \u2018the girl of 100 portraits\u2019 inspired two books",
+      "published_date": "Sun, 08 Nov 2026 11:00:38 GMT",
+      "domain": "www.theguardian.com",
+      "country": "UK",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "But when she was killed, what journalists and the police saw was a young woman who was a bit libertine, had a baby out of wedlock, had jobs they didn't think were proper jobs and posed for painters.",
+      "language": "en",
+      "source_country": "UK",
+      "collected_at": "2026-11-08 19:03:37",
+      "matched_query": "rss:www.theguardian.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "But when she was killed, what journalists and the police saw was a young woman who was a bit libertine, had a baby out of wedlock, had jobs they didn't think were proper jobs and posed for painters.",
+      "incident_fingerprint": "but when killed what journalists police saw young woman who bit libertine"
+    },
     {
       "id": 1898,
       "url": "https://www.seneweb.com/fr/news/International/apres-les-midterms-american-airlines-efface-le-nom-de-trump_n_999002897.html",

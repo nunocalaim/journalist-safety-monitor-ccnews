@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-11-08T19:03:37.731967",
-  "alert_count": 16,
+  "timestamp": "2026-11-08T23:31:08.969776",
+  "alert_count": 17,
   "incidents": [
     {
       "id": 1912,
@@ -153,6 +153,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "A este escenario se suman 24 periodistas que contin\u00faan desaparecidos, de un total de 43 casos registrados en el mismo periodo.",
       "incident_fingerprint": "este escenario se suman 24 periodistas que contin desaparecidos de un total"
+    },
+    {
+      "id": 1915,
+      "url": "https://www.finanznachrichten.de/nachrichten-2026-11/70018482-most-journalist-murders-go-unpunished-unesco-reports-020.htm",
+      "title": "Most Journalist Murders Go Unpunished, UNESCO Reports",
+      "published_date": "2026-11-03",
+      "domain": "www.finanznachrichten.de",
+      "country": "DE",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "The highest number of journalists were killed in the Arab States (97) followed by Latin American and the Caribbean (37), Asia-Pacific (34), Central and Eastern Europe (14), Africa (6) and Western Europe and North America (1).",
+      "language": "en",
+      "source_country": "DE",
+      "collected_at": "2026-11-08 23:31:08",
+      "matched_query": "ccnews:www.finanznachrichten.de",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "The highest number of journalists were killed in the Arab States (97) followed by Latin American and the Caribbean (37), Asia-Pacific (34), Central and Eastern Europe (14), Africa (6) and Western Europe and North America (1).",
+      "incident_fingerprint": "highest number journalists killed arab states 97 followed by latin american caribbean"
     },
     {
       "id": 1858,

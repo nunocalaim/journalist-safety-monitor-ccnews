@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-11-12T09:03:35.852496",
-  "alert_count": 10,
+  "timestamp": "2026-11-12T21:28:39.151304",
+  "alert_count": 11,
   "incidents": [
     {
       "id": 1954,
@@ -39,6 +39,25 @@
       "validation_reason": "media subject and harm action found in returned text",
       "evidence_text": "Nasser Hospital, the largest in southern Gaza, was hit by a double Israeli strike in August 2025, which killed at least 20 people, including journalists and health workers.",
       "incident_fingerprint": "nasser hospital largest southern gaza hit by double israeli strike august 2025"
+    },
+    {
+      "id": 1962,
+      "url": "https://www.mediaite.com/media/news/it-wasnt-a-traffic-jam-tmz-dc-reporter-accuses-house-dem-of-lying-purposely-missing-hegseth-impeachment-vote/",
+      "title": "\u2018It Wasn\u2019t a Traffic Jam\u2019: TMZ DC Reporter Accuses House Dem of Lying, \u2018Purposely\u2019 Missing Hegseth Impeachment Vote",
+      "published_date": "Thu, 12 Nov 2026 16:55:52 +0000",
+      "domain": "mediaite.com",
+      "country": "US",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "'It Wasn't a Traffic Jam': TMZ DC Reporter Accuses House Dem of Lying, 'Purposely' Missing Hegseth Impeachment Vote \"If this guy's as dangerous to America and our soldiers out there as you claim he is, it's gotta be better than that.",
+      "language": "en",
+      "source_country": "US",
+      "collected_at": "2026-11-12 21:28:39",
+      "matched_query": "rss:mediaite.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "'It Wasn't a Traffic Jam': TMZ DC Reporter Accuses House Dem of Lying, 'Purposely' Missing Hegseth Impeachment Vote \"If this guy's as dangerous to America and our soldiers out there as you claim he is, it's gotta be better than that.",
+      "incident_fingerprint": "it wasn t traffic jam tmz dc reporter accuses house dem lying"
     },
     {
       "id": 1946,

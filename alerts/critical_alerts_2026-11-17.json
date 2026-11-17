@@ -1,7 +1,26 @@
 {
-  "timestamp": "2026-11-17T10:04:15.552625",
-  "alert_count": 7,
+  "timestamp": "2026-11-17T22:19:13.833425",
+  "alert_count": 8,
   "incidents": [
+    {
+      "id": 2001,
+      "url": "https://www.theguardian.com/world/2026/nov/17/costa-rica-journalist-camilo-rodriguez-shot-dead",
+      "title": "Costa Rican journalist\u00a0shot dead in first such killing in 25 years",
+      "published_date": "Tue, 17 Nov 2026 17:19:12 GMT",
+      "domain": "www.theguardian.com",
+      "country": "UK",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Costa Rican journalist shot dead in first such killing in 25 years The Costa Rican journalist Camilo Rodr\u00edguez, who gained prominence for publishing allegations against suspected drug traffickers and politicians, was shot dead on Monday, authorities said.",
+      "language": "en",
+      "source_country": "UK",
+      "collected_at": "2026-11-17 22:19:13",
+      "matched_query": "rss:www.theguardian.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Costa Rican journalist shot dead in first such killing in 25 years The Costa Rican journalist Camilo Rodr\u00edguez, who gained prominence for publishing allegations against suspected drug traffickers and politicians, was shot dead on Monday, authorities said.",
+      "incident_fingerprint": "costa rican journalist shot dead first such killing 25 years costa rican"
+    },
     {
       "id": 1971,
       "url": "https://www.rappler.com/world/the-week-in-photos-november-7-13-2026/",

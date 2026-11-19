@@ -1,0 +1,63 @@
+{
+  "timestamp": "2026-11-19T09:27:58.672012",
+  "alert_count": 3,
+  "incidents": [
+    {
+      "id": 2001,
+      "url": "https://www.theguardian.com/world/2026/nov/17/costa-rica-journalist-camilo-rodriguez-shot-dead",
+      "title": "Costa Rican journalist\u00a0shot dead in first such killing in 25 years",
+      "published_date": "Tue, 17 Nov 2026 17:19:12 GMT",
+      "domain": "www.theguardian.com",
+      "country": "UK",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "Costa Rican journalist shot dead in first such killing in 25 years The Costa Rican journalist Camilo Rodr\u00edguez, who gained prominence for publishing allegations against suspected drug traffickers and politicians, was shot dead on Monday, authorities said.",
+      "language": "en",
+      "source_country": "UK",
+      "collected_at": "2026-11-17 22:19:13",
+      "matched_query": "rss:www.theguardian.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Costa Rican journalist shot dead in first such killing in 25 years The Costa Rican journalist Camilo Rodr\u00edguez, who gained prominence for publishing allegations against suspected drug traffickers and politicians, was shot dead on Monday, authorities said.",
+      "incident_fingerprint": "costa rican journalist shot dead first such killing 25 years costa rican"
+    },
+    {
+      "id": 1971,
+      "url": "https://www.rappler.com/world/the-week-in-photos-november-7-13-2026/",
+      "title": "The week in photos: November 7-13, 2026",
+      "published_date": "Sat, 14 Nov 2026 11:38:13 +0800",
+      "domain": "www.rappler.com",
+      "country": "PH",
+      "severity": "CRITICAL",
+      "incident_type": "KILLING",
+      "description": "PHOTO BY JAKUB PORZYCKI/REUTERS Staff of Russian newspaper Novaya Gazeta collect portraits of slain journalists as they hold a last editorial meeting in the office in Moscow, Russia, on November 9, 2026, as the newspaper shuts down, citing what it describes as a relentless state pressure campaign.",
+      "language": "en",
+      "source_country": "PH",
+      "collected_at": "2026-11-14 08:28:54",
+      "matched_query": "rss:www.rappler.com",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "PHOTO BY JAKUB PORZYCKI/REUTERS Staff of Russian newspaper Novaya Gazeta collect portraits of slain journalists as they hold a last editorial meeting in the office in Moscow, Russia, on November 9, 2026, as the newspaper shuts down, citing what it describes as a relentless state pressure campaign.",
+      "incident_fingerprint": "photo by jakub porzycki reuters staff russian newspaper novaya gazeta collect portraits"
+    },
+    {
+      "id": 1976,
+      "url": "https://www.20minutes.fr/diaporama/diaporama-4262752-images-guerre-ukraine-derniers-instants-vie-ukrainiens-donbass?at_medium=display&at_campaign=149",
+      "title": "En images - Guerre en Ukraine\u00a0: Les derniers instants de vie des Ukrainiens du Donbass",
+      "published_date": "Sat, 14 Nov 2026 04:02:37 GMT",
+      "domain": "20minutes.fr",
+      "country": "FR",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "qui parlent du quotidien de ces anonymes et mettent en lumi\u00e8re les travaux du journaliste disparu.",
+      "language": "fr",
+      "source_country": "FR",
+      "collected_at": "2026-11-14 19:23:42",
+      "matched_query": "rss:20minutes.fr",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "qui parlent du quotidien de ces anonymes et mettent en lumi\u00e8re les travaux du journaliste disparu.",
+      "incident_fingerprint": "qui parlent du quotidien de ces anonymes et mettent en lumi re"
+    }
+  ]
+}

@@ -1,7 +1,26 @@
 {
-  "timestamp": "2026-11-21T08:51:46.635191",
-  "alert_count": 5,
+  "timestamp": "2026-11-21T20:41:49.064476",
+  "alert_count": 6,
   "incidents": [
+    {
+      "id": 2038,
+      "url": "https://www.lastampa.it/cronaca/2026/11/21/diretta/corrado_augias_tutti_in_coda_per_l_ultimo_saluto_aperta_la_camera_ardente_in_campidoglio-15805007/",
+      "title": "Augias, in 10mila per l\u2019ultimo saluto. Chiusa la camera ardente, in centinaia ancora in coda",
+      "published_date": "Sat, 21 Nov 2026 10:15:00 +0100",
+      "domain": "www.lastampa.it",
+      "country": "IT",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "Iacona ha ricordato gli esordi professionali al fianco del giornalista scomparso: \u00c2\u00abHo fatto il mio primo lavoro in Rai con lui nel 1988, appena sono entrato.",
+      "language": "it",
+      "source_country": "IT",
+      "collected_at": "2026-11-21 20:41:48",
+      "matched_query": "rss:www.lastampa.it",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "Iacona ha ricordato gli esordi professionali al fianco del giornalista scomparso: \u00c2\u00abHo fatto il mio primo lavoro in Rai con lui nel 1988, appena sono entrato.",
+      "incident_fingerprint": "iacona ha ricordato gli esordi professionali al fianco del giornalista scomparso ho"
+    },
     {
       "id": 2025,
       "url": "https://www.ilmessaggero.it/persone/corrado_augias_torre_babele_autrice_carla_mellidi_cosa_ha_detto-9900825.html",

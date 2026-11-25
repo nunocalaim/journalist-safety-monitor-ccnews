@@ -635,6 +635,13 @@ class IncidentDatabase:
             params = (days,)
 
         rows = self._query_all_candidates(where_sql, params)
+        # A candidate later promoted to an incident (e.g. re-validated after
+        # a term-list fix) keeps its old 'candidate' row: the closed month
+        # .db files are multi-hundred-MB Git LFS objects and fragments are
+        # write-once, so the row is left in place rather than rewritten.
+        # Skip it here so the article isn't listed as both.
+        incident_urls = {r[0] for r in self.conn.execute('SELECT url FROM incidents')}
+        rows = [r for r in rows if r['url'] not in incident_urls]
         rows.sort(key=lambda r: r['__sort_date'] or '', reverse=True)
         fieldnames = [k for k in rows[0].keys() if k != '__sort_date'] if rows else CANDIDATES_COLUMNS
 

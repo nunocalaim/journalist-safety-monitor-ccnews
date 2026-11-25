@@ -105,6 +105,27 @@ def test_candidate_export_writes_review_candidates(tmp_path):
         db.close()
 
 
+def test_candidate_export_skips_urls_already_promoted_to_incidents(tmp_path):
+    db = IncidentDatabase(db_path=str(tmp_path / "incidents.db"))
+    try:
+        today = datetime.now().strftime("%Y-%m-%d")
+        db.bulk_insert_candidates([
+            {"url": f"https://example.com/{name}", "title": name, "published_date": today,
+             "language": "es", "validation_status": "candidate"}
+            for name in ("promoted", "still-candidate")
+        ])
+        db.bulk_insert_incidents([_incident("https://example.com/promoted", days_ago=0)])
+        export_path = tmp_path / "candidates_full.csv"
+
+        db.export_candidates_to_csv(str(export_path))
+
+        exported = export_path.read_text()
+        assert "https://example.com/still-candidate" in exported
+        assert "https://example.com/promoted" not in exported
+    finally:
+        db.close()
+
+
 def test_candidate_full_export_includes_older_review_candidates(tmp_path):
     db = IncidentDatabase(db_path=str(tmp_path / "incidents.db"))
     try:

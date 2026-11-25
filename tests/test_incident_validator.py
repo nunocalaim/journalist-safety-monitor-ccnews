@@ -268,6 +268,17 @@ def test_validate_incident_types(article, expected_status, expected_type):
         ("es", "Matan a periodista Luis Ángel López en Poza Rica, Veracruz", "validated", "KILLING"),
         ("es", "Israel mata al periodista Mohamed Wishah de Al Jazeera al bombardear su coche", "validated", "KILLING"),
         ("es", "El juicio por el asesinato de la periodista comenzará en marzo.", "candidate", None),
+        # Media term in a byline / masthead / source phrase, not the victim
+        # (2026-11-25, from real false KILLINGs).
+        ("es", "Olimpia doblega a Lobos en su debut Redacción La Prensa Sucesos Matan a hombre en Choloma", "rejected", None),
+        ("es", "Mató exreo a árbitro tras molestarse por sus decisiones. El periodista Carlos Jiménez informó sobre el asesinato de un árbitro.", "rejected", None),
+        ("es", "Fuentes consultadas por este periódico apuntan a un posible asesinato por encargo.", "rejected", None),
+        ("es", "Buxadé denuncia el saqueo: \"la corrupción mata\" en declaraciones ante los periodistas en Miranda de Ebro.", "rejected", None),
+        ("es", "El encuentro se llevará a cabo en el Club de Periodistas de México, en Filomeno Mata 8.", "rejected", None),
+        ("es", "Revelan que suegra asesinó a exreina de belleza por un presunto robo – Periódico Zócalo", "rejected", None),
+        # ...but the masking must not swallow a real victim.
+        ("es", "Asesinan al periodista Luis Ángel López en Veracruz – Periódico Zócalo", "validated", "KILLING"),
+        ("es", "El periodista Juan Pérez informó sobre corrupción y fue asesinado días después.", "validated", "KILLING"),
         ("es", "Un reportero fue detenido por la policía durante la protesta", "validated", "DETENTION"),
         ("es", "Una testigo dijo a los reporteros que su hijo fue asesinado en el ataque.", "rejected", None),
         ("es", "A un año del asesinato de la periodista, sigue sin justicia.", "candidate", None),

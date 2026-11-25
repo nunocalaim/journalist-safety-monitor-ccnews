@@ -64,6 +64,16 @@ class LanguageTerms:
     # disappearance). English-only for now; extend as real cases surface in
     # other languages.
     exclusion_patterns: List[str] = field(default_factory=list)
+    # Phrases where a media-subject term names someone who is NOT the
+    # victim: bylines and mastheads ("Redacción La Prensa", "– Periódico
+    # Zócalo"), author credits, a journalist acting as the source ("el
+    # periodista X informó sobre el asesinato"), venue/organization names
+    # ("Club de Periodistas"). Unlike exclusion_patterns, these don't block
+    # the whole sentence -- a real headline often carries a masthead in the
+    # same sentence ("Asesinan al periodista X – Periódico Zócalo") -- they
+    # only blank out the matched span, so a subject term inside it can't
+    # count as the victim; the rest of the sentence is still checked.
+    non_victim_subject_patterns: List[str] = field(default_factory=list)
 
 
 SPANISH = LanguageTerms(
@@ -226,6 +236,38 @@ SPANISH = LanguageTerms(
         # "periodista ... contestar cuando se siente atacado" as a
         # hypothetical example of temperament, misclassified as an ATTACK.
         r"\bsentirse atacad[oa]\b|\bse siente atacad[oa]\b",
+    ],
+    # Found 2026-11-25 reviewing the Spanish re-validation (see the KILLING
+    # terms' comment): most false KILLINGs had the "journalist" match in
+    # one of these shapes, not in the story itself.
+    non_victim_subject_patterns=[
+        # Bylines / mastheads / page boilerplate. laprensa.hn's related-links
+        # block repeats "Redacción La Prensa <section>" next to other
+        # stories' headlines, which validated football results and a court
+        # case as killings.
+        r"\bredacci[oó]n\s+la\s+prensa\b",
+        r"\b(?:autor|autora|por)\s*:?\s+redacci[oó]n\b",
+        r"[–|-]\s*peri[oó]dico\s+\w+",
+        r"\bnota del?\s+(?:la\s+)?editor(?:a)?\b",
+        r"\([^)]*\beditor(?:a|es|as)\b[^)]*\)",
+        # Author credits / bios.
+        r"\b(?:supervisad[oa]|revisad[oa]|elaborad[oa]|redactad[oa])\s+por\s+(?:nuestros\s+|los\s+)?periodistas\b",
+        r"\bperiodistas?\s+(?:audiovisual(?:es)?\s+)?egresad[oa]s?\b",
+        # The journalist is the source / author, not the victim: "el
+        # periodista Carlos Jiménez informó sobre el asesinato de un
+        # árbitro". Up to three tokens allowed for a name. Requires the
+        # reported-on harm noun after the verb -- a bare "informó" would
+        # also mask "el periodista X informó sobre corrupción y fue
+        # asesinado", where the journalist IS the victim.
+        r"\b(?:el|la|los|las)\s+periodistas?\s+(?:[^\s,]+\s+){0,3}(?:informó|informa|difundió|difunde|reveló|revela|contó|cuenta|narró|narra|relató|relata|documentó)\s+(?:sobre\s+|acerca\s+de\s+)?(?:el|la|los|las|un|una)\s+(?:asesinatos?|muertes?|crímenes|crimen|homicidios?|ataques?|caso)\b",
+        r"\b(?:periodistas|reporteros|reporteras)\s+(?:le\s+|les\s+)?preguntaron\b",
+        r"\bante\s+(?:los\s+|las\s+)?(?:periodistas|reporteros|medios)\b",
+        r"\b(?:este|nuestro)\s+peri[oó]dico\b",
+        r"\b(?:contó|publicó|escribió)\s+en\s+el\s+peri[oó]dico\b",
+        r"\b(?:art[ií]culo|columna|libro|cr[oó]nica)\s+(?:del|de\s+la)\s+periodista\b",
+        # Venue / organization names that contain a media term.
+        r"\bclub\s+de\s+periodistas\b",
+        r"\basociaci[oó]n\s+de\s+corresponsales\b",
     ],
 )
 

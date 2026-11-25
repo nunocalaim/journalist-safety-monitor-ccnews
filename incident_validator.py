@@ -526,8 +526,19 @@ def _split_sentences(text: str) -> list[str]:
     return [chunk.strip() for chunk in chunks if chunk.strip()]
 
 
+def _mask_non_victim_subjects(lowered: str, terms: LanguageTerms) -> str:
+    """Blank out bylines, mastheads, source phrases etc. (see
+    LanguageTerms.non_victim_subject_patterns) so a media term inside them
+    can't be taken as the victim. Replaced with a non-word placeholder
+    rather than deleted, so the words on either side don't become
+    adjacent and form a new match."""
+    for pattern in terms.non_victim_subject_patterns:
+        lowered = re.sub(pattern, " \u00a4 ", lowered)
+    return lowered
+
+
 def _has_media_subject(text: str, terms: LanguageTerms) -> bool:
-    lowered = text.lower()
+    lowered = _mask_non_victim_subjects(text.lower(), terms)
     return any(_term_in_text(term, lowered) for term in terms.media_subject_terms)
 
 
@@ -562,6 +573,10 @@ def _find_positive_incident_frame(sentence: str, compiled: _CompiledLanguage) ->
     if _has_source_attribution(lowered, terms) or _has_exclusion(lowered, terms):
         return None
 
+    # Negation is still checked against the unmasked sentence below.
+    unmasked = lowered
+    lowered = _mask_non_victim_subjects(lowered, terms)
+
     for incident_type, actions in terms.action_terms_by_type.items():
         for subject in terms.media_subject_terms:
             for action in actions:
@@ -586,7 +601,7 @@ def _find_positive_incident_frame(sentence: str, compiled: _CompiledLanguage) ->
                     )
 
                 if subject_before_action or action_before_subject or nominal_frame:
-                    if compiled.negated_action_re.search(lowered):
+                    if compiled.negated_action_re.search(unmasked):
                         continue
                     return incident_type, subject, action
 

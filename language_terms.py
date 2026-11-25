@@ -97,6 +97,29 @@ SPANISH = LanguageTerms(
             "golpeado hasta la muerte", "golpeada hasta la muerte",
             "encontrado muerto", "encontrada muerta",
             "asesinado a tiros",
+            # Headline forms, added 2026-11-25. The list above only had past
+            # participles, so the noun and active-verb forms Spanish
+            # headlines actually use ("denuncia el asesinato del periodista",
+            # "Asesinan al periodista", "Matan a periodista") found no
+            # killing term at all. Real misses: Evelio Lisandro López
+            # Sánchez (Guatemala, Oct 2026) left as "candidate"; the CPJ
+            # article on Luis Ángel López's murder (Veracruz, Jun 2026)
+            # typed ATTACK from a later sentence. Trial/verdict coverage of
+            # an old "asesinato" is still caught first by
+            # retrospective_patterns.
+            # Deliberately NOT added: "homicidio" and "mató". Re-validating
+            # the ~168k stored Spanish articles with them, they validated 9
+            # and 8 unrelated crime stories (a byline "Periodista" or an
+            # "editor"/"reporteros" boilerplate word landing near the verb)
+            # against 1 and 4 real journalist killings -- and the real ones
+            # were already caught via "mata"/"matan"/"asesinato" in other
+            # outlets' coverage.
+            "asesinato", "asesinatos",
+            "asesinan", "asesinaron", "asesinó",
+            "matan", "mataron", "mata",
+            "ultimado", "ultimada",
+            "acribillado", "acribillada",
+            "muerto a balazos", "muerta a balazos", "muerta a tiros",
         ],
         "DETENTION": [
             "detenido", "detenida", "detenidos", "detenidas",

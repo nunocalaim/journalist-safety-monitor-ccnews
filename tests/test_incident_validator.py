@@ -260,6 +260,14 @@ def test_validate_incident_types(article, expected_status, expected_type):
     ("language", "text", "expected_status", "expected_type"),
     [
         ("es", "Periodista fue asesinado a tiros en la capital", "validated", "KILLING"),
+        # Noun / active-verb headline forms (2026-11-25), from real missed or
+        # mistyped headlines.
+        ("es", "La Asociación de Prensa de Huehuetenango denuncia el asesinato del periodista Evelio Lisandro López Sánchez ante el Ministerio Público", "validated", "KILLING"),
+        ("es", "CPJ Américas exige investigación por el asesinato del periodista Luis López en Veracruz. Es la segunda agresión en menos de una semana.", "validated", "KILLING"),
+        ("es", "Asesinan al reportero Luis Ángel López en Poza Rica", "validated", "KILLING"),
+        ("es", "Matan a periodista Luis Ángel López en Poza Rica, Veracruz", "validated", "KILLING"),
+        ("es", "Israel mata al periodista Mohamed Wishah de Al Jazeera al bombardear su coche", "validated", "KILLING"),
+        ("es", "El juicio por el asesinato de la periodista comenzará en marzo.", "candidate", None),
         ("es", "Un reportero fue detenido por la policía durante la protesta", "validated", "DETENTION"),
         ("es", "Una testigo dijo a los reporteros que su hijo fue asesinado en el ataque.", "rejected", None),
         ("es", "A un año del asesinato de la periodista, sigue sin justicia.", "candidate", None),

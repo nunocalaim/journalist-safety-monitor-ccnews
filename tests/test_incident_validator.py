@@ -369,6 +369,26 @@ def test_validate_incident_types(article, expected_status, expected_type):
         ("tr", "Gazetecinin öldürülmesinin yıl dönümü, cezasızlığı hatırlatıyor.", "candidate", None),
         ("tr", "Gazeteci operasyon sırasında polise göre öldürülmedi.", "candidate", None),
 
+        # Outlet / journalist named as the story's SOURCE, not its victim
+        # (2026-11-25, from real false incidents) -- and real incidents in
+        # the same shapes that must still validate.
+        ("ru", "Синоптик спрогнозировал потепление в Москве. Ранее задержаны двое подозреваемых, как писала газета Взгляд, в воскресенье.", "rejected", None),
+        ("ru", "Врач королевской семьи найдена мертвой в своем доме у поместья Сандрингем, сообщила газета Sun.", "rejected", None),
+        ("ru", "Основателя канала задержали в Черногории по запросу США, пишет издание Vijesti.", "rejected", None),
+        ("ru", "Журналист задержан в Москве по обвинению в госизмене.", "validated", "DETENTION"),
+        ("ru", "Газета закрыта после блокировки сайта властями.", "validated", "CENSORSHIP"),
+        ("en", "Several dead after tourist coach crashes, the driver told the Dutch newspaper De Telegraaf.", "rejected", None),
+        ("en", "Students were arrested, Nunez told radio broadcaster RTL early Wednesday.", "rejected", None),
+        ("en", "Trump said in his conversation with reporters that the suspects were arrested.", "rejected", None),
+        ("en", "Secret Service agent shot at White House Correspondents' Dinner", "rejected", None),
+        ("en", "Journalist arrested by ICE released after 15 days in detention", "validated", "DETENTION"),
+        ("fr", "Une fusillade aux Pays-Bas fait un mort, selon le journal local De Gelderlander.", "rejected", None),
+        ("fr", "La journaliste libanaise Amal Khalil a été tuée par une frappe israélienne.", "validated", "KILLING"),
+        ("it", "Brucia un'azienda a Monaco, il giornale riporta che due persone sono state arrestate.", "rejected", None),
+        ("it", "Giornalista del Washington Post aggredita da coloni israeliani", "validated", "ATTACK"),
+        ("pt", "Dois suspeitos foram presos, informou o jornal The Guardian.", "rejected", None),
+        ("pt", "Repórter é agredido ao vivo durante cobertura de acidente", "validated", "ATTACK"),
+
         # No Arabic term list yet -- rejected rather than validated-or-not
         # (2026-08-26: unsupported languages now reject instead of being
         # capped at "candidate", see PLAN.md), the same gate every

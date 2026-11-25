@@ -297,6 +297,26 @@ ENGLISH_NEGATION_PREFIXES = [
 ]
 ENGLISH_EXTRA_NEGATABLE_ACTIONS = ["harm", "harmed", "hurt", "injure"]
 
+# Spans where a media term names an outlet or journalist acting as the
+# SOURCE of the story, or a venue -- blanked before subject matching (see
+# LanguageTerms.non_victim_subject_patterns). Found 2026-11-25 checking
+# every incident's matched subject: ~30 English incidents matched only on
+# "told radio broadcaster RTL", "according to state broadcaster CCTV",
+# "told the Dutch newspaper De Telegraaf", "in his conversation with
+# reporters", "when journalists asked". SOURCE_ATTRIBUTION_PATTERNS above
+# already covers the plain forms ("told reporters"); these allow the
+# adjectives/outlet names in between that slipped past it.
+ENGLISH_NON_VICTIM_SUBJECT_PATTERNS = [
+    r"\b(?:according to|told|reported by|as reported by|quoted by|cited by|speaking to|in an interview with)\s+(?:the\s+|a\s+|an\s+)?(?:[\w'.-]+\s+){0,3}?(?:newspaper|broadcasters?|news outlet|radio station|tv station|television station|reporters?|journalists?|correspondents?|editors?|columnists?)\b",
+    r"\b(?:the\s+)?(?:newspaper|broadcaster|news outlet)\s+(?:added|quoted|cited|reported|said)\b",
+    r"\b(?:conversations?|interviews?|exchange)\s+with\s+(?:the\s+)?(?:reporters|journalists)\b",
+    r"\b(?:when|as|after)\s+(?:a\s+|the\s+|some\s+)?(?:reporters?|journalists?|photojournalists?)\s+(?:asked|questioned|pressed)\b",
+    r"\basked by\s+(?:a\s+|the\s+|some\s+)?(?:reporters?|journalists?|photojournalists?)\b",
+    # Venue / outlet names containing a media term.
+    r"\b(?:white house\s+)?correspondents?['’]?\s*(?:'s\s+)?(?:association|club|dinner)\b",
+    r"\bthe hollywood reporter\b",
+]
+
 # The "killing of a journalist"-style nominal frame ("harm-noun of subject")
 # is only implemented for English for now -- it's a bonus pattern on top of
 # the subject/action proximity match below, not required for basic
@@ -365,6 +385,7 @@ _ENGLISH_TERMS = LanguageTerms(
     negation_prefixes=ENGLISH_NEGATION_PREFIXES,
     extra_negatable_actions=ENGLISH_EXTRA_NEGATABLE_ACTIONS,
     exclusion_patterns=ENGLISH_EXCLUSION_PATTERNS,
+    non_victim_subject_patterns=ENGLISH_NON_VICTIM_SUBJECT_PATTERNS,
 )
 
 # Language code -> compiled term set. "en" plus the 2026-08-25 non-English

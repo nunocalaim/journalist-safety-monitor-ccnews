@@ -367,6 +367,15 @@ PORTUGUESE = LanguageTerms(
         # sense is real and worth keeping.
         r"\bmanuais? de reda[çc][aã]o\b",
     ],
+    # Found 2026-11-25: "informou o jornal The Guardian", "como informou o
+    # colunista Lauro Jardim" -- outlet/columnist as the source, not the
+    # victim. Blanked before subject matching (see
+    # LanguageTerms.non_victim_subject_patterns).
+    non_victim_subject_patterns=[
+        r"\b(?:informou|informa|disse|noticiou|noticia|publicou|revelou|apurou)\s+(?:o|a|os|as)\s+(?:\S+\s+){0,1}?(?:jornal|colunista|emissora|redação|jornalista|repórter)\b",
+        r"\bsegundo\s+(?:o|a)\s+(?:\S+\s+){0,2}?(?:jornal|colunista|emissora|redação)\b",
+        r"\b(?:disse|afirmou|declarou|contou)\s+(?:ao|à)\s+(?:\S+\s+){0,1}?(?:jornal|colunista|emissora)\b",
+    ],
 )
 
 
@@ -480,6 +489,15 @@ ITALIAN = LanguageTerms(
         # "giornalisti" + "sospeso" as a fresh CENSORSHIP incident.
         r"\bfiato sospeso\b",
     ],
+    # Found 2026-11-25: "il giornale riporta che...", "secondo il
+    # giornalista Clément Garin" -- outlet/journalist as the source, not the
+    # victim. Blanked before subject matching (see
+    # LanguageTerms.non_victim_subject_patterns).
+    non_victim_subject_patterns=[
+        r"\bsecondo\s+(?:il|la|lo|l'|i|le|gli)\s*(?:\S+\s+){0,2}?(?:giornale|giornalista|testata|redazione|cronista|corrispondente)\b",
+        r"\b(?:il|la)\s+(?:giornale|testata|redazione)\s+(?:\S+\s+){0,2}?(?:riporta|riferisce|scrive|ha scritto|ha riportato|ha riferito)\b",
+        r"\bha\s+(?:detto|dichiarato|raccontato|spiegato|riferito)\s+(?:al|alla|ai|alle)\s+(?:\S+\s+){0,2}?(?:giornale|giornalisti|cronisti|testata|redazione)\b",
+    ],
 )
 
 
@@ -574,6 +592,14 @@ FRENCH = LanguageTerms(
     ],
     negation_prefixes=[r"\bpas", r"\bjamais", r"\bplus"],
     extra_negatable_actions=["endommag[eé]", "endommag[eé]e", "bless[eé]", "bless[eé]e"],
+    # Found 2026-11-25: "selon le journal local de Gelderlander", "selon le
+    # média Need to Know" -- an outlet cited as the source of an unrelated
+    # story. Blanked before subject matching (see
+    # LanguageTerms.non_victim_subject_patterns).
+    non_victim_subject_patterns=[
+        r"\b(?:selon|d'apr[eè]s)\s+(?:le|la|les|l')\s*(?:\S+\s+){0,2}?(?:journal|m[eé]dia|m[eé]dias|r[eé]daction|cha[iî]ne de t[eé]l[eé]vision|station de radio|journaliste|reporter|correspondant|correspondante|chroniqueur)\b",
+        r"\b(?:a|ont)\s+(?:indiqu[eé]|d[eé]clar[eé]|confi[eé]|dit|racont[eé]|expliqu[eé])\s+(?:au|[aà]\s+la|aux)\s+(?:\S+\s+){0,2}?(?:journal|m[eé]dia|journalistes|cha[iî]ne de t[eé]l[eé]vision|station de radio)\b",
+    ],
 )
 
 
@@ -657,6 +683,19 @@ RUSSIAN = LanguageTerms(
     ],
     negation_prefixes=[r"\bне", r"\bникогда"],
     extra_negatable_actions=["повреждён", "повреждена", "пострадал", "пострадала"],
+    # Found 2026-11-25 checking every incident's matched subject: ~45 of the
+    # 99 Russian incidents matched only on an outlet cited as the SOURCE --
+    # 30 vz.ru articles (weather, box office, diplomacy) ending in the
+    # boilerplate "как писала газета Взгляд", 7 unrelated UK stories with
+    # "сообщила газета Sun", plus "пишет издание", "по данным СМИ", "со
+    # ссылкой на телеканал", "СМИ сообщили". Blanked before subject
+    # matching (see LanguageTerms.non_victim_subject_patterns).
+    non_victim_subject_patterns=[
+        r"\b(?:как\s+)?(?:писала|писал|писало|пишет|пишут|сообщила|сообщил|сообщило|сообщает|сообщают|сообщили|передает|передаёт|передают|отмечает|утверждает|уточняет|уточнила|рассказала|выяснила|выяснило)\s+(?:\S+\s+){0,2}?(?:газета|издание|телеканал|сми|радиостанция|редакция|оператор)\b",
+        r"\b(?:газета|издание|телеканал|сми|радиостанция)\s+(?:\S+\s+){0,2}?(?:пишет|писала|сообщ\w+|переда[её]т|отмечает|утверждает|уточняет)\b",
+        r"\bпо\s+данным\s+(?:\S+\s+){0,2}?сми\b",
+        r"\bсо\s+ссылкой\s+на\s+(?:\S+\s+){0,2}?(?:газету|издание|телеканал|сми|радиостанцию)\b",
+    ],
 )
 
 

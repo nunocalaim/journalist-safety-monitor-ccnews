@@ -1,7 +1,26 @@
 {
-  "timestamp": "2026-11-26T09:59:57.797985",
+  "timestamp": "2026-11-26T23:00:39.514016",
   "alert_count": 20,
   "incidents": [
+    {
+      "id": 2182,
+      "url": "https://lespresso.it/c/attualita/2026/11/26/enigma-della-repubblica-nuovo-numero-lespresso/66146",
+      "title": "L'enigma della Repubblica - Cosa c'\u00e8 nel nuovo numero de L'Espresso",
+      "published_date": "Thu, 26 Nov 2026 15:13:12 GMT",
+      "domain": "lespresso.it",
+      "country": "IT",
+      "severity": "CRITICAL",
+      "incident_type": "DISAPPEARANCE",
+      "description": "E dopo l'omaggio di Sebastiano Messina, un'intervista d'archivio (di Roberto Cotroneo) lancia un regalo ai lettori de L'Espresso in ricordo di Corrado Augias: dal prossimo numero ripubblichiamo a puntate un giallo firmato nel 1992 dal grande giornalista recentemente scomparso.",
+      "language": "it",
+      "source_country": "IT",
+      "collected_at": "2026-11-26 23:00:39",
+      "matched_query": "rss:lespresso.it",
+      "validation_status": "validated",
+      "validation_reason": "media subject and harm action found in returned text",
+      "evidence_text": "E dopo l'omaggio di Sebastiano Messina, un'intervista d'archivio (di Roberto Cotroneo) lancia un regalo ai lettori de L'Espresso in ricordo di Corrado Augias: dal prossimo numero ripubblichiamo a puntate un giallo firmato nel 1992 dal grande giornalista recentemente scomparso.",
+      "incident_fingerprint": "e dopo l omaggio di sebastiano messina un intervista d archivio di"
+    },
     {
       "id": 2064,
       "url": "https://www.winnipegfreepress.com/arts-and-life/life/greenpage/2026/11/25/the-worlds-largest-oat-milk-producer-has-joined-an-unusual-climate-journalism-campaign-2",
@@ -362,25 +381,6 @@
       "validation_reason": "media subject and harm action found in returned text (re-validated 2026-11-25 after Spanish killing-term fix)",
       "evidence_text": "Asesinan a Karely Merlano , esposa de periodista de RCN , en hogar del ICBF ; menores estar\u00edan implicados \u2013 Publimetro Colombia",
       "incident_fingerprint": "asesinan karely merlano esposa de periodista de rcn en hogar del icbf"
-    },
-    {
-      "id": 2093,
-      "url": "https://www.publico.es/internacional/israel-mata-periodista-ataque-libano-bombardea-ambulancia-iba-rescatarla.html",
-      "title": "Israel mata a otra periodista en un ataque en L\u00edbano y bombardea la ambulancia que iba a rescatarla",
-      "published_date": "20260423T120000Z",
-      "domain": "publico.es",
-      "country": "",
-      "severity": "CRITICAL",
-      "incident_type": "KILLING",
-      "description": "Israel mata a otra periodista en un ataque en L\u00edbano y bombardea la ambulancia que iba a rescatarla",
-      "language": "Spanish",
-      "source_country": "",
-      "collected_at": "2026-11-25 11:44:11",
-      "matched_query": "gdelt_legacy_backfill",
-      "validation_status": "validated",
-      "validation_reason": "media subject and harm action found in returned text (re-validated 2026-11-25 after Spanish killing-term fix)",
-      "evidence_text": "Israel mata a otra periodista en un ataque en L\u00edbano y bombardea la ambulancia que iba a rescatarla",
-      "incident_fingerprint": "israel mata otra periodista en un ataque en l bano y bombardea"
     }
   ]
 }
